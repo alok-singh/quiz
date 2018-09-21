@@ -1,0 +1,920 @@
+.body {
+    font-family: sans-serif;
+}
+
+.navbar-default {
+    background-color: #ffffff;
+    border-color: #e7e7e7;
+    padding: 10px;
+}
+
+.navbar-right .login {
+    border: 1px solid #3a9cee;
+    border-radius: 6px;
+    -webkit-box-shadow: inset 0 0 1px #00f;
+    -moz-box-shadow: inset 0 0 1px #00f;
+    box-shadow: inset 0 0 1px #00f;
+}
+
+.navbar {
+    margin-bottom: 0px;
+}
+
+
+/* Start Player-7b  Page*/
+
+#checkfa .innerrow {
+    margin-top: -35px;
+    color: #ffffff;
+}
+
+#checkfa .innerrow .fa {
+    font-size: 140px;
+    line-height: 0px;
+}
+
+#checkfa .innerrow img {
+    display: inline;
+    margin-top: -5px;
+}
+
+
+/* End Player-7b  Page*/
+
+
+/* Start 9 Page*/
+
+#toptitle {
+    background: #3a9cee;
+    padding: 10px 30px;
+}
+
+#toptitle .titlerow .btn {
+    background: #ffffff;
+    padding: 3px 25px;
+    border-radius: 10px;
+    border: 0px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#topcontent .titlerow .btnrow .fa {
+    padding: 8px 9px;
+    color: #ffffff;
+    border-radius: 25px;
+    font-size: 15px;
+}
+
+#topcontent .titlerow .btnrow .block {
+    padding: 0px;
+    padding-top: 10px;
+}
+
+#topcontent .titlerow .btnrow .col-xs-2 {
+    width: 13%;
+}
+
+
+/* End 9 Page*/
+
+
+/* Start 10 Page */
+
+#checkblock .gaping {
+    padding: 3px 0px;
+}
+
+#checkblock p {
+    color: #ffffff;
+    font-size: 20px;
+    font-family: calibri;
+    margin: 0px;
+    padding: 0px 10px;
+}
+
+#checkblock hr {
+    border-top: 1px solid #f9f9f9;
+    margin: 5px;
+}
+
+
+/* End 10 Page */
+
+
+/* Start A4 Page*/
+
+#topcontent .titlerow .innerboxx {
+    border: 1px solid rgb(169, 169, 169);
+    padding: 40px 20px;
+}
+
+#topcontent .titlerow textarea {
+    width: 100%;
+}
+
+#topcontent .titlerow .innerboxx hr {
+    border-top: 1px solid rgb(169, 169, 169);
+}
+
+#uploadsection .btn {
+    border: 0px;
+    border-radius: 0px;
+    margin: 0px 10px;
+    font-size: 18px;
+}
+
+#uploadsection .innerblock {
+    background: #f2f2f2;
+    padding: 30px 20px;
+    margin-top: 20px;
+}
+
+#uploadsection .fa {
+    font-size: 54px;
+    color: #3a9cee;
+}
+
+
+/* End A4 Page*/
+
+
+/* Start A5 Page*/
+
+#topcontent {
+    font-family: calibri;
+}
+
+#topcontent .titlerow {
+    padding: 50px 0px 0px;
+}
+
+#topcontent .titlerow .btnrow .btn {
+    color: #3a9cee;
+    background: #3a9cee;
+    font-size: 20px;
+    font-weight: bold;
+    border: 0px;
+    padding: 6px 20px;
+    color: #ffffff;
+    border-radius: 6px;
+}
+
+#topcontent hr {
+    border-top: 1px solid #000;
+    width: 86%;
+}
+
+#topcontent .boxrow {
+    padding: 10px 95px;
+}
+
+#topcontent .boxrow .box {
+    padding: 20px 25px;
+    box-shadow: 0px 0px 2px 2px #bcbcbc;
+}
+
+#topcontent .boxdash {
+    background: #ececec;
+    border: 2px dashed;
+    padding: 20px 25px;
+}
+
+#topcontent .boxdash .fa {
+    color: #3a9cee;
+    font-size: 35px;
+}
+
+#topcontent .boxrow .btnrow {
+    padding-top: 15px;
+}
+
+#topcontent .boxrow .btnrow .block {
+    padding: 0px;
+}
+
+#topcontent .boxrow .btnrow .fa {
+    padding: 8px 9px;
+    color: #ffffff;
+    border-radius: 25px;
+    font-size: 18px;
+}
+
+
+/* End A5 Page*/
+
+
+/* Start A6 Page */
+
+#questionbox {
+    padding: 20px 0px;
+}
+
+#questionbox .btn {
+    width: 92%;
+    background: #ffffff;
+    border: 1px solid #474747;
+    border-radius: 0px;
+    padding: 10px 30px;
+    text-align: left;
+    font-size: 20px;
+}
+
+#questionbox .fa {
+    position: absolute;
+    right: 12px;
+    top: 42px;
+    font-size: 40px;
+    color: #8cd35d;
+}
+
+
+/* End A6 Page */
+
+
+/* Start A7 Page */
+
+#faicons .fa {
+    margin-right: 10px;
+}
+
+
+/* End A7 Page */
+
+
+/* Start A8 Page*/
+
+#titlebar .topmargin {
+    margin-top: -50px;
+}
+
+#titlebar .toprow .btn {
+    background: #3a9cee;
+    padding: 6px 35px;
+    font-size: 20px;
+    color: #ffffff;
+    font-family: 'Hobo Std';
+    margin: 17px 0px;
+    border: 0px;
+}
+
+#titlebar .tablecont .table>tbody>tr>td {
+    padding: 0px 8px;
+    font-size: 32px;
+}
+
+#titlebar .footerrow {
+    background: #1b91ba;
+    border-radius: 15px;
+    padding: 15px;
+    font-family: 'Hobo Std';
+    color: #ffffff;
+}
+
+#titlebar .footerrow p {
+    margin: 0px;
+    font-size: 25px;
+}
+
+#titlebar .footerrow .fa {
+    font-size: 35px;
+    margin-right: 10px;
+}
+
+
+/* End A8 Page*/
+
+
+/* Start A9 Page*/
+
+#titlebar {
+    padding: 20px;
+}
+
+#titlebar .titlerow {
+    background: #f2f2f2;
+    border: 1px solid #636363;
+}
+
+#titlebar .smartimage .gap,
+#titlebar .btnright .gap {
+    padding: 0px;
+}
+
+#titlebar .par .fa {
+    font-size: 22px;
+    margin-right: 8px;
+    color: #248ff0;
+}
+
+#titlebar .par {
+    padding: 10px 15px;
+}
+
+#titlebar .par p {
+    font-size: 24px;
+    margin: 0;
+    color: #515151;
+}
+
+#titlebar .par .btn {
+    background: #f74b19;
+    border: 1px solid #4d4d4d;
+    color: #ffffff;
+    border-radius: 20px;
+    margin: 60px 0px 0px;
+    font-size: 16px;
+}
+
+
+/* End A9 Page*/
+
+
+/* Start A10 Page*/
+
+#titlebar .titlerow .logo {
+    padding-top: 0px;
+}
+
+#titlebar .headrow {
+    padding: 0px 0px 170px;
+}
+
+#titlebar .quesbtn .btn {
+    padding: 10px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    font-family: 'Hobo Std';
+    font-size: 25px;
+    color: #ffffff;
+    border: 1px solid #222a32;
+}
+
+
+/* End A10 Page*/
+
+
+/* Start A11 Page*/
+
+#titlebar .smartimage .btn {
+    border-radius: 10px;
+}
+
+#titlebar .quesbtn .fa {
+    color: #ff0000;
+    font-size: 62px;
+    position: absolute;
+    bottom: 30px;
+    right: 95px;
+    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+}
+
+
+/* End A11 Page*/
+
+
+/* Start A12 Page*/
+
+#titlebar .btnright .btn {
+    background: #ffffff;
+    color: #33a7da;
+    padding: 4px 30px;
+    font-family: 'Hobo Std';
+    font-size: 25px;
+    margin-top: 15px;
+    border: 0px;
+}
+
+#titlebar .tablerow .tablescroll {
+    display: block;
+    max-height: 420px;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    color: #ffffff;
+}
+
+#titlebar .tablerow .fa {
+    color: #ffffff;
+    font-size: 30px;
+    color: #ffffff;
+}
+
+#titlebar .tablerow .table>thead {
+    border-bottom: 2px solid #fff;
+}
+
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
+    border: 0px;
+    font-family: Calibri;
+    padding: 2px 8px;
+    font-size: 22px;
+    text-align: center;
+}
+
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: none;
+}
+
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: #ffffff;
+}
+
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+/* End A12 Page*/
+
+
+/* Start A13 Page*/
+
+#titlebar .names {
+    color: #ffffff;
+    font-family: Calibri;
+}
+
+#titlebar .names .topgap {
+    padding-top: 40px;
+}
+
+#titlebar .names h3 {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+#titlebar .names h2 {
+    font-size: 45px;
+    font-weight: bold;
+}
+
+#titlebar .names p {
+    font-size: 20px;
+}
+
+#titlebar .footrow {
+    background: #f2f2f2;
+    border-radius: 15px;
+    padding: 10px;
+    position: fixed;
+    bottom: 20px;
+    width: 96%;
+    text-align: center;
+    font-family: 'Hobo Std';
+}
+
+#titlebar .footrow .btn {
+    font-size: 24px;
+    border: 0px;
+}
+
+
+/* End A13 Page*/
+
+
+/* Start A14 Page*/
+
+#admin .titlerow {
+    background: #f2f2f2;
+    border-bottom: 1px solid #000000;
+}
+
+#admin .titlerow .bdright {
+    border-right: 1px solid #d4d4d4;
+}
+
+#admin .titlerow .btn {
+    background: #6dd2b0;
+    font-weight: bold;
+    color: #000000;
+    border: 0px;
+}
+
+#admin .titlerow .fa {
+    font-size: 20px;
+    padding: 14px;
+}
+
+.admincontent {
+    background: #f2f2f2;
+}
+
+.admincontent .controw .contblock {
+    color: #000000;
+    background: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid #ededed;
+    font-family: calibri;
+    padding: 11px;
+}
+
+.admincontent .controw .contblock p,
+.admincontent .controw .maincontent p {
+    margin: 0px
+}
+
+.admincontent .controw .maincontent {
+    padding: 40px 100px 0px;
+    background: #f2f2f2;
+}
+
+.admincontent .controw .maincontent .inner {
+    border: 1px solid #000000;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.admincontent .controw .maincontent .tablerows {
+    padding: 40px 0px 20px;
+}
+
+.admincontent .controw .maincontent .table>tbody>tr>td,
+.admincontent .controw .maincontent .table>tbody>tr>th,
+.admincontent .controw .maincontent .table>tfoot>tr>td,
+.admincontent .controw .maincontent .table>tfoot>tr>th,
+.admincontent .controw .maincontent .table>thead>tr>td,
+.admincontent .controw .maincontent .table>thead>tr>th {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.admincontent .controw .maincontent .table>tbody>tr>td {
+    font-weight: normal !important;
+}
+
+.admincontent .controw .maincontent .table>thead {
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.admincontent .controw .maincontent .table>thead>tr>th {
+    padding: 10px 0px;
+}
+
+.admincontent input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+}
+
+.admincontent .table-hover>tbody>tr:hover {
+    background-color: #d4d4d4;
+}
+
+.admincontent .controw .maincontent .fa {
+    padding: 0px 10px;
+}
+
+
+
+/* End A14 Page*/
+
+
+/* Start XX Page  */
+
+.admincontent .maincontent .main {
+    width: 90%;
+    margin: 20px auto;
+}
+
+.admincontent .maincontent .form-control {
+    height: 42px;
+    border-radius: 0px;
+    border: 1px solid #474747;
+}
+
+.admincontent .maincontent .has-search .form-control-feedback {
+    left: initial;
+    right: 10px;
+    top: 10px;
+    color: #d4d4d4;
+}
+
+.admincontent .controw .maincontent .main .fa {
+    font-size: 20px;
+}
+
+.admincontent .maincontent .has-search .form-control {
+    padding-right: 12px;
+    padding-left: 34px;
+}
+
+.admincontent .maincontent hr {
+    border-top: 1px solid #d8d8d8;
+}
+
+.adminrow .titlerow {
+    border: 1px solid #d4d4d4;
+    padding: 10px 0px 5px;
+}
+
+.adminrow .titlerow .btnrow .fa {
+    padding: 6px 7px;
+    color: #ffffff;
+    border-radius: 25px;
+    font-size: 14px;
+}
+
+.adminrow .titlerow .btnrow .block {
+    padding: 0px;
+    padding-top: 10px;
+}
+
+.adminrow .titlerow .btnrow .col-xs-2 {
+    width: 13%;
+}
+
+.adminrow .titlerow img {
+    border: 1px solid #000000;
+}
+
+.adminrow .titlerow .head .par1 {
+    font-size: 19px;
+    color: #000000;
+    line-height: 34px;
+    padding: 0px 0px 5px;
+    margin: 0px;
+}
+
+.adminrow .titlerow .head .par2 {
+    font-size: 14px;
+    color: #373737;
+    margin: 0px;
+}
+
+.adminrow .titlerow .btn {
+    background: #d1d1d1;
+    border: 0px;
+    border-radius: 0px;
+    padding: 2px 25px;
+    color: #000000;
+}
+
+.adminrow {
+    padding: 0px 30px 20px !important;
+}
+
+#topictag span {
+    margin: 0px 10px;
+}
+
+
+/* End XX Page  */
+
+
+/* Start Modal */
+
+.modal-dialog {
+    margin: 220px auto;
+}
+
+.modal-content {
+    padding: 40px 40px 20px;
+    border-radius: 0px;
+}
+
+.modal-content label {
+    padding: 0px 37px;
+    font-weight: 700;
+}
+
+.modal-body {
+    border: 1px solid #000000;
+    text-align: center;
+}
+
+#myModal .btn {
+    background: #6cd3b0;
+    color: #000000;
+    border: 0px;
+    border-radius: 0px;
+    padding: 7px 22px;
+    margin-top: 15px
+}
+
+.modal-footer {
+    text-align: center;
+}
+
+
+/* End Modal */
+
+@media (min-width: 1200px) {
+
+    /* Start A9 Page*/
+    #titlebar .container {
+        width: 1300px;
+    }
+    #admin .container,
+    .admincontent .container {
+        width: 100%;
+    }
+    /* End A9 Page*/
+}
+
+@media (max-width: 768px) {
+
+    /* Start Player-7b Page */
+    #checkfa .innerrow {
+        margin-top: 0;
+    }
+
+    /* End Player-7b Page */
+    /* Start 9 Page */
+    #topcontent .titlerow .btnrow .fa {
+        font-size: 12px;
+    }
+    #topcontent .titlerow .btnrow .col-xs-2 {
+        width: 25%;
+    }
+    #topcontent .titlerow .btnrow .gapp {
+        padding: 0px;
+    }
+
+    /* End 9 Page*/
+    /* Start A5 Page */
+    #topcontent .boxrow {
+        padding: 10px 0px;
+    }
+    #toptitle {
+        padding: 10px 8px;
+    }
+    #toptitle .titlerow .btn {
+        padding: 3px 10px;
+    }
+    #topcontent .titlerow .btnrow .btn {
+        padding: 5px;
+    }
+    #topcontent .titlerow .head {
+        padding: 0px;
+    }
+    #topcontent .titlerow .head .par1 {
+        font-size: 24px !important;
+    }
+    #topcontent .titlerow .head .par2 {
+        font-size: 16px !important;
+    }
+    #topcontent hr {
+        width: 100%;
+    }
+    #topcontent .boxrow {
+        padding: 10px 20px;
+    }
+    #topcontent .boxrow .boxhead {
+        padding: 0px;
+        font-size: 16px;
+    }
+    #topcontent .boxrow .para {
+        padding: 0px;
+        font-size: 42px !important;
+    }
+    #topcontent .boxrow .boxhead p {
+        font-size: 14px !important;
+    }
+    #topcontent .boxrow .btnrow {
+        left: 45px;
+        padding-top: 0px;
+    }
+
+    /* End A5 Page */
+    /* Start A6 Page */
+    #questionbox .fa {
+        right: 6px;
+        font-size: 35px;
+    }
+
+    /* End A6 Page */
+    /* Start A7 Page */
+    #faicons,
+    #fahead {
+        padding-left: 35px;
+    }
+    #fahead p {
+        font-size: 30px !important;
+    }
+    #faicons p {
+        font-size: 14px !important;
+    }
+
+    /* End A7 Page */
+    /* Start A8 Page*/
+    #titlebar .topmargin {
+        margin-top: 0px;
+    }
+    #titlebar .toprow .btn {
+        margin: 12px 0px;
+    }
+    #titlebar .footerrow p {
+        font-size: 23px;
+    }
+    #titlebar .tablecont .table>tbody>tr>td {
+        display: block;
+        line-height: 36px;
+        font-size: 37px;
+    }
+
+    /* End A8 Page*/
+    /* Start A9 Page*/
+    #titlebar .par {
+        padding: 0px;
+    }
+    #titlebar .par p {
+        font-size: 18px;
+    }
+    #titlebar .par .btn {
+        margin: 60px 0px 40px;
+    }
+    #titlebar .smartimage .gap img {
+        width: 45px;
+    }
+
+    /* End A9 Page*/
+    /* Start A10 Page*/
+    #titlebar .titlerow p {
+        font-size: 20px !important;
+    }
+    #titlebar .titlerow .logo {
+        padding-top: 8px;
+    }
+    #titlebar .headrow {
+        padding: 30px 0px;
+    }
+    #titlebar .headrow p {
+        font-size: 35px !important;
+    }
+    #titlebar .quesbtn .btn {
+        padding: 20px 0px;
+        font-size: 11px;
+    }
+
+    /* End A10 Page*/
+    /* Start A11 Page*/
+    #titlebar .headrow .hd {
+        margin-top: 0px !important;
+    }
+    #titlebar .quesbtn {
+        padding: 50px 0px;
+    }
+    #titlebar .quesbtn .fa {
+        font-size: 20px;
+        bottom: 18px;
+        right: 20px;
+    }
+
+    /* End A11 Page*/
+    /* Start A12 Page*/
+    #titlebar .tablerow {
+        padding: 45px 0px !important;
+    }
+
+    /* End A12 Page*/
+    /* Start A13 Page*/
+    #titlebar .footrow {
+        width: 90%;
+    }
+    #titlebar .footrow .btn {
+        font-size: 12px;
+    }
+    #titlebar .names h2 {
+        font-size: 36px;
+    }
+    #titlebar .names h3 {
+        font-size: 26px;
+    }
+    #titlebar .names .sidegap {
+        padding: 0px;
+    }
+
+    /* End A13 Page*/
+}
+
+@media (min-width: 768px) {
+    .navbar-nav>li>a {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+    .navbar-right {
+        padding: 4px 0px;
+    }
+}
