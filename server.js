@@ -10,6 +10,7 @@ import {createQuizController} from './controllers/createQuizController';
 import {loginController} from './controllers/loginController';
 import {homeController} from './controllers/homeController';
 import {gatewayPostController, gatewayGetController} from './controllers/apiController';
+import {addQuestionController} from './controllers/addQuestionController';
 
 const app = express();
 
@@ -25,6 +26,10 @@ app.get('/login', (req, res) => {
 
 app.get('/quiz', (req, res) => {
 	quizController(req, res);
+});
+
+app.get('/quiz/:quizID/edit', (req, res) => {
+	addQuestionController(req, res);
 });
 
 app.get('/build/*', (req, res) => {

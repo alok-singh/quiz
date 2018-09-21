@@ -58,19 +58,19 @@
     font-size: 20px;
 }
 
-#topcontent .titlerow .btnrow .fa {
+.topcontent .titlerow .btnrow .fa {
     padding: 8px 9px;
     color: #ffffff;
     border-radius: 25px;
     font-size: 15px;
 }
 
-#topcontent .titlerow .btnrow .block {
+.topcontent .titlerow .btnrow .block {
     padding: 0px;
     padding-top: 10px;
 }
 
-#topcontent .titlerow .btnrow .col-xs-2 {
+.topcontent .titlerow .btnrow .col-xs-2 {
     width: 13%;
 }
 
@@ -103,33 +103,33 @@
 
 /* Start A4 Page*/
 
-#topcontent .titlerow .innerboxx {
+.topcontent .titlerow .innerboxx {
     border: 1px solid rgb(169, 169, 169);
     padding: 40px 20px;
 }
 
-#topcontent .titlerow textarea {
+.topcontent .titlerow textarea {
     width: 100%;
 }
 
-#topcontent .titlerow .innerboxx hr {
+.topcontent .titlerow .innerboxx hr {
     border-top: 1px solid rgb(169, 169, 169);
 }
 
-#uploadsection .btn {
+.uploadsection .btn {
     border: 0px;
     border-radius: 0px;
     margin: 0px 10px;
     font-size: 18px;
 }
 
-#uploadsection .innerblock {
+.uploadsection .innerblock {
     background: #f2f2f2;
     padding: 30px 20px;
     margin-top: 20px;
 }
 
-#uploadsection .fa {
+.uploadsection .fa {
     font-size: 54px;
     color: #3a9cee;
 }
@@ -140,15 +140,15 @@
 
 /* Start A5 Page*/
 
-#topcontent {
+.topcontent {
     font-family: calibri;
 }
 
-#topcontent .titlerow {
+.topcontent .titlerow {
     padding: 50px 0px 0px;
 }
 
-#topcontent .titlerow .btnrow .btn {
+.topcontent .titlerow .btnrow .btn {
     color: #3a9cee;
     background: #3a9cee;
     font-size: 20px;
@@ -159,40 +159,40 @@
     border-radius: 6px;
 }
 
-#topcontent hr {
+.topcontent hr {
     border-top: 1px solid #000;
     width: 86%;
 }
 
-#topcontent .boxrow {
+.topcontent .boxrow {
     padding: 10px 95px;
 }
 
-#topcontent .boxrow .box {
+.topcontent .boxrow .box {
     padding: 20px 25px;
     box-shadow: 0px 0px 2px 2px #bcbcbc;
 }
 
-#topcontent .boxdash {
+.topcontent .boxdash {
     background: #ececec;
     border: 2px dashed;
     padding: 20px 25px;
 }
 
-#topcontent .boxdash .fa {
+.topcontent .boxdash .fa {
     color: #3a9cee;
     font-size: 35px;
 }
 
-#topcontent .boxrow .btnrow {
+.topcontent .boxrow .btnrow {
     padding-top: 15px;
 }
 
-#topcontent .boxrow .btnrow .block {
+.topcontent .boxrow .btnrow .block {
     padding: 0px;
 }
 
-#topcontent .boxrow .btnrow .fa {
+.topcontent .boxrow .btnrow .fa {
     padding: 8px 9px;
     color: #ffffff;
     border-radius: 25px;
@@ -205,11 +205,11 @@
 
 /* Start A6 Page */
 
-#questionbox {
+.questionbox {
     padding: 20px 0px;
 }
 
-#questionbox .btn {
+.questionbox .btn {
     width: 92%;
     background: #ffffff;
     border: 1px solid #474747;
@@ -219,14 +219,18 @@
     font-size: 20px;
 }
 
-#questionbox .fa {
+.questionbox .fa-check-circle, .questionbox .fa-circle {
     position: absolute;
     right: 12px;
     top: 42px;
     font-size: 40px;
     color: #8cd35d;
+    cursor: pointer;
 }
 
+.questionbox .fa-circle {
+	color: #888;
+}
 
 /* End A6 Page */
 
@@ -742,19 +746,19 @@
 
     /* End Player-7b Page */
     /* Start 9 Page */
-    #topcontent .titlerow .btnrow .fa {
+    .topcontent .titlerow .btnrow .fa {
         font-size: 12px;
     }
-    #topcontent .titlerow .btnrow .col-xs-2 {
+    .topcontent .titlerow .btnrow .col-xs-2 {
         width: 25%;
     }
-    #topcontent .titlerow .btnrow .gapp {
+    .topcontent .titlerow .btnrow .gapp {
         padding: 0px;
     }
 
     /* End 9 Page*/
     /* Start A5 Page */
-    #topcontent .boxrow {
+    .topcontent .boxrow {
         padding: 10px 0px;
     }
     #toptitle {
@@ -763,43 +767,43 @@
     #toptitle .titlerow .btn {
         padding: 3px 10px;
     }
-    #topcontent .titlerow .btnrow .btn {
+    .topcontent .titlerow .btnrow .btn {
         padding: 5px;
     }
-    #topcontent .titlerow .head {
+    .topcontent .titlerow .head {
         padding: 0px;
     }
-    #topcontent .titlerow .head .par1 {
+    .topcontent .titlerow .head .par1 {
         font-size: 24px !important;
     }
-    #topcontent .titlerow .head .par2 {
+    .topcontent .titlerow .head .par2 {
         font-size: 16px !important;
     }
-    #topcontent hr {
+    .topcontent hr {
         width: 100%;
     }
-    #topcontent .boxrow {
+    .topcontent .boxrow {
         padding: 10px 20px;
     }
-    #topcontent .boxrow .boxhead {
+    .topcontent .boxrow .boxhead {
         padding: 0px;
         font-size: 16px;
     }
-    #topcontent .boxrow .para {
+    .topcontent .boxrow .para {
         padding: 0px;
         font-size: 42px !important;
     }
-    #topcontent .boxrow .boxhead p {
+    .topcontent .boxrow .boxhead p {
         font-size: 14px !important;
     }
-    #topcontent .boxrow .btnrow {
+    .topcontent .boxrow .btnrow {
         left: 45px;
         padding-top: 0px;
     }
 
     /* End A5 Page */
     /* Start A6 Page */
-    #questionbox .fa {
+    .questionbox .fa {
         right: 6px;
         font-size: 35px;
     }
@@ -907,6 +911,11 @@
     }
 
     /* End A13 Page*/
+}
+
+.add-question-button {
+	margin-top: 30px;
+    text-align: center;
 }
 
 @media (min-width: 768px) {

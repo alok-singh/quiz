@@ -8,7 +8,8 @@ module.exports = {
     entry: {
         createQuiz: './src/js/createQuiz.js',
         login: './src/js/login.js',
-        home: './src/js/home.js'
+        home: './src/js/home.js',
+        addQuestion: './src/js/addQuestion.js'
     },
     output: {
         path: __dirname + '/build',
