@@ -36,6 +36,9 @@ export default class createQuizComponent extends Component {
                 authorization: apiToken
             }).then(data => {
                 alert(data.message);
+                if(data.status == '200' && data.id){
+                    location.href = `/quiz/${data.id}/edit`
+                }
             })
         }
         else{
@@ -45,7 +48,7 @@ export default class createQuizComponent extends Component {
     }
 
     renderBottomComponent() {
-        return  <section id="topcontent" >
+        return  <section className="topcontent" >
             <div className="container">
                 <div className="row titlerow" style={{padding: '25px 0px 0px'}}>
                     <div className="col-xs-12 col-md-8 " >
@@ -62,7 +65,7 @@ export default class createQuizComponent extends Component {
                             </div>
                         </div>
                     </div>
-                    <div id="uploadsection" className="col-xs-12 col-md-4 " >
+                    <div className="col-xs-12 col-md-4 uploadsection" >
                         <div className="row">
                             <div className="col-xs-12 " >
                                 <p style={{fontSize: '20px', color: '#676767', fontWeight: 'bold', lineHeight: '34px', marginBottom: '15px'}} >Add Cover Photo</p>
