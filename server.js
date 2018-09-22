@@ -9,6 +9,7 @@ import bodyParser from 'body-parser';
 import {createQuizController} from './controllers/createQuizController';
 import {loginController} from './controllers/loginController';
 import {homeController} from './controllers/homeController';
+import {playerHomeController} from './controllers/playerHomeController';
 import {gatewayPostController, gatewayGetController} from './controllers/apiController';
 import {addQuestionController} from './controllers/addQuestionController';
 
@@ -54,6 +55,10 @@ app.get('/images/*', function(req, res) {
 
 app.get('/home', (req, res) => {
 	homeController(req, res);
+});
+
+app.get('/player-home', (req, res) => {
+	playerHomeController(req, res);
 });
 
 app.get('/create', (req, res) => {

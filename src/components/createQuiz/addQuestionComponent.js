@@ -121,7 +121,7 @@ export default class AddQuestionComponent extends Component {
         
         if(questions[index]){
             if(questions[index][key] && Array.isArray(questions[index][key])){
-                questions[index][key][optionIndex] = value;
+                questions[index][key][optionIndex].option_title = value;
             }
             else{
                 questions[index][key] = value;

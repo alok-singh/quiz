@@ -6,7 +6,8 @@ export default class QuizComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            quizList: []
+            quizList: [],
+            userName: 'Default'
         }
         this.signout = this.signout.bind(this);
     }
@@ -28,7 +29,14 @@ export default class QuizComponent extends Component {
                 this.setState({
                     quizList: data.quizzes ? data.quizzes : []
                 });
-            })
+            });
+            get('/api/user/name/', {
+                authorization: apiToken
+            }).then(data => {
+                this.setState({
+                    userName: data.message ? data.message : 'Default'
+                });
+            });
         }
         else{
             location.href = '/login';
@@ -140,7 +148,7 @@ export default class QuizComponent extends Component {
                         <img src="/images/br.png" className="img-responsive logo" style={{width: '120px', margin: '0 auto', padding: '10px'}} />
                     </div>
                     <div className="col-xs-2 text-center" style={{background: '#6dd2b0', padding: '11px'}}>
-                        <button type="button" className="btn btn-success">DEEPAK</button>
+                        <button type="button" className="btn btn-success">{this.state.userName.toUpperCase()}</button>
                     </div>
                 </div>
             </div>
