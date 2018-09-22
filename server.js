@@ -10,6 +10,7 @@ import {createQuizController} from './controllers/createQuizController';
 import {loginController} from './controllers/loginController';
 import {homeController} from './controllers/homeController';
 import {playerHomeController} from './controllers/playerHomeController';
+import {playQuizController} from './controllers/playQuizController';
 import {gatewayPostController, gatewayGetController} from './controllers/apiController';
 import {addQuestionController} from './controllers/addQuestionController';
 
@@ -33,6 +34,22 @@ app.get('/quiz/:quizID/edit', (req, res) => {
 	addQuestionController(req, res);
 });
 
+app.get('/home', (req, res) => {
+	homeController(req, res);
+});
+
+app.get('/player-home', (req, res) => {
+	playerHomeController(req, res);
+});
+
+app.get('/play/quiz/:quizID', (req, res) => {
+	playQuizController(req, res);
+});
+
+app.get('/create', (req, res) => {
+	createQuizController(req, res);
+});
+
 app.get('/build/*', (req, res) => {
 	let filePath = "." + req.url;
 	let contentType = req.url.split('.').pop();
@@ -51,18 +68,6 @@ app.get('/images/*', function(req, res) {
 		'Content-Type': 'image/jpg', 
 		'Cache-Control': 'public, max-age=31557600'
 	});
-});
-
-app.get('/home', (req, res) => {
-	homeController(req, res);
-});
-
-app.get('/player-home', (req, res) => {
-	playerHomeController(req, res);
-});
-
-app.get('/create', (req, res) => {
-	createQuizController(req, res);
 });
 
 app.get('/api/*', (req, res) => {

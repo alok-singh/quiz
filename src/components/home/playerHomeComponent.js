@@ -6,28 +6,21 @@ export default class QuizComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            quizList: [{
-                name: 'Nature and its Landforms',
-                id: 123,
-                description: 'When Goliath comes out, you should run. When Goliath comes out.'
-            },{
-                name: 'Nature and its Landforms',
-                id: 123,
-                description: 'When Goliath comes out, you should run. When Goliath comes out.'
-            },{
-                name: 'Nature and its Landforms',
-                id: 123,
-                description: 'When Goliath comes out, you should run. When Goliath comes out.'
-            },{
-                name: 'Nature and its Landforms',
-                id: 123,
-                description: 'When Goliath comes out, you should run. When Goliath comes out.'
-            },{
-                name: 'Nature and its Landforms',
-                id: 123,
-                description: 'When Goliath comes out, you should run. When Goliath comes out.'
-            }]
+            quizList: []
         }
+    }
+
+    componentDidMount() {
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+
+        get('/api/quiz/all/', {
+            authorization: apiToken
+        }).then(data => {
+            this.setState({
+                quizList: data.quizzes ? data.quizzes : []
+            });
+        });
     }
 
     renderExplore() {
@@ -123,15 +116,15 @@ export default class QuizComponent extends Component {
                                 <figure className="effect-goliath">
                                     <img className="img-responsive" src="/images/eet.png" alt="img23"/>
                                     <figcaption>
-                                        <h2><span>{quiz.name}</span></h2>
+                                        <h2><span>{quiz.quiz_title}</span></h2>
                                         <p style={{textAlign: 'left', fontSize: '14px'}}>{quiz.description}</p>
-                                        <a href={`/play/quiz/${quiz.id}`}>Play</a>
+                                        <a href={`/play/quiz/${quiz.quiz_id}`}>Play</a>
                                     </figcaption>           
                                 </figure>
                                 <div>
                                     <div className="row">
                                         <div className="col-xs-12 btnblock">
-                                            <a href={`/play/quiz/${quiz.id}`} className="btn btn-success " >Play Quiz</a>
+                                            <a href={`/play/quiz/${quiz.quiz_id}`} className="btn btn-success " >Play Quiz</a>
                                         </div>
                                     </div>
                                 </div>

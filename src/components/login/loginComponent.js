@@ -149,7 +149,12 @@ export default class QuizComponent extends Component {
                     });
                     sessionStorage.bqsid = this.state.sessionID;
                     sessionStorage.apitk = this.state.apiToken;
-                    location.href = '/home';
+                    if(data.role == 'player'){
+                        location.href = '/player-home'
+                    }
+                    else {
+                        location.href = '/home';
+                    }
                 }
                 else{
                     this.setState({

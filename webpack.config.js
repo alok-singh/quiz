@@ -10,7 +10,8 @@ module.exports = {
         login: './src/js/login.js',
         home: './src/js/home.js',
         addQuestion: './src/js/addQuestion.js',
-        playerHome: './src/js/playerHome.js'
+        playerHome: './src/js/playerHome.js',
+        playQuiz: './src/js/playQuiz.js'
     },
     output: {
         path: __dirname + '/build',
