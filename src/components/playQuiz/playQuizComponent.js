@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {get, post} from '../../common/api';
+import Modal from '../common/modal';
 
 const selectedColor = '#2e9e0f';
 
@@ -11,7 +12,9 @@ export default class PlayQuizComponent extends Component {
             questionList: [],
             currentQuestion: 1,
             currentTimeout: 30,
-            isAnsweringAllowed: true
+            isAnsweringAllowed: true,
+            isModalVisible: false,
+            modalData: ''
         }
         this.onClickNext = this.onClickNext.bind(this);
     }
@@ -41,7 +44,16 @@ export default class PlayQuizComponent extends Component {
                 });
             }
             else{
-                console.log(this.state);
+                let apiToken = sessionStorage.apitk;
+                let sessionKey = sessionStorage.bqsid;
+                post('/api/quiz/answers/', this.getMappedData(), {
+                    authorization: apiToken
+                }).then(data => {
+                    this.setState({
+                        isModalVisible: true,
+                        modalData: data
+                    })
+                })
             }
         }
     }
@@ -51,7 +63,8 @@ export default class PlayQuizComponent extends Component {
             let {questionList} = this.state;
             let options = questionList[questionIndex].options.map(val => {
                 return {
-                    option_title: val.option_title
+                    option_title: val.option_title,
+                    option_id: val.option_id
                 }
             });
             options[optionIndex].is_answer = true;
@@ -59,6 +72,23 @@ export default class PlayQuizComponent extends Component {
             this.setState({
                 questionList
             });
+        }
+    }
+
+    getMappedData() {
+        let questions = this.state.questionList.map(question => {
+            let retObj = {};
+            let markedOption = question.options.filter(val => {
+                return val.is_answer;
+            })[0];
+            retObj.option_id = markedOption ? markedOption.option_id : null
+            retObj.question_id = question.question_id;
+            return retObj
+        });
+
+        return {
+            quiz_id: this.props.quizID,
+            questions 
         }
     }
 
@@ -108,7 +138,7 @@ export default class PlayQuizComponent extends Component {
                         </div>
                     </div>
                     <div className="row smartimage">
-                        <div class="col-xs-12 gap" style={{textAlign: 'right'}}>
+                        <div className="col-xs-12 gap" style={{textAlign: 'right'}}>
                             <div style={{display: 'inline-block', height: '90px', width: '90px', textAlign: 'center', borderRadius: '50%', background: '#008ff8', marginTop: '10px', padding: '11px', color: '#fff'}}>
                                 <span style={{fontSize: '30px', display: 'block'}}>{this.state.currentTimeout}</span>
                                 <span>Seconds</span>
@@ -137,14 +167,14 @@ export default class PlayQuizComponent extends Component {
             </section>
         }
         else{
-            return <span>Wait</span>
+            return <div style={{fontSize: '20px', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>No Questions Added in Quiz</div>
         }
     }
 
     renderNextButton() {
-        if(!this.state.isAnsweringAllowed){
+        if(!this.state.isAnsweringAllowed && this.state.questionList.length){
             return <div style={{textAlign: 'center', margin: '30px 0px'}}>
-                <button onClick={this.onClickNext} class="btn btn-success" style={{height: '42px', width: '120px', fontSize: '16px', textTransform: 'capitalize', display: 'inline-block', background: '#0067d5', border: '1px solid #0067d5'}}>{this.state.currentQuestion < this.state.questionList.length ? 'next' : 'finish'}</button>
+                <button onClick={this.onClickNext} className="btn btn-success" style={{height: '42px', width: '120px', fontSize: '16px', textTransform: 'capitalize', display: 'inline-block', background: '#0067d5', border: '1px solid #0067d5'}}>{this.state.currentQuestion < this.state.questionList.length ? 'next' : 'finish'}</button>
             </div>
         }
         else{
@@ -161,11 +191,43 @@ export default class PlayQuizComponent extends Component {
         }
     }
 
+    renderModal() {
+        if(this.state.modalData && this.state.isModalVisible){
+            let {modalData} = this.state;
+            return <Modal isVisible={this.state.isModalVisible}>
+                <div className="content-wrapper">
+                    <h2>Results</h2>
+                    <div className="table-wrapper">
+                        <div className="result-row">
+                            <div className="parameter">Total Attemted Questions</div>
+                            <div className="value">{modalData.total_attemted_questions}</div>
+                        </div>
+                        <div className="result-row">
+                            <div className="parameter">Total Number of Questions</div>
+                            <div className="value">{modalData.total_questions}</div>
+                        </div>
+                        <div className="result-row">
+                            <div className="parameter">Total Number of Correct Answers</div>
+                            <div className="value">{modalData.correct_answers}</div>
+                        </div>
+                        <div className="result-row">
+                            <div className="parameter">Total Number of Incorrect Answers</div>
+                            <div className="value">{modalData.wrong_answers}</div>
+                        </div>
+                    </div>
+                    <a className="btn-signin" onClick={() => location.reload()}>Retry Quiz</a>
+                    <a className="btn-signin" href='/player-home' style={{marginLeft: '5px'}}>Home</a>
+                </div>
+            </Modal>
+        }
+    }
+
     render() {
         return <div className="main">
             {this.renderQuestion()}
             {this.renderHiddenData()}
             {this.renderNextButton()}
+            {this.renderModal()}
         </div>
     }
 
