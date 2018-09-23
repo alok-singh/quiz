@@ -104,5 +104,5 @@ const sendTo404 = (res) => {
 
 // *********************** server start ************************** //
 
-http.createServer(app).listen(8080);
-console.log("server started in port 8080");
+http.createServer(app).listen(3000);
+console.log("server started in port 3000");
