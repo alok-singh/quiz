@@ -14,20 +14,23 @@ export default class PlayQuizComponent extends Component {
             currentTimeout: 30,
             isAnsweringAllowed: true,
             isModalVisible: false,
+            isCurrentQuestionAnswered: false,
             modalData: ''
         }
         this.onClickNext = this.onClickNext.bind(this);
     }
 
     onClickNext() {
-        if(!this.state.isAnsweringAllowed){
+        if(!this.state.isAnsweringAllowed || this.state.isCurrentQuestionAnswered){
             if(this.state.currentQuestion < this.state.questionList.length){
                 this.setState({
                     currentQuestion: this.state.currentQuestion + 1,
                     currentTimeout: this.state.questionList[this.state.currentQuestion].question_time ? this.state.questionList[this.state.currentQuestion].question_time : 30,
-                    isAnsweringAllowed: true
+                    isAnsweringAllowed: true,
+                    isCurrentQuestionAnswered: false
                 }, () => {
-                    let interval = setInterval(() => {
+                    clearInterval(this.interval);
+                    this.interval = setInterval(() => {
                         if(this.state.currentTimeout - 1 >= 0){
                             this.setState({
                                 currentTimeout: this.state.currentTimeout - 1,
@@ -35,7 +38,7 @@ export default class PlayQuizComponent extends Component {
                             });
                         }
                         else{
-                            clearInterval(interval);
+                            clearInterval(this.interval);
                             this.setState({
                                 isAnsweringAllowed: false
                             })
@@ -49,6 +52,7 @@ export default class PlayQuizComponent extends Component {
                 post('/api/quiz/answers/', this.getMappedData(), {
                     authorization: apiToken
                 }).then(data => {
+                    clearInterval(this.interval);
                     this.setState({
                         isModalVisible: true,
                         modalData: data
@@ -70,7 +74,8 @@ export default class PlayQuizComponent extends Component {
             options[optionIndex].is_answer = true;
             questionList[questionIndex].options = options;
             this.setState({
-                questionList
+                questionList,
+                isCurrentQuestionAnswered: true
             });
         }
     }
@@ -102,7 +107,7 @@ export default class PlayQuizComponent extends Component {
                 questionList: data.questions ? data.questions : [],
                 currentTimeout: data.questions && data.questions.length ? data.questions[0].question_time : 30,
             }, () => {
-                let interval = setInterval(() => {
+                this.interval = setInterval(() => {
                     if(this.state.currentTimeout - 1 >= 0){
                         this.setState({
                             currentTimeout: this.state.currentTimeout - 1,
@@ -110,7 +115,7 @@ export default class PlayQuizComponent extends Component {
                         });
                     }
                     else{
-                        clearInterval(interval);
+                        clearInterval(this.interval);
                         this.setState({
                             isAnsweringAllowed: false
                         })
@@ -172,7 +177,7 @@ export default class PlayQuizComponent extends Component {
     }
 
     renderNextButton() {
-        if(!this.state.isAnsweringAllowed && this.state.questionList.length){
+        if((!this.state.isAnsweringAllowed || this.state.isCurrentQuestionAnswered) && this.state.questionList.length){
             return <div style={{textAlign: 'center', margin: '30px 0px'}}>
                 <button onClick={this.onClickNext} className="btn btn-success" style={{height: '42px', width: '120px', fontSize: '16px', textTransform: 'capitalize', display: 'inline-block', background: '#0067d5', border: '1px solid #0067d5'}}>{this.state.currentQuestion < this.state.questionList.length ? 'next' : 'finish'}</button>
             </div>
