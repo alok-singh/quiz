@@ -17,7 +17,7 @@ import {addQuestionController} from './controllers/addQuestionController';
 const app = express();
 
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '/Templates'));
+app.set('views', path.join(__dirname, '/templates'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -104,5 +104,5 @@ const sendTo404 = (res) => {
 
 // *********************** server start ************************** //
 
-http.createServer(app).listen(3000);
-console.log("server started in port 3000");
+http.createServer(app).listen(8080);
+console.log("server started in port 8080");
