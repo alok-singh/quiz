@@ -12,10 +12,6 @@ export default class createQuizComponent extends Component {
         this.onCreateQuiz = this.onCreateQuiz.bind(this);
     }
 
-    componentDidMount() {
-        
-    }
-
     onChangeInput(key, value) {
         this.setState({
             [key]: value
@@ -58,7 +54,7 @@ export default class createQuizComponent extends Component {
                                 <textarea rows="3" value={this.state.quizName} onChange={({target}) => this.onChangeInput('quizName', target.value)}></textarea>
                             </div>
                         </div>
-                        <div className="row">
+                        <div className="row" style={{marginTop: '20px'}}>
                             <div className="col-xs-12" >
                                 <p style={{fontSize: '20px', color: '#676767', fontWeight: 'bold', lineHeight: '34px', marginBottom: '15px'}} >Description</p>
                                 <textarea rows="5" value={this.state.description} onChange={({target}) => this.onChangeInput('description', target.value)}></textarea>
@@ -96,10 +92,10 @@ export default class createQuizComponent extends Component {
         return <section id="toptitle">
             <div className="row titlerow">
                 <div className="col-xs-6 col-md-2" >
-                    <button type="button" className="btn btn-success pull-left" style={{color: '#000000'}}>Cancel</button>
+                    <a type="button" className="btn btn-success pull-left" style={{color: '#000000'}} href="/home">Cancel</a>
                 </div>
                 <div className="col-md-8 text-center hidden-sm hidden-xs" >
-                    <p style={{fontFamily: 'Calibri', fontWeight: 'bold', lineHeight: 1, fontSize: '30px', color: '#ffffff', margin: '0px'}}>Create Quiz</p>
+                    <p style={{fontWeight: 'bold', lineHeight: 1, fontSize: '30px', color: '#ffffff', margin: '0px'}}>Create Quiz</p>
                 </div>
                 <div className="col-xs-6 col-md-2" >
                     <button onClick={this.onCreateQuiz} type="button" className="btn btn-success pull-right" style={{color: '#000000'}}>Save & Next</button>

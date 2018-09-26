@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Modal from '../common/modal';
 import {get, post} from '../../common/api';
 
 export default class QuizComponent extends Component {
@@ -7,15 +8,44 @@ export default class QuizComponent extends Component {
         super(props);
         this.state = {
             quizList: [],
-            userName: 'Default'
+            userName: 'Default',
+            activeQuizID: false,
+            isModalVisible: false,
+            activeConductType: 'live',
+            isSidebarVisible: true
         }
         this.signout = this.signout.bind(this);
+        this.onClickCancel = this.onClickCancel.bind(this);
+        this.onClickConductModal = this.onClickConductModal.bind(this);
     }
 
     signout() {
         delete sessionStorage.apitk;
         delete sessionStorage.bqsid;
         location.href = '/login';
+    }
+
+    onClickConduct(quizID, quizIndex) {
+        this.setState({
+            activeQuizID: quizID,
+            isModalVisible: true
+        })
+    }
+
+    onClickConductModal() {
+        console.log(this.state);
+    }
+
+    onClickCancel() {
+        this.setState({
+            isModalVisible: false
+        })
+    }
+
+    onChangeConductType(activeConductType) {
+        this.setState({
+            activeConductType
+        });
     }
 
     componentDidMount() {
@@ -46,7 +76,7 @@ export default class QuizComponent extends Component {
     renderQuizList() {
         if(this.state.quizList.length){
             return <React.Fragment>
-                {this.state.quizList.map(val => {
+                {this.state.quizList.map((val, quizIndex) => {
                     return <div className="adminrow row tablerows">
                         <div className="col-xs-12">
                             <div className="row titlerow" >
@@ -75,7 +105,7 @@ export default class QuizComponent extends Component {
                                 </div>
                                 <div className="col-xs-4 col-md-3 btnrow " >
                                     <div className="row">
-                                        <div className="col-xs-12 gapp"><button type="button" className="btn btn-success pull-left" style={{padding: '10px 42px', fontSize: '17px', marginBottom: '5px'}} >Conduct</button></div>
+                                        <div className="col-xs-12 gapp"><button type="button" className="btn btn-success pull-left" style={{padding: '10px 42px', fontSize: '17px', marginBottom: '5px'}} onClick={()=>{this.onClickConduct(val.id, quizIndex)}} >Conduct</button></div>
                                         <div className="col-xs-2 block" style={{marginLeft: '30px'}}><i className="fa fa-star" style={{background: '#ff9955'}} aria-hidden="true"></i></div>
                                         <div className="col-xs-2 block"><i className="fa fa-pencil" style={{background: '#ff55dd'}} aria-hidden="true"></i></div>
                                         <div className="col-xs-2 block"><i className="fa fa-clone" style={{background: '#b380ff'}} aria-hidden="true"></i></div>
@@ -96,8 +126,8 @@ export default class QuizComponent extends Component {
     renderAdminContent() {
         return <section className="admincontent">
             <div className="container" >
-                <div className="row controw">
-                    <div className="col-md-2 text-center" style={{background: '#8cc4fd'}} >
+                <div className="row controw" style={{display: 'flex'}}>
+                    {this.state.isSidebarVisible ? <div className="col-md-2 text-center" style={{background: '#8cc4fd', borderRight: '1px solid #d4d4d4', width: '27%'}} >
                         <div className="row">
                             <div className="col-xs-12 contblock " style={{background: '#ffffff', padding: '0px'}}>
                                 <img src="images/user.jpg" className="img-responsive "/>
@@ -111,12 +141,9 @@ export default class QuizComponent extends Component {
                             <div className="col-xs-12 contblock"><p>Org Accounts</p></div>
                             <div className="col-xs-12 contblock"><p>Account Setting</p></div>
                             <div className="col-xs-12 contblock" onClick={this.signout}><p>Sign Out</p></div>
-                            <div className="col-xs-12 contblock" style={{padding: '57px'}}>
-                                <p></p>
-                            </div>
                         </div>
-                    </div>
-                    <div className="col-md-10 maincontent" style={{padding: '20px 100px 0px'}} >
+                    </div> : null}
+                    <div className="col-md-10 maincontent" style={{padding: '20px 100px 0px', width: '100%'}} >
                         <div className="row">
                             <div className="main">
                                 <div className="form-group has-feedback has-search">
@@ -127,7 +154,7 @@ export default class QuizComponent extends Component {
                         </div>
                         <div className="row">
                             <div className="col-xs-12 " >
-                                <p style={{fontSize: '15px', fontWeight: 'bold', marginLeft: '15px', marginBottom: '20px'}}>Popular Quiz</p>
+                                <p style={{fontSize: '25px', fontWeight: 'bold', marginLeft: '15px', marginBottom: '20px', color: 'rgba(0,0,0,0.38)'}}>Popular Quiz</p>
                             </div>
                         </div>
                         {this.renderQuizList()}
@@ -137,11 +164,32 @@ export default class QuizComponent extends Component {
         </section>
     }
 
+    renderModal() {
+        return <Modal isVisible={this.state.isModalVisible} width='710px'>
+            <div className="modal-body">
+                <label className="radio-inline">
+                    <input type="radio" name="optradio" onChange={() => {this.onChangeConductType('live')}} checked={this.state.activeConductType == 'live'} />PLAY LIVE
+                </label>
+                <label className="radio-inline">
+                    <input type="radio" name="optradio" onChange={() => {this.onChangeConductType('pin')}} checked={this.state.activeConductType == 'pin'} />CHALLENGE VIA PIN GENERATION
+                </label>
+                <label className="radio-inline">
+                    <input type="radio" name="optradio" onChange={() => {this.onChangeConductType('schedule')}} checked={this.state.activeConductType == 'schedule'} />ACTIVATE AS PER SCHEDULED
+                </label>
+            </div>
+            <div className="modal-footer text-center">
+                <button type="button" className="btn btn-primary" onClick={this.onClickConductModal}>CONDUCT</button>
+                <button type="button" className="btn btn-primary" style={{marginLeft: '20px'}} onClick={this.onClickCancel}>CANCEL</button>
+            </div>
+        </Modal>
+
+    }
+
     renderAdmin() {
         return <section id="admin">
             <div className="container">
                 <div className="row titlerow">
-                    <div className="col-xs-1 text-center bdright" style={{padding: '3px'}}>
+                    <div className="col-xs-1 text-center bdright" style={{padding: '3px', cursor: 'pointer'}} onClick={() => this.setState({isSidebarVisible: !this.state.isSidebarVisible})}>
                         <i className="fa fa-bars"></i>
                     </div>
                     <div className="col-xs-9 text-center bdright">
@@ -159,6 +207,7 @@ export default class QuizComponent extends Component {
         return <div className="main">
             {this.renderAdmin()}
             {this.renderAdminContent()}
+            {this.renderModal()}
         </div>
     }
 }

@@ -39,5 +39,8 @@ module.exports = {
     node: {
         dns: 'mock',
         net: 'mock'
+    },
+    watchOptions: {
+        ignored: ['build', 'node_modules']
     }
 };

@@ -3,6 +3,11 @@ body {
 	font-family: "Roboto", sans-serif;
     line-height: 1.8;
 }
+
+a:hover{
+    text-decoration: none !important;
+}
+
 .margin {margin-bottom: 45px;}
 .container-fluid {
     padding-top: 70px;

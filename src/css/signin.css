@@ -7,6 +7,10 @@ body {
     background: rgba(255, 255, 255, .5);
 }
 
+a:hover{
+    text-decoration: none !important;
+}
+
 .container {
     width: 100%;
     padding-top: 55px;

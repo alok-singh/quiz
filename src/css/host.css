@@ -1,4 +1,12 @@
-.body {
+body {
+    font-family: sans-serif;
+}
+
+a:hover{
+    text-decoration: none !important;
+}
+
+p{
     font-family: sans-serif;
 }
 
@@ -120,7 +128,7 @@
     border: 0px;
     border-radius: 0px;
     margin: 0px 10px;
-    font-size: 18px;
+    font-size: 17px;
 }
 
 .uploadsection .innerblock {
@@ -500,7 +508,7 @@
 
 #admin .titlerow {
     background: #f2f2f2;
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #d4d4d4;
 }
 
 #admin .titlerow .bdright {
@@ -524,14 +532,20 @@
 }
 
 .admincontent .controw .contblock {
-    color: #000000;
-    background: #ffffff;
     font-size: 14px;
     font-weight: bold;
     text-align: center;
     border-bottom: 1px solid #ededed;
-    font-family: calibri;
     padding: 11px;
+    cursor: pointer;
+}
+
+.admincontent .controw .contblock:hover {
+    background: #4988c1;
+}
+
+.admincontent .controw .contblock a {
+    color: #333;
 }
 
 .admincontent .controw .contblock p,
@@ -598,14 +612,14 @@
 /* Start XX Page  */
 
 .admincontent .maincontent .main {
-    width: 90%;
+    width: 95%;
     margin: 20px auto;
 }
 
 .admincontent .maincontent .form-control {
     height: 42px;
     border-radius: 0px;
-    border: 1px solid #474747;
+    border: 1px solid #d4d4d4;
 }
 
 .admincontent .maincontent .has-search .form-control-feedback {
@@ -650,15 +664,16 @@
 }
 
 .adminrow .titlerow img {
-    border: 1px solid #000000;
+    border: 1px solid #d4d4d4;
+    background: #d4d4d4;
 }
 
 .adminrow .titlerow .head .par1 {
     font-size: 19px;
-    color: #000000;
     line-height: 34px;
     padding: 0px 0px 5px;
     margin: 0px;
+    text-transform: capitalize;
 }
 
 .adminrow .titlerow .head .par2 {

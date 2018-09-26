@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --progress --colors",
+    "watch": "./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --progress --colors --watch",
     "start": "npm run build && node index.js",
     "dev": "npm run build && node --inspect index.js"
   },
@@ -32,7 +33,7 @@
     "less-loader": "^4.1.0",
     "style-loader": "^0.23.0",
     "webpack": "^4.9.1",
-    "webpack-cli": "^2.1.5"
+    "webpack-cli": "^3.1.1"
   },
   "babel": {
     "plugins": [
