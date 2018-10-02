@@ -5,14 +5,18 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import bodyParser from 'body-parser';
+import socket from 'socket.io';
 
+import {webSocketController} from './controllers/webSocketController';
 import {createQuizController} from './controllers/createQuizController';
 import {loginController} from './controllers/loginController';
 import {homeController} from './controllers/homeController';
 import {playerHomeController} from './controllers/playerHomeController';
 import {playQuizController} from './controllers/playQuizController';
+import {playLiveQuizController} from './controllers/playLiveQuizController';
 import {gatewayPostController, gatewayGetController} from './controllers/apiController';
 import {addQuestionController} from './controllers/addQuestionController';
+import {conductQuizController} from './controllers/conductQuizController';
 
 const app = express();
 
@@ -46,9 +50,18 @@ app.get('/play/quiz/:quizID', (req, res) => {
 	playQuizController(req, res);
 });
 
+app.get('/play/live/:quizPin', (req, res) => {
+	playLiveQuizController(req, res);
+});
+
 app.get('/create', (req, res) => {
 	createQuizController(req, res);
 });
+
+app.get('/conduct/:quizID/:quizPin/', (req, res) => {
+	conductQuizController(req, res);
+});
+
 
 app.get('/build/*', (req, res) => {
 	let filePath = "." + req.url;
@@ -62,7 +75,7 @@ app.get('/build/*', (req, res) => {
 	getFileFromPath(filePath, res, contentType);
 });
 
-app.get('/images/*', function(req, res) {
+app.get('/images/*', (req, res) => {
 	let filePath = path.resolve("./images" + decodeURI(req.url.split("images").pop()));
 	getFileFromPath(filePath, res, {
 		'Content-Type': 'image/jpg', 
@@ -83,7 +96,7 @@ app.post('/api/*', (req, res) => {
 });
 
 const getFileFromPath = (filePath, res, contentType)  => {
-	fs.readFile(filePath, function(err, data){
+	fs.readFile(filePath, (err, data) => {
 		if(err){
 			sendTo404(res);
 		}
@@ -104,5 +117,14 @@ const sendTo404 = (res) => {
 
 // *********************** server start ************************** //
 
-http.createServer(app).listen(3000);
+let server = http.createServer(app);
+
+webSocketController(socket(server)); // registering websocket events
+
+server.listen(3000);
+
 console.log("server started in port 3000");
+
+
+
+

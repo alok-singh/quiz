@@ -11,7 +11,9 @@ module.exports = {
         home: './src/js/home.js',
         addQuestion: './src/js/addQuestion.js',
         playerHome: './src/js/playerHome.js',
-        playQuiz: './src/js/playQuiz.js'
+        playQuiz: './src/js/playQuiz.js',
+        playLiveQuiz: './src/js/playLiveQuiz.js',
+        conductQuiz: './src/js/conductQuiz.js'
     },
     output: {
         path: __dirname + '/build',

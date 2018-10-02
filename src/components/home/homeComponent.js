@@ -33,7 +33,22 @@ export default class QuizComponent extends Component {
     }
 
     onClickConductModal() {
-        console.log(this.state);
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+
+        post('/api/generate/pin/', {
+            quiz_id: this.state.activeQuizID
+        }, {
+            authorization: apiToken
+        }).then(data => {
+            if(data.quiz_pin && data.quiz_id){
+                alert(data.message);
+                location.href = `/conduct/${data.quiz_id}/${data.quiz_pin}/`;
+            }
+            else{
+                alert(data.message);
+            }
+        });
     }
 
     onClickCancel() {

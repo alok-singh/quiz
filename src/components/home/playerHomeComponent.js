@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import {get, post} from '../../common/api';
+import Modal from '../common/modal';
 
 export default class QuizComponent extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            quizList: []
+            quizList: [],
+            quizPin: '',
+            isModalVisible: false
         }
+        this.onClickSubmitPin = this.onClickSubmitPin.bind(this);
+        this.onClickEnterPinButton = this.onClickEnterPinButton.bind(this);
+        this.onClickCancel = this.onClickCancel.bind(this);
     }
 
     componentDidMount() {
@@ -23,15 +29,49 @@ export default class QuizComponent extends Component {
         });
     }
 
+    onClickCancel() {
+        this.setState({
+            isModalVisible: false
+        })
+    }
+
+    onClickEnterPinButton() {
+        this.setState({
+            isModalVisible: true
+        });
+    }
+
+    onClickSubmitPin() {
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+
+        if(this.state.quizPin.length){
+            post(`/api/verify/player/${this.state.quizPin.toUpperCase()}/`, null, {
+                authorization: apiToken
+            }).then(data => {
+                alert(data.message);
+                if(data.status == 201 || data.status == 400){
+                    location.href = `/play/live/${this.state.quizPin.toUpperCase()}/`
+                }
+            });
+        }
+    }
+
+    onChangeInput(key, value) {
+        this.setState({
+            [key]: value
+        })
+    }
+
     renderExplore() {
         return <section id="explore">
             <div className="container grid">
                 <div className="row phead">
                     <div className="col-xs-9" >
-                        <p style={{color: '#8800aa', textAlign: 'left', fontSize: '44px', lineHeight: '2.2', fontFamily: 'Calibri', fontWeight: 'bold', marginBottom: '0px'}}>Konwledge Partner & Associates</p>
+                        <p style={{color: '#8800aa', textAlign: 'left', fontSize: '44px', lineHeight: '2.2', fontWeight: 'bold', marginBottom: '0px'}}>Konwledge Partner & Associates</p>
                     </div>
                     <div className="col-xs-3" >
-                        <p style={{color: '#d8d8d8', textAlign: 'right', fontSize: '20px', lineHeight: '6', fontFamily: 'Calibri', fontWeight: '500', marginBottom: '0px'}}>See All</p>
+                        <p style={{color: '#d8d8d8', textAlign: 'right', fontSize: '20px', lineHeight: '6', fontWeight: '500', marginBottom: '0px'}}>See All</p>
                     </div>
                 </div>
                 <div className="row phead">
@@ -54,7 +94,7 @@ export default class QuizComponent extends Component {
 
     renderExploreImage() {
         return <section>
-            <img src="/images/ft.png" class="img-responsive"/>
+            <img src="/images/ft.png" className="img-responsive"/>
         </section>
     }
 
@@ -106,7 +146,7 @@ export default class QuizComponent extends Component {
             <div className="container grid">
                 <div className="row">
                     <div className="col-xs-12" >
-                        <p style={{color: '#eb670f', textAlign: 'left', fontSize: '44px', lineHeight: '2.2', fontFamily: 'Calibri', fontWeight: 'bold', marginBottom: '0px'}}>All Live Quizzes</p>
+                        <p style={{color: '#eb670f', textAlign: 'left', fontSize: '44px', lineHeight: '2.2', fontWeight: 'bold', marginBottom: '0px'}}>All Live Quizzes</p>
                     </div>
                 </div>
                 <div className="row">
@@ -185,8 +225,29 @@ export default class QuizComponent extends Component {
         </nav>
     }
 
+    renderFixedFooter() {
+        return <div className="btn-signin pin-button" onClick={this.onClickEnterPinButton}>
+            Enter PIN
+        </div>
+    }
+
+    renderModal() {
+        return <Modal isVisible={this.state.isModalVisible} width="20%">
+            <div className="content-wrapper" style={{padding: '15px', textAlign: 'center'}}>
+                <h2 style={{color: '#333'}}>Enter PIN</h2>
+                <div className="table-wrapper">
+                    <div className="result-row">
+                        <input value={this.state.quizPin} onChange={({target}) => this.onChangeInput('quizPin', target.value)} style={{width: '75%', height: '35px', margin: '20px 0px 30px', color: '#333', letterSpacing: '3px', textTransform: 'uppercase', fontSize: '20px', paddingLeft: '8px'}}/>
+                    </div>
+                </div>
+                <button className="btn btn-primary" onClick={this.onClickSubmitPin}>Proceed</button>
+                <button className="btn btn-primary" style={{marginLeft: '20px'}} onClick={this.onClickCancel}>Cancel</button>
+            </div>
+        </Modal>
+    }
+
     render() {
-        return <div className="main">
+        return <div className="player-home">
             {this.renderNavBar()}
             {this.renderHeader()}
             {this.renderBottomHeader()}
@@ -194,6 +255,8 @@ export default class QuizComponent extends Component {
             {this.renderExplore()}
             {this.renderExploreImage()}
             {this.renderFooter()}
+            {this.renderFixedFooter()}
+            {this.renderModal()}
         </div>
     }
 }

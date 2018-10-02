@@ -32,18 +32,17 @@ p{
 /* Start Player-7b  Page*/
 
 #checkfa .innerrow {
-    margin-top: -35px;
     color: #ffffff;
 }
 
 #checkfa .innerrow .fa {
     font-size: 140px;
-    line-height: 0px;
 }
 
 #checkfa .innerrow img {
     display: inline;
     margin-top: -5px;
+    margin-left: 10px;
 }
 
 
@@ -227,7 +226,7 @@ p{
     font-size: 20px;
 }
 
-.questionbox .fa-check-circle, .questionbox .fa-circle {
+.questionbox .fa-check-circle, .questionbox .fa-circle, .questionbox .fa-times-circle {
     position: absolute;
     right: 12px;
     top: 42px;
@@ -304,7 +303,8 @@ p{
 
 #titlebar .titlerow {
     background: #f2f2f2;
-    border: 1px solid #636363;
+    border: 1px solid #d8d8d8;
+    height: 42px;
 }
 
 #titlebar .smartimage .gap,
@@ -329,14 +329,32 @@ p{
 }
 
 #titlebar .par .btn {
-    background: #f74b19;
     border: 1px solid #4d4d4d;
     color: #ffffff;
     border-radius: 20px;
     margin: 60px 0px 0px;
     font-size: 16px;
+    padding: 0px;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    background: transparent;
 }
 
+#titlebar .par .btn .compleated {
+    width: 36%;
+    display: inline-block;
+    height: 31px;
+    background: #f74b19;
+}
+
+#titlebar .par .btn .loading-text {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #333;
+}
 
 /* End A9 Page*/
 
@@ -344,7 +362,8 @@ p{
 /* Start A10 Page*/
 
 #titlebar .titlerow .logo {
-    padding-top: 0px;
+    padding-top: 3px;
+    height: 36px;
 }
 
 #titlebar .headrow {
@@ -404,6 +423,13 @@ p{
     color: #ffffff;
 }
 
+#titlebar .tablerow .player-table {
+    display: flex !important;
+    justify-content: space-between;
+    font-size: 26px;
+    flex-wrap: wrap;
+}
+
 #titlebar .tablerow .fa {
     color: #ffffff;
     font-size: 30px;
@@ -412,6 +438,10 @@ p{
 
 #titlebar .tablerow .table>thead {
     border-bottom: 2px solid #fff;
+}
+
+.table-element {
+    width: 25%;
 }
 
 .table>tbody>tr>td,
@@ -964,4 +994,59 @@ p{
     .navbar-right {
         padding: 4px 0px;
     }
+}
+
+.graph {
+    display: flex;
+    width: 560px;
+    margin: 60px auto;
+    color: #e01b3c;
+    justify-content: space-around;
+    border-bottom: 8px solid #4c4c4c;
+    align-items: flex-end;
+}
+
+.graph .count {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.graph .entity {
+    text-align: center;
+}
+
+.graph .correct {
+    font-size: 32px;
+    background: #e01b3c;
+    color: #fff;
+    margin-top: 2px;
+    border-radius: 0px 0px 3px 3px;
+}
+
+.graph .bar {
+    height: 200px;
+    background: #e01b3c;
+    width: 60px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: none;
+    border:1px solid #d8d8d8; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #d8d8d8; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
 }

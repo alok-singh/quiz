@@ -199,7 +199,7 @@ export default class PlayQuizComponent extends Component {
     renderModal() {
         if(this.state.modalData && this.state.isModalVisible){
             let {modalData} = this.state;
-            return <Modal isVisible={this.state.isModalVisible}>
+            return <Modal isVisible={this.state.isModalVisible} width="40%">
                 <div className="content-wrapper">
                     <h2>Results</h2>
                     <div className="table-wrapper">
