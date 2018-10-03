@@ -136,13 +136,19 @@ export default class AddQuestionComponent extends Component {
     componentDidMount() {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
-        get(`/api/quiz/${this.props.quizID}/questions/`, {
-            authorization: apiToken
-        }).then(data => {
-            this.setState({
-                questions: data.questions ? data.questions : defaultQuestion
-            })
-        })
+
+        if(apiToken && sessionKey){
+            get(`/api/quiz/${this.props.quizID}/questions/`, {
+                authorization: apiToken
+            }).then(data => {
+                this.setState({
+                    questions: data.questions ? data.questions : defaultQuestion
+                })
+            });
+        }
+        else{
+            location.href = '/login';
+        }
     }
 
     renderTopComponent() {

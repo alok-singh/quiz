@@ -8,6 +8,6 @@ export const playLiveQuizController = (req, res) => {
 		pageTitle: 'BrainItOn Live quiz',
 		jsPath: '/build/js/playLiveQuiz.bundle.js',
 		cssPath: '/build/css/host.css',
-		innerHTML: renderToString(<PlayLiveQuizComponent quizPin={req.params.quizPin} />)
+		innerHTML: renderToString(<PlayLiveQuizComponent quizPin={req.params.quizPin} quizID={req.params.quizID} />)
 	});
 }

@@ -43,7 +43,7 @@ export default class QuizComponent extends Component {
         }).then(data => {
             if(data.quiz_pin && data.quiz_id){
                 alert(data.message);
-                location.href = `/conduct/${data.quiz_id}/${data.quiz_pin}/`;
+                location.href = `/conduct/live/${data.quiz_id}/${data.quiz_pin}/`;
             }
             else{
                 alert(data.message);

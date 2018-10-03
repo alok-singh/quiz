@@ -19,14 +19,19 @@ export default class QuizComponent extends Component {
     componentDidMount() {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
-
-        get('/api/quiz/all/', {
-            authorization: apiToken
-        }).then(data => {
-            this.setState({
-                quizList: data.quizzes ? data.quizzes : []
+        
+        if(apiToken && sessionKey){
+            get('/api/quiz/all/', {
+                authorization: apiToken
+            }).then(data => {
+                this.setState({
+                    quizList: data.quizzes ? data.quizzes : []
+                });
             });
-        });
+        }
+        else{
+            location.href = '/login';
+        }
     }
 
     onClickCancel() {
@@ -50,8 +55,8 @@ export default class QuizComponent extends Component {
                 authorization: apiToken
             }).then(data => {
                 alert(data.message);
-                if(data.status == 201 || data.status == 400){
-                    location.href = `/play/live/${this.state.quizPin.toUpperCase()}/`
+                if(data.status == 200 && data.quizID){
+                    location.href = `/play/live/${data.quizID}/${this.state.quizPin.toUpperCase()}/`
                 }
             });
         }

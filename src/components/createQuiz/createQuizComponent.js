@@ -12,6 +12,18 @@ export default class createQuizComponent extends Component {
         this.onCreateQuiz = this.onCreateQuiz.bind(this);
     }
 
+    componentDidMount() {
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+
+        if(apiToken && sessionKey){
+            
+        }
+        else{
+            location.href = '/login';
+        }
+    }
+
     onChangeInput(key, value) {
         this.setState({
             [key]: value

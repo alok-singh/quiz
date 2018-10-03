@@ -57,16 +57,18 @@ export default class ScoreBoardComponent extends Component {
         return <div className="row tablerow" style={{padding: '10px'}}>
             <div className="col-md-3 hidden-sm hidden-xs"></div>
             <div className="col-xs-12 col-md-6 " >
+                <table className="table" style={{color: '#fff'}}>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+                </table>
                 <div className="table-wrapper-scroll-y tablescroll">
                     <table className="table">
-                        <thead>
-                             <tr>
-                                <th scope="col">Rank</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Score</th>
-                                <th scope="col">Response</th>
-                            </tr>
-                        </thead>
                         <tbody>
                             {this.props.playerList.map(player => {
                                 return <tr>

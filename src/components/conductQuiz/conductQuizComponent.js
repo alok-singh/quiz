@@ -4,6 +4,7 @@ import LoadingScreenComponent from '../common/loadingScreenComponent';
 import QuestionComponent from './questionComponent';
 import StatsComponent from './statsComponent';
 import LeaderBoardComponent from './leaderBoardComponent';
+import ResultScreenComponent from '../common/resultScreenComponent';
 
 export default class AddQuestionComponent extends Component {
 
@@ -16,50 +17,34 @@ export default class AddQuestionComponent extends Component {
             isQuestionRunning: false,
             isStatsRunning: false,
             isLeaderBordRunning: false,
+            isResultRunning: false,
             loadingPercent: 0,
             currentQuestionRemainingTime: 5,
             currentQuestionNumber: 1,
             totalQuestions: 10,
-            optionACount: 1,
-            optionBCount: 1,
-            optionCCount: 1,
-            optionDCount: 1,
-            questionObject: {
-                "options": [
-                {
-                    "option_title": "National Aeronautical Space Agency",
-                    "option_id": 49,
-                    is_answer: true
-                },
-                {
-                    "option_title": "National Aeronautical Space Agency",
-                    "option_id": 51
-                },
-                {
-                    "option_title": "National Aeronautical Space Agency",
-                    "option_id": 52
-                },
-                {
-                    "option_title": "National Aeronautical Space Agency",
-                    "option_id": 50
-                }],
-                "question_title": "What is the form of NASA?",
-                "question_id": 19,
-                "question_image": "",
-                "question_time": 10
-            },
-            leaderBoardList: []
+            questionObject: {},
+            leaderBoardList: [],
+            resultList: []
         }
         this.onClickStartQuiz = this.onClickStartQuiz.bind(this);
         this.onClickNextQuestion = this.onClickNextQuestion.bind(this);
         this.onClickNextStats = this.onClickNextStats.bind(this);
         this.onClickNextLeaderBoard = this.onClickNextLeaderBoard.bind(this);
+        if(typeof window !== 'undefined'){
+            window.conductComponent = this;
+        }
     }
 
     componentDidMount() {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
-        this.getPlayerList(apiToken, sessionKey);
+
+        if(apiToken && sessionKey){
+            this.getPlayerList(apiToken, sessionKey);
+        }
+        else{
+            location.href = '/login';
+        }
     }
 
     componentDidUpdate() {
@@ -79,81 +64,152 @@ export default class AddQuestionComponent extends Component {
 
     onClickNextLeaderBoard() {
         // put the request of next question or final stats for host
-        this.setState({
-            isLoading: false,
-            isPlayerList: false, 
-            isQuestionRunning: true,
-            isStatsRunning: false,
-            isLeaderBordRunning: false,
-            optionACount: 12,
-            optionBCount: 5,
-            optionCCount: 8,
-            optionDCount: 2
-        })
+        
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        
+        post(`/api/seminar/${this.props.quizPin}/next_question/`, null, {
+            authorization: apiToken
+        }).then(response => {
+            alert(response.message);
+            this.setState({
+                isLoading: false,
+                isPlayerList: false, 
+                isQuestionRunning: true,
+                isStatsRunning: false,
+                isLeaderBordRunning: false,
+                questionObject: response.question,
+                currentQuestionRemainingTime: response.question.question_time,
+                currentQuestionNumber: parseInt(this.state.currentQuestionNumber) + 1
+            })
+        });
     }
 
     onClickNextQuestion() {
         // put the request for stats for host
-        this.setState({
-            isLoading: false,
-            isPlayerList: false, 
-            isQuestionRunning: false,
-            isStatsRunning: true,
-            optionACount: 12,
-            optionBCount: 5,
-            optionCCount: 8,
-            optionDCount: 2
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        let data = {
+            quiz_pin: this.props.quizPin,
+            quiz_id: this.props.quizID,
+            question_id: this.state.questionObject.question_id,
+            option1_id: this.state.questionObject.options[0].option_id,
+            option2_id: this.state.questionObject.options[1].option_id,
+            option3_id: this.state.questionObject.options[2].option_id,
+            option4_id: this.state.questionObject.options[3].option_id,
+        };
+        post(`/api/host/options/stats/`, data, {
+            authorization: apiToken
+        }).then(data => {
+            let questionObject = this.state.questionObject;
+            questionObject.options = questionObject.options.map(option => {
+                return {
+                    option_title: option.option_title,
+                    option_id: option.option_id,
+                    is_answer: option.is_answer,
+                    optionCount: data.question.options.filter(responseOption => {
+                        return responseOption.option_id == option.option_id
+                    })[0].option1_count,
+                }
+            })
+            this.setState({
+                isLoading: false,
+                isPlayerList: false, 
+                isQuestionRunning: false,
+                isStatsRunning: true,
+                questionObject
+            })
         })
     }
 
     onClickNextStats() {
         // put the request of leaderboard stats data
-        this.setState({
-            isLoading: false,
-            isPlayerList: false, 
-            isQuestionRunning: false,
-            isLeaderBordRunning: true,
-            isStatsRunning: false,
-            leaderBoardList: [{
-                rank: 1,
-                name: 'Rahul',
-                score: 1903,
-                isCorrect: true
-            }, {
-                rank: 2,
-                name: 'Additti',
-                score: 1803,
-                isCorrect: true,
-            }, {
-                rank: 3,
-                name: 'Kamya',
-                score: 1203,
-                isCorrect: false,
-            }]
-        })
+        
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        let data = {
+            quiz_pin: this.props.quizPin,
+            quiz_id: this.props.quizID,
+            question_id: this.state.questionObject.question_id
+        };
+        
+        post(`/api/host/question/stats/`, data, {
+            authorization: apiToken
+        }).then(response => {
+            alert(response.message);
+            this.setState({
+                isLoading: false,
+                isPlayerList: false, 
+                isQuestionRunning: false,
+                isLeaderBordRunning: true,
+                isStatsRunning: false,
+                leaderBoardList: response.users.map((player, index) => {
+                    return {
+                        rank: parseInt(index) + 1,
+                        name: player.name,
+                        score: player.score,
+                        isCorrect: player.is_correct
+                    }
+                })
+            });
+        });
+
     }
 
     onClickStartQuiz() {
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        let message = '';
         this.setState({
             isLoading: true,
             loadingPercent: this.state.loadingPercent,
-            isPlayerList: false
+            isPlayerList: false,
+            isQuestionRunning: false,
+            isStatsRunning: false,
+            isLeaderBordRunning: false
         }, () => {
-            this.timeout = setInterval(() => {
+            // request for question data
+            // websocket to be added here for number of players data
+            post(`/api/seminar/${this.props.quizPin}/start/`, null, {
+                authorization: apiToken
+            }).then(data => {
+                if(data.question && data.question.question_time){
+                    this.setState({
+                        questionObject: data.question,
+                        totalQuestions: 10,
+                        currentQuestionNumber: 1,
+                        currentQuestionRemainingTime: parseInt(data.question.question_time)
+                    });
+                }
+                else{
+                    message = data.message;
+                }
+            }, error => {
+                console.log(error);
+                message = 'error occured check console';
+            });
+            this.interval = setInterval(() => {
                 let loadingPercent = parseInt(this.state.loadingPercent) + parseInt(50*Math.random());
                 if(loadingPercent >= 100){
-                    clearInterval(this.timeout);
+                    clearInterval(this.interval);
                     loadingPercent = 100;
                 }
                 this.setState({
                     loadingPercent: loadingPercent
                 }, () => {
                     if(loadingPercent >= 100){
-                        this.setState({
-                            isLoading: false,
-                            isPlayerList: false,
-                            isQuestionRunning: true
-                        })
+                        if(this.state.questionObject && this.state.questionObject.question_time){
+                            this.setState({
+                                isLoading: false,
+                                isPlayerList: false,
+                                isQuestionRunning: true,
+                                isStatsRunning: false,
+                                isLeaderBordRunning: false
+                            })
+                        }
+                        else{
+                            alert(message);
+                        }
                     }
                 });
             }, 1000);
@@ -286,10 +342,10 @@ export default class AddQuestionComponent extends Component {
                 totalQuestions={this.state.totalQuestions}
                 onClickNext={this.onClickNextStats}
                 currentQuestionNumber={this.state.currentQuestionNumber}
-                optionACount={this.state.optionACount}
-                optionBCount={this.state.optionBCount}
-                optionCCount={this.state.optionCCount}
-                optionDCount={this.state.optionDCount}
+                optionACount={this.state.questionObject.options[0].optionCount}
+                optionBCount={this.state.questionObject.options[1].optionCount}
+                optionCCount={this.state.questionObject.options[2].optionCount}
+                optionDCount={this.state.questionObject.options[3].optionCount}
             />
         }
         else{
@@ -309,6 +365,15 @@ export default class AddQuestionComponent extends Component {
         }
     }
 
+    renderResultScreen() {
+        if(this.state.isResultRunning){
+            return <ResultScreenComponent resultList={this.state.resultList} />
+        }
+        else{
+            return null;
+        }
+    }
+
     render() {
         return <div className="conduct">
             {this.renderHiddenData()}
@@ -317,6 +382,7 @@ export default class AddQuestionComponent extends Component {
             {this.renderRunningQuestion()}
             {this.renderStatsScreen()}
             {this.renderLeaderBoardScreen()}
+            {this.renderResultScreen()}
         </div>
     }
 

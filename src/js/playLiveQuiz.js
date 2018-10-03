@@ -2,5 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PlayLiveQuizComponent from '../components/playQuiz/playLiveQuizComponent';
 
-let quizPin = document.getElementById('data').innerHTML;
-ReactDOM.render(<PlayLiveQuizComponent quizPin={quizPin} />, document.getElementById('root'));
+let data = JSON.parse(document.getElementById('data').innerHTML);
+let {quizID, quizPin} = data;
+
+ReactDOM.render(<PlayLiveQuizComponent quizID={quizID} quizPin={quizPin} />, document.getElementById('root'));

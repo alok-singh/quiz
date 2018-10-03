@@ -3,6 +3,7 @@ import {get, post} from '../../common/api';
 import LoadingScreenComponent from '../common/loadingScreenComponent';
 import ScoreBoardComponent from './scoreBoardComponent';
 import QuestionComponent from './questionComponent';
+import ResultScreenComponent from '../common/resultScreenComponent';
 
 const selectedColor = '#2e9e0f';
 
@@ -15,6 +16,7 @@ export default class PlayQuizComponent extends Component {
             isLoading: true,
             isScoreActive: false,
             isQuestionActive: false,
+            isResultRunning: false,
             currentQuestionNumber: 1,
             totalQuestions: 10,
             isPlayerCorrect: false,
@@ -57,7 +59,8 @@ export default class PlayQuizComponent extends Component {
                 "question_image": "",
                 "question_time": 10
             },
-            currentTimeout: 10
+            currentTimeout: 10,
+            resultList: []
 
         }
 
@@ -127,6 +130,24 @@ export default class PlayQuizComponent extends Component {
                 this.setState({
                     currentTimeout: remainingTime,
                     isAnsweringAllowed: !(remainingTime <= 0)
+                }, () => {
+                    
+                    if(remainingTime <= 0){
+                        let apiToken = sessionStorage.apitk;
+                        let sessionKey = sessionStorage.bqsid;
+                        let data = {
+                            quiz_id: this.props.quizID,
+                            question_id: this.state.questionObject.question_id,
+                            quiz_pin: this.props.quizPin,
+                            option_id: this.state.questionObject.options.filter(option => {
+                                return option.is_answer
+                            })[0].option_id
+                        };
+                        post(`/api/player/answer/`, data, {
+                            authorization: apiToken
+                        });
+                    }
+
                 });
             }, 1000);
         }
@@ -143,7 +164,11 @@ export default class PlayQuizComponent extends Component {
 
     renderHiddenData() {
         if(typeof window == 'undefined'){
-            return <span id='data' style={{display: 'none'}}>{this.props.quizPin}</span>
+            let data = JSON.stringify({
+                quizID: this.props.quizID,
+                quizPin: this.props.quizPin
+            })
+            return <span id='data' style={{display: 'none'}}>{data}</span>
         }
         else{
             return null;
@@ -183,12 +208,22 @@ export default class PlayQuizComponent extends Component {
         }
     }
 
+    renderResultScreen() {
+        if(this.state.isResultRunning){
+            return <ResultScreenComponent resultList={this.state.resultList} />
+        }
+        else{
+            return null;
+        }
+    }
+
     render() {
         return <div className="main">
             {this.renderLoadingScreen()}
             {this.renderHiddenData()}
             {this.renderScoreBoard()}
             {this.renderQuestion()}
+            {this.renderResultScreen()}
         </div>
     }
 

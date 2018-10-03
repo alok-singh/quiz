@@ -50,7 +50,7 @@ app.get('/play/quiz/:quizID', (req, res) => {
 	playQuizController(req, res);
 });
 
-app.get('/play/live/:quizPin', (req, res) => {
+app.get('/play/live/:quizID/:quizPin', (req, res) => {
 	playLiveQuizController(req, res);
 });
 
@@ -58,7 +58,7 @@ app.get('/create', (req, res) => {
 	createQuizController(req, res);
 });
 
-app.get('/conduct/:quizID/:quizPin/', (req, res) => {
+app.get('/conduct/live/:quizID/:quizPin/', (req, res) => {
 	conductQuizController(req, res);
 });
 
