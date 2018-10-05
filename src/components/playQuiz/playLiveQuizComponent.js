@@ -71,22 +71,6 @@ export default class PlayQuizComponent extends Component {
         }
     }
 
-    eventHandler() {
-        /* 
-            io is available via socket.io.js 
-            it is automatically serverby socket.io to the client
-        */
-        this.socket = io();
-
-        this.socket.on('broadcast', (data) => {
-            
-        });
-
-        this.socket.emit('update', Object.assign({}, {
-
-        }));
-    }
-
     onClickAnswer(optionIndex) {
         if(this.state.isAnsweringAllowed){
             let {questionObject} = this.state;

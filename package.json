@@ -4,10 +4,10 @@
   "description": "quiz",
   "main": "index.js",
   "scripts": {
-    "build": "./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --progress --colors",
-    "watch": "./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --progress --colors --watch",
+    "build": "NODE_ENV=prod ./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --progress --colors",
+    "watch": "NODE_ENV=dev && ./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --progress --colors --watch",
     "start": "npm run build && node index.js",
-    "dev": "npm run build && node --inspect index.js"
+    "dev": "node --inspect index.js"
   },
   "author": "Alok Singh",
   "license": "ISC",
@@ -18,8 +18,7 @@
     "fetch": "^1.1.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "request": "^2.85.0",
-    "socket.io": "^2.1.1"
+    "request": "^2.85.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -33,6 +32,7 @@
     "css-loader": "^1.0.0",
     "less-loader": "^4.1.0",
     "style-loader": "^0.23.0",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^4.9.1",
     "webpack-cli": "^3.1.1"
   },

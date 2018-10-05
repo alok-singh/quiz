@@ -5,9 +5,6 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import bodyParser from 'body-parser';
-import socket from 'socket.io';
-
-import {webSocketController} from './controllers/webSocketController';
 import {createQuizController} from './controllers/createQuizController';
 import {loginController} from './controllers/loginController';
 import {homeController} from './controllers/homeController';
@@ -117,11 +114,7 @@ const sendTo404 = (res) => {
 
 // *********************** server start ************************** //
 
-let server = http.createServer(app);
-
-webSocketController(socket(server)); // registering websocket events
-
-server.listen(3000);
+http.createServer(app).listen(3000);
 
 console.log("server started in port 3000");
 

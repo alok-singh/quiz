@@ -2,9 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const isProd = !!(process.env.NODE_ENV == "prod");
 
 module.exports = { 
-    devtool: 'cheap-module-eval-source-map',
+    devtool: isProd ? undefined : 'cheap-module-eval-source-map',
     entry: {
         createQuiz: './src/js/createQuiz.js',
         login: './src/js/login.js',
@@ -31,7 +32,7 @@ module.exports = {
             }]
         }]
     },
-    mode: 'development',
+    mode: 'production',
     plugins: [
         new CopyWebpackPlugin([{ 
             from: './src/css', 
@@ -44,5 +45,10 @@ module.exports = {
     },
     watchOptions: {
         ignored: ['build', 'node_modules']
+    },
+    optimization: isProd ? undefined : {
+        minimizer: [new UglifyJsPlugin({
+            test: /\.js(\?.*)?$/i
+        })]
     }
 };
