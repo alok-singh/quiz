@@ -73,7 +73,7 @@ export default class QuizComponent extends Component {
             <div className="container grid">
                 <div className="row phead">
                     <div className="col-xs-9" >
-                        <p style={{color: '#8800aa', textAlign: 'left', fontSize: '44px', lineHeight: '2.2', fontWeight: 'bold', marginBottom: '0px'}}>Konwledge Partner & Associates</p>
+                        <p style={{color: '#8800aa', textAlign: 'left', fontSize: '44px', lineHeight: '2.2', fontWeight: 'bold', marginBottom: '0px'}}>Knowledge Partner & Associates</p>
                     </div>
                     <div className="col-xs-3" >
                         <p style={{color: '#d8d8d8', textAlign: 'right', fontSize: '20px', lineHeight: '6', fontWeight: '500', marginBottom: '0px'}}>See All</p>
