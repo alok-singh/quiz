@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Signin from './signin';
 import {get, post} from '../../common/api';
-import Loader from './loader';
+import Loader from '../common/loader';
 
 export default class QuizComponent extends Component {
 
@@ -145,16 +145,19 @@ export default class QuizComponent extends Component {
                     this.setState({
                         popupMessage: data.message,
                         apiToken: data.api_token,
-                        isLoading: false
+                        isLoading: false,
+                        role: data.role
+                    }, () => {
+                        sessionStorage.bqsid = this.state.sessionID;
+                        sessionStorage.apitk = this.state.apiToken;
+                        sessionStorage.role = this.state.role;
+                        if(data.role == 'player'){
+                            location.href = '/player-home'
+                        }
+                        else {
+                            location.href = '/home';
+                        }
                     });
-                    sessionStorage.bqsid = this.state.sessionID;
-                    sessionStorage.apitk = this.state.apiToken;
-                    if(data.role == 'player'){
-                        location.href = '/player-home'
-                    }
-                    else {
-                        location.href = '/home';
-                    }
                 }
                 else{
                     this.setState({
@@ -181,7 +184,12 @@ export default class QuizComponent extends Component {
 
     componentDidMount() {
         if(sessionStorage.bqsid && sessionStorage.apitk){
-            location.href = '/home';
+            if(sessionStorage.role == 'player'){
+                location.href = '/player-home';
+            }
+            else{
+                location.href = '/home';
+            }
         }
     }
 

@@ -5,6 +5,7 @@ import QuestionComponent from './questionComponent';
 import StatsComponent from './statsComponent';
 import LeaderBoardComponent from './leaderBoardComponent';
 import ResultScreenComponent from '../common/resultScreenComponent';
+import Loader from '../common/loader';
 
 export default class AddQuestionComponent extends Component {
 
@@ -18,6 +19,7 @@ export default class AddQuestionComponent extends Component {
             isStatsRunning: false,
             isLeaderBordRunning: false,
             isResultRunning: false,
+            showLoader: false,
             loadingPercent: 0,
             currentQuestionRemainingTime: 5,
             currentQuestionNumber: 1,
@@ -68,20 +70,52 @@ export default class AddQuestionComponent extends Component {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
         
-        post(`/api/seminar/${this.props.quizPin}/next_question/`, null, {
+        this.setState({
+            showLoader: true
+        });
+
+        get(`/api/seminar/${this.props.quizPin}/next_question/`, {
             authorization: apiToken
         }).then(response => {
             alert(response.message);
-            this.setState({
-                isLoading: false,
-                isPlayerList: false, 
-                isQuestionRunning: true,
-                isStatsRunning: false,
-                isLeaderBordRunning: false,
-                questionObject: response.question,
-                currentQuestionRemainingTime: response.question.question_time,
-                currentQuestionNumber: parseInt(this.state.currentQuestionNumber) + 1
-            })
+            if(response.status == 200 && response.question){
+                this.setState({
+                    isLoading: false,
+                    isPlayerList: false, 
+                    isQuestionRunning: true,
+                    isStatsRunning: false,
+                    isLeaderBordRunning: false,
+                    showLoader: false,
+                    questionObject: response.question,
+                    currentQuestionRemainingTime: response.question.question_time,
+                    currentQuestionNumber: parseInt(this.state.currentQuestionNumber) + 1
+                })
+            }
+            else if(response.status == 200){
+                let data = {
+                    quiz_pin: this.props.quizPin,
+                    quiz_id: this.props.quizID
+                };
+                post(`/api/host/quiz/stats/`, data, {
+                    authorization: apiToken
+                }).then(result => {
+                    this.setState({
+                        isPlayerList: false,
+                        isLoading: false,
+                        isQuestionRunning: false,
+                        isStatsRunning: false,
+                        isLeaderBordRunning: false,
+                        isResultRunning: true,
+                        showLoader: false,
+                        resultList: result.users
+                    });
+                })
+            }
+            else{
+                this.setState({
+                    showLoader: false
+                })
+            }
         });
     }
 
@@ -98,18 +132,22 @@ export default class AddQuestionComponent extends Component {
             option3_id: this.state.questionObject.options[2].option_id,
             option4_id: this.state.questionObject.options[3].option_id,
         };
+        this.setState({
+            showLoader: true
+        });
         post(`/api/host/options/stats/`, data, {
             authorization: apiToken
         }).then(data => {
             let questionObject = this.state.questionObject;
-            questionObject.options = questionObject.options.map(option => {
+            questionObject.options = questionObject.options.map((option, index) => {
+                let matchedOption = data.question.options.filter(responseOption => {
+                    return responseOption.option_id == option.option_id
+                })[0];
                 return {
                     option_title: option.option_title,
                     option_id: option.option_id,
-                    is_answer: option.is_answer,
-                    optionCount: data.question.options.filter(responseOption => {
-                        return responseOption.option_id == option.option_id
-                    })[0].option1_count,
+                    is_answer: matchedOption.is_answer,
+                    optionCount: matchedOption[`option${parseInt(index) + 1}_count`]
                 }
             })
             this.setState({
@@ -117,6 +155,7 @@ export default class AddQuestionComponent extends Component {
                 isPlayerList: false, 
                 isQuestionRunning: false,
                 isStatsRunning: true,
+                showLoader: false,
                 questionObject
             })
         })
@@ -132,26 +171,36 @@ export default class AddQuestionComponent extends Component {
             quiz_id: this.props.quizID,
             question_id: this.state.questionObject.question_id
         };
-        
+        this.setState({
+            showLoader: true
+        });
         post(`/api/host/question/stats/`, data, {
             authorization: apiToken
         }).then(response => {
             alert(response.message);
-            this.setState({
-                isLoading: false,
-                isPlayerList: false, 
-                isQuestionRunning: false,
-                isLeaderBordRunning: true,
-                isStatsRunning: false,
-                leaderBoardList: response.users.map((player, index) => {
-                    return {
-                        rank: parseInt(index) + 1,
-                        name: player.name,
-                        score: player.score,
-                        isCorrect: player.is_correct
-                    }
-                })
-            });
+            if(response.users && response.users.length){
+                this.setState({
+                    isLoading: false,
+                    isPlayerList: false, 
+                    isQuestionRunning: false,
+                    isLeaderBordRunning: true,
+                    isStatsRunning: false,
+                    showLoader: false,
+                    leaderBoardList: response.users.map((player, index) => {
+                        return {
+                            rank: parseInt(index) + 1,
+                            name: player.name,
+                            score: player.score,
+                            isCorrect: player.is_correct
+                        }
+                    })
+                });
+            }
+            else{
+                this.setState({
+                    showLoader: false
+                });
+            }
         });
 
     }
@@ -374,6 +423,10 @@ export default class AddQuestionComponent extends Component {
         }
     }
 
+    renderLoader() {
+        return <Loader isLoading={this.state.showLoader} />
+    }
+
     render() {
         return <div className="conduct">
             {this.renderHiddenData()}
@@ -383,6 +436,7 @@ export default class AddQuestionComponent extends Component {
             {this.renderStatsScreen()}
             {this.renderLeaderBoardScreen()}
             {this.renderResultScreen()}
+            {this.renderLoader()}
         </div>
     }
 

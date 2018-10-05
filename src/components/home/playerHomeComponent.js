@@ -55,7 +55,7 @@ export default class QuizComponent extends Component {
                 authorization: apiToken
             }).then(data => {
                 alert(data.message);
-                if(data.status == 200 && data.quizID){
+                if((data.status == 200 || data.status == 400) && data.quizID){
                     location.href = `/play/live/${data.quizID}/${this.state.quizPin.toUpperCase()}/`
                 }
             });

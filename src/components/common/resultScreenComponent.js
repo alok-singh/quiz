@@ -19,15 +19,15 @@ export default class ResultScreenComponent extends Component {
 			<div className="row names">
   		     	<div className="col-xs-4 col-md-5 text-right topgap" >
 			 		<h3>{(this.props.resultList[1] && this.props.resultList[1].name) ? this.props.resultList[1].name : 'NA'}</h3>
-					<p>{(this.props.resultList[1] && this.props.resultList[1].score) ? this.props.resultList[1].score : 'NA'}</p>
+					<p>{(this.props.resultList[1] && this.props.resultList[1].score) ? this.props.resultList[1].score : '0'}</p>
     	     	</div>
 				<div className="col-xs-4 col-md-2 text-center sidegap" >
 			 		<h2>{(this.props.resultList[0] && this.props.resultList[0].name) ? this.props.resultList[0].name : 'NA'}</h2>
-					<p>{(this.props.resultList[0] && this.props.resultList[0].score) ? this.props.resultList[0].score : 'NA'}</p>
+					<p>{(this.props.resultList[0] && this.props.resultList[0].score) ? this.props.resultList[0].score : '0'}</p>
     	     	</div>
 				<div className="col-xs-4 col-md-5 text-left topgap" >
 			 		<h3>{(this.props.resultList[2] && this.props.resultList[2].name) ? this.props.resultList[2].name : 'NA'}</h3>
-					<p>{(this.props.resultList[2] && this.props.resultList[2].score) ? this.props.resultList[2].score : 'NA'}</p>
+					<p>{(this.props.resultList[2] && this.props.resultList[2].score) ? this.props.resultList[2].score : '0'}</p>
     	     	</div>
          	</div>
 			<div className="row">

@@ -105,52 +105,59 @@ export default class PlayQuizComponent extends Component {
     }
 
     componentDidMount() {
-        this.timeout = setInterval(() => {
-            let loadingPercent = parseInt(this.state.loadingPercent) + parseInt(10*Math.random());
-            if(loadingPercent >= 100){
-                clearInterval(this.timeout);
-                loadingPercent = 100;
-            }
-            if(this.state.isLoading){
-                this.setState({
-                    loadingPercent: loadingPercent
-                });
-            }
-        }, 1000);
-    }
-
-    componentDidUpdate() {
-        if(this.state.isQuestionActive && this.state.currentTimeout){
-            this.timeout = setTimeout(() => {
-                let remainingTime = this.state.currentTimeout - 1;
-                if(remainingTime <= 0){
-                    remainingTime = 0;
-                    clearTimeout(this.timeout);
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        
+        if(apiToken && sessionKey){
+            this.timeout = setInterval(() => {
+                let loadingPercent = parseInt(this.state.loadingPercent) + parseInt(50*Math.random());
+                if(loadingPercent >= 100){
+                    clearInterval(this.timeout);
+                    loadingPercent = 100;
                 }
-                this.setState({
-                    currentTimeout: remainingTime,
-                    isAnsweringAllowed: !(remainingTime <= 0)
-                }, () => {
-                    
-                    if(remainingTime <= 0){
-                        let apiToken = sessionStorage.apitk;
-                        let sessionKey = sessionStorage.bqsid;
-                        let data = {
-                            quiz_id: this.props.quizID,
-                            question_id: this.state.questionObject.question_id,
-                            quiz_pin: this.props.quizPin,
-                            option_id: this.state.questionObject.options.filter(option => {
-                                return option.is_answer
-                            })[0].option_id
-                        };
-                        post(`/api/player/answer/`, data, {
-                            authorization: apiToken
-                        });
-                    }
-
-                });
+                if(this.state.isLoading){
+                    this.setState({
+                        loadingPercent: loadingPercent
+                    });
+                }
             }, 1000);
         }
+        else{
+            location.href = '/login';
+        }
+    }
+
+    startClock() {
+        this.interval = setInterval(() => {
+            let remainingTime = this.state.currentTimeout - 1;
+            if(remainingTime <= 0){
+                remainingTime = 0;
+                clearTimeout(this.interval);
+            }
+            this.setState({
+                currentTimeout: remainingTime,
+                isAnsweringAllowed: !(remainingTime <= 0)
+            }, () => {
+                
+                if(remainingTime <= 0){
+                    let apiToken = sessionStorage.apitk;
+                    let sessionKey = sessionStorage.bqsid;
+                    let answeredOption = this.state.questionObject.options.filter(option => {
+                        return option.is_answer
+                    })[0];
+                    let data = {
+                        quiz_id: this.props.quizID,
+                        question_id: this.state.questionObject.question_id,
+                        quiz_pin: this.props.quizPin,
+                        option_id: answeredOption ? answeredOption.option_id : null
+                    };
+                    post(`/api/player/answer/`, data, {
+                        authorization: apiToken
+                    });
+                }
+
+            });
+        }, 1000);
     }
 
     renderLoadingScreen() {
