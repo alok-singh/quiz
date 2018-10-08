@@ -36,32 +36,9 @@ export default class PlayQuizComponent extends Component {
                 isCorrect: false
             }],
             isAnsweringAllowed: true,
-            questionObject: {
-                "options": [
-                {
-                    "option_title": "National Aeronautical Space Agency",
-                    "option_id": 49
-                },
-                {
-                    "option_title": "National Aeronautical Space Agency",
-                    "option_id": 51
-                },
-                {
-                    "option_title": "National Aeronautical Space Agency",
-                    "option_id": 52
-                },
-                {
-                    "option_title": "National Aeronautical Space Agency",
-                    "option_id": 50
-                }],
-                "question_title": "What is the form of NASA?",
-                "question_id": 19,
-                "question_image": "",
-                "question_time": 10
-            },
+            questionObject: {},
             currentTimeout: 10,
             resultList: []
-
         }
 
         this.onClickAnswer = this.onClickAnswer.bind(this);
@@ -69,6 +46,24 @@ export default class PlayQuizComponent extends Component {
         if(typeof window !== 'undefined'){
             window.quizComponent = this;
         }
+    }
+
+    eventHandler() {
+        this.socket = io();
+        this.socket.on('broadcast', (data) => {
+            if(data){
+                this.setState({
+                    isQuestionActive: true,
+                    isLoading: false,
+                    isScoreActive: false,
+                    isResultRunning: false,
+                    questionObject: data.question,
+                    totalQuestions: data.total_questions
+                }, () => {
+                    this.startClock();
+                })
+            }
+        });
     }
 
     onClickAnswer(optionIndex) {
@@ -105,6 +100,7 @@ export default class PlayQuizComponent extends Component {
                     });
                 }
             }, 1000);
+            this.eventHandler();
         }
         else{
             location.href = '/login';

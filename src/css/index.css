@@ -794,7 +794,7 @@ figure.effect-goliath:hover p {
 
 
 .u-overlay {
-    position: absolute;
+    position: fixed;
     top: 0px;
     bottom: 0px;
     left: 0px;

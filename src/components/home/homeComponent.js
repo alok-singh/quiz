@@ -66,22 +66,28 @@ export default class QuizComponent extends Component {
     componentDidMount() {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
-        
+        let role = sessionStorage.role;
+
         if(apiToken && sessionKey){
-            get('/api/user/quizzes/', {
-                authorization: apiToken
-            }).then(data => {
-                this.setState({
-                    quizList: data.quizzes ? data.quizzes : []
+            if(role == 'host'){
+                get('/api/user/quizzes/', {
+                    authorization: apiToken
+                }).then(data => {
+                    this.setState({
+                        quizList: data.quizzes ? data.quizzes : []
+                    });
                 });
-            });
-            get('/api/user/name/', {
-                authorization: apiToken
-            }).then(data => {
-                this.setState({
-                    userName: data.message ? data.message : 'Default'
+                get('/api/user/name/', {
+                    authorization: apiToken
+                }).then(data => {
+                    this.setState({
+                        userName: data.message ? data.message : 'Default'
+                    });
                 });
-            });
+            }
+            else{
+                location.href = '/player-home';
+            }
         }
         else{
             location.href = '/login';

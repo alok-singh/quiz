@@ -99,6 +99,7 @@ export default class AddQuestionComponent extends Component {
                 post(`/api/host/quiz/stats/`, data, {
                     authorization: apiToken
                 }).then(result => {
+                    alert(result.message);
                     this.setState({
                         isPlayerList: false,
                         isLoading: false,
@@ -107,7 +108,7 @@ export default class AddQuestionComponent extends Component {
                         isLeaderBordRunning: false,
                         isResultRunning: true,
                         showLoader: false,
-                        resultList: result.users
+                        resultList: result.users ? result.users : []
                     });
                 })
             }
@@ -196,6 +197,17 @@ export default class AddQuestionComponent extends Component {
                     })
                 });
             }
+            else if(response.status == 400){
+                this.setState({
+                    isLoading: false,
+                    isPlayerList: false, 
+                    isQuestionRunning: false,
+                    isLeaderBordRunning: true,
+                    isStatsRunning: false,
+                    showLoader: false,
+                    leaderBoardList: []
+                });
+            }
             else{
                 this.setState({
                     showLoader: false
@@ -217,26 +229,6 @@ export default class AddQuestionComponent extends Component {
             isStatsRunning: false,
             isLeaderBordRunning: false
         }, () => {
-            // request for question data
-            // websocket to be added here for number of players data
-            post(`/api/seminar/${this.props.quizPin}/start/`, null, {
-                authorization: apiToken
-            }).then(data => {
-                if(data.question && data.question.question_time){
-                    this.setState({
-                        questionObject: data.question,
-                        totalQuestions: 10,
-                        currentQuestionNumber: 1,
-                        currentQuestionRemainingTime: parseInt(data.question.question_time)
-                    });
-                }
-                else{
-                    message = data.message;
-                }
-            }, error => {
-                console.log(error);
-                message = 'error occured check console';
-            });
             this.interval = setInterval(() => {
                 let loadingPercent = parseInt(this.state.loadingPercent) + parseInt(50*Math.random());
                 if(loadingPercent >= 100){
@@ -247,18 +239,29 @@ export default class AddQuestionComponent extends Component {
                     loadingPercent: loadingPercent
                 }, () => {
                     if(loadingPercent >= 100){
-                        if(this.state.questionObject && this.state.questionObject.question_time){
-                            this.setState({
-                                isLoading: false,
-                                isPlayerList: false,
-                                isQuestionRunning: true,
-                                isStatsRunning: false,
-                                isLeaderBordRunning: false
-                            })
-                        }
-                        else{
-                            alert(message);
-                        }
+                        post(`/api/seminar/${this.props.quizPin}/start/`, null, {
+                            authorization: apiToken
+                        }).then(data => {
+                            if(data.question && data.question.question_time){
+                                this.setState({
+                                    questionObject: data.question,
+                                    totalQuestions: data.total_questions,
+                                    currentQuestionNumber: 1,
+                                    currentQuestionRemainingTime: parseInt(data.question.question_time),
+                                    isLoading: false,
+                                    isPlayerList: false,
+                                    isQuestionRunning: true,
+                                    isStatsRunning: false,
+                                    isLeaderBordRunning: false
+                                });
+                            }
+                            else{
+                                message = data.message;
+                            }
+                        }, error => {
+                            console.log(error);
+                            message = 'error occured check console';
+                        });
                     }
                 });
             }, 1000);

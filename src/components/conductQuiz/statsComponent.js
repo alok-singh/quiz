@@ -87,7 +87,7 @@ export default class StatsComponent extends Component {
             <div className="entity">
                 <div className="count" style={{color: barColor[0]}}>{optionACount}</div>
                 <div className="bar" style={{backgroundColor: barColor[0], height: `${parseInt((200*optionACount)/totalResponses)}px`}}></div>
-                <div className="correct" style={{backgroundColor: barColor[0]}}>{correctOptionIndex == 0 ? <i className="fa fa-check"></i> : <i className="fa fa-check"></i>}</div>
+                <div className="correct" style={{backgroundColor: barColor[0]}}>{correctOptionIndex == 0 ? <i className="fa fa-check"></i> : <i className="fa fa-close"></i>}</div>
             </div>
             <div className="entity">
                 <div className="count" style={{color: barColor[1]}}>{optionBCount}</div>

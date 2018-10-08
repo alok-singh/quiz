@@ -11,7 +11,7 @@ import {homeController} from './controllers/homeController';
 import {playerHomeController} from './controllers/playerHomeController';
 import {playQuizController} from './controllers/playQuizController';
 import {playLiveQuizController} from './controllers/playLiveQuizController';
-import {gatewayPostController, gatewayGetController} from './controllers/apiController';
+import {gatewayPostController, gatewayGetController, createConnection} from './controllers/apiController';
 import {addQuestionController} from './controllers/addQuestionController';
 import {conductQuizController} from './controllers/conductQuizController';
 
@@ -114,8 +114,9 @@ const sendTo404 = (res) => {
 
 // *********************** server start ************************** //
 
-http.createServer(app).listen(3000);
-
+const server = http.createServer(app);
+createConnection(server);
+server.listen(3000);
 console.log("server started in port 3000");
 
 
