@@ -70,9 +70,9 @@ export default class ScoreBoardComponent extends Component {
                 <div className="table-wrapper-scroll-y tablescroll">
                     <table className="table">
                         <tbody>
-                            {this.props.playerList.map(player => {
+                            {this.props.playerList.map((player, index) => {
                                 return <tr>
-                                    <th>{player.rank}</th>
+                                    <th>{parseInt(index) + 1}</th>
                                     <td>{player.name}</td>
                                     <td>{player.score}</td>
                                     <td>{player.isCorrect ? <i className="fa fa-check" ></i> : <i className="fa fa-close" ></i>}</td>

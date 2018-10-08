@@ -14,16 +14,16 @@ export default class PlayQuizComponent extends Component {
         this.state = {
             loadingPercent: 0,
             isLoading: true,
-            isScoreActive: false,
-            isQuestionActive: false,
-            isResultRunning: false,
+            isScoreActive: false, // show is player correct
+            isQuestionActive: false, 
+            isResultRunning: false,  // leaderboard
             currentQuestionNumber: 1,
             totalQuestions: 10,
             isPlayerCorrect: false,
-            playerScore: 302,
-            roundBest: 120,
-            playerTotalScore: 984,
-            playerRank: 3,
+            playerScore: 'NA',
+            roundBest: 'NA',
+            playerTotalScore: 'NA',
+            playerRank: 'NA',
             playerList: [{
                 name: 'Alok',
                 rank: 1,
@@ -51,17 +51,36 @@ export default class PlayQuizComponent extends Component {
     eventHandler() {
         this.socket = io();
         this.socket.on('broadcast', (data) => {
-            if(data){
+            if(data && data.action == 'question'){
                 this.setState({
                     isQuestionActive: true,
                     isLoading: false,
                     isScoreActive: false,
                     isResultRunning: false,
                     questionObject: data.question,
-                    totalQuestions: data.total_questions
+                    totalQuestions: data.total_questions,
+                    currentTimeout: data.question.question_time
                 }, () => {
                     this.startClock();
                 })
+            }
+            else if(data && data.action == 'result'){
+                this.setState({
+                    isQuestionActive: false,
+                    isLoading: false,
+                    isScoreActive: true,
+                    isResultRunning: false,
+                    playerList: data.users
+                });
+            }
+            else if(data && data.action == 'leaderBoard'){
+                this.setState({
+                    isQuestionActive: false,
+                    isLoading: false,
+                    isScoreActive: false,
+                    isResultRunning: true,
+                    resultList: data.users
+                });
             }
         });
     }
@@ -133,6 +152,10 @@ export default class PlayQuizComponent extends Component {
                     };
                     post(`/api/player/answer/`, data, {
                         authorization: apiToken
+                    }).then(data => {
+                        this.setState({
+                            isPlayerCorrect: data.correct
+                        });
                     });
                 }
 
