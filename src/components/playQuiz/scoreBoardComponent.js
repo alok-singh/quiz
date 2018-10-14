@@ -21,7 +21,7 @@ export default class ScoreBoardComponent extends Component {
                 <p style={{margin: '0px'}}>
                     <span>{this.props.isPlayerCorrect ? <i className="fa fa-check" ></i> : <i className="fa fa-close"></i>}</span>
                 </p>
-                <p style={{fontSize: '40px'}}>{this.props.isPlayerCorrect ? "Correct" : "Incorrect"}</p>
+                <p style={{fontSize: '40px'}}>{this.props.isPlayerCorrect ? "Correct" : (this.props.isPlayerCorrect == false ? "Incorrect" : "Not Answered")}</p>
                 <p style={{fontSize: '20px'}}>
                     <span>Answer Streak</span>
                     <span>
