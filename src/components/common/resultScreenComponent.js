@@ -10,7 +10,9 @@ export default class ResultScreenComponent extends Component {
 			<div className="col-xs-9 col-md-8 text-center" >
 		 		<p style={{fontSize: '30px', color: '#333', margin: '0px'}}>Final Scores</p>
 	     	</div>
-			<div className="col-xs-2 hidden-sm hidden-xs"></div>
+			<div class="col-xs-2" style={{fontSize: '20px', textAlign: 'right', paddingTop: '7px'}}>
+			    <a href={this.props.homeURL} style={{padding: '5px 10px', background: '#2fbf2d', color: '#fff', borderRadius: '5px'}}>Home</a>
+			</div>
      	</div>
 	}
 

@@ -24,17 +24,7 @@ export default class PlayQuizComponent extends Component {
             roundBest: 'NA',
             playerTotalScore: 'NA',
             playerRank: 'NA',
-            playerList: [{
-                name: 'Alok',
-                rank: 1,
-                score: 120,
-                isCorrect: true
-            }, {
-                name: 'Janny',
-                rank: 2,
-                score: 110,
-                isCorrect: false
-            }],
+            playerList: [],
             isAnsweringAllowed: true,
             questionObject: {},
             currentTimeout: 10,
@@ -220,7 +210,7 @@ export default class PlayQuizComponent extends Component {
 
     renderResultScreen() {
         if(this.state.isResultRunning){
-            return <ResultScreenComponent resultList={this.state.resultList} />
+            return <ResultScreenComponent resultList={this.state.resultList} homeURL="/player-home"/>
         }
         else{
             return null;

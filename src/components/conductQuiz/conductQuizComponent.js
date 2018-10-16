@@ -419,7 +419,7 @@ export default class AddQuestionComponent extends Component {
 
     renderResultScreen() {
         if(this.state.isResultRunning){
-            return <ResultScreenComponent resultList={this.state.resultList} />
+            return <ResultScreenComponent resultList={this.state.resultList} homeURL="/home" />
         }
         else{
             return null;
