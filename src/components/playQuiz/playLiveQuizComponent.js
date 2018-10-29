@@ -19,7 +19,7 @@ export default class PlayQuizComponent extends Component {
             isQuestionActive: false, 
             isResultRunning: false,  // leaderboard
             currentQuestionNumber: 0,
-            totalQuestions: 10,
+            totalQuestions: 'NA',
             isPlayerCorrect: false,
             playerScore: 'NA',
             roundBest: 'NA',
@@ -50,7 +50,7 @@ export default class PlayQuizComponent extends Component {
                     isResultRunning: false,
                     isStatsActive: false,
                     questionObject: data.question,
-                    totalQuestions: data.total_questions,
+                    totalQuestions: data.total_questions ? data.total_questions : this.state.totalQuestions,
                     currentTimeout: data.question.question_time,
                     currentQuestionNumber: parseInt(this.state.currentQuestionNumber) + 1
                 }, () => {
