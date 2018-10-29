@@ -182,7 +182,9 @@ export default class AddQuestionComponent extends Component {
         post(`/api/host/question/stats/`, data, {
             authorization: apiToken
         }).then(response => {
-            alert(response.message);
+            if(response.message){
+                alert(response.message);
+            }
             if(response.users && response.users.length){
                 this.setState({
                     isLoading: false,
