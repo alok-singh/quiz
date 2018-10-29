@@ -224,6 +224,7 @@ p{
     padding: 10px 30px;
     text-align: left;
     font-size: 20px;
+    white-space: normal;
 }
 
 .questionbox .fa-check-circle, .questionbox .fa-circle, .questionbox .fa-times-circle {
@@ -378,6 +379,7 @@ p{
     font-size: 25px;
     color: #ffffff;
     border: 1px solid #222a32;
+    white-space: normal;
 }
 
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {get, post} from '../../common/api';
 import LoadingScreenComponent from '../common/loadingScreenComponent';
 import QuestionComponent from './questionComponent';
-import StatsComponent from './statsComponent';
+import StatsComponent from '../common/statsComponent';
 import LeaderBoardComponent from './leaderBoardComponent';
 import ResultScreenComponent from '../common/resultScreenComponent';
 import Loader from '../common/loader';
@@ -77,7 +77,9 @@ export default class AddQuestionComponent extends Component {
         get(`/api/seminar/${this.props.quizPin}/next_question/`, {
             authorization: apiToken
         }).then(response => {
-            alert(response.message);
+            if(response.message){
+                alert(response.message);
+            }
             if(response.status == 200 && response.question){
                 this.setState({
                     isLoading: false,
@@ -99,7 +101,9 @@ export default class AddQuestionComponent extends Component {
                 post(`/api/host/quiz/stats/`, data, {
                     authorization: apiToken
                 }).then(result => {
-                    alert(result.message);
+                    if(result.message){
+                        alert(result.message);
+                    }
                     this.setState({
                         isPlayerList: false,
                         isLoading: false,

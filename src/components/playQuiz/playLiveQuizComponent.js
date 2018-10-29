@@ -4,6 +4,7 @@ import LoadingScreenComponent from '../common/loadingScreenComponent';
 import ScoreBoardComponent from './scoreBoardComponent';
 import QuestionComponent from './questionComponent';
 import ResultScreenComponent from '../common/resultScreenComponent';
+import StatsComponent from '../common/statsComponent';
 
 const selectedColor = '#2e9e0f';
 
@@ -17,7 +18,7 @@ export default class PlayQuizComponent extends Component {
             isScoreActive: false, // show is player correct
             isQuestionActive: false, 
             isResultRunning: false,  // leaderboard
-            currentQuestionNumber: 1,
+            currentQuestionNumber: 0,
             totalQuestions: 10,
             isPlayerCorrect: false,
             playerScore: 'NA',
@@ -47,9 +48,11 @@ export default class PlayQuizComponent extends Component {
                     isLoading: false,
                     isScoreActive: false,
                     isResultRunning: false,
+                    isStatsActive: false,
                     questionObject: data.question,
                     totalQuestions: data.total_questions,
-                    currentTimeout: data.question.question_time
+                    currentTimeout: data.question.question_time,
+                    currentQuestionNumber: parseInt(this.state.currentQuestionNumber) + 1
                 }, () => {
                     this.startClock();
                 })
@@ -60,6 +63,7 @@ export default class PlayQuizComponent extends Component {
                     isLoading: false,
                     isScoreActive: true,
                     isResultRunning: false,
+                    isStatsActive: false,
                     playerList: data.users
                 });
             }
@@ -69,7 +73,30 @@ export default class PlayQuizComponent extends Component {
                     isLoading: false,
                     isScoreActive: false,
                     isResultRunning: true,
+                    isStatsActive: false,
                     resultList: data.users
+                });
+            }
+            else if(data && data.action == 'statsBoard'){
+                let questionObject = this.state.questionObject;
+                questionObject.options = questionObject.options.map((option, index) => {
+                    let matchedOption = data.question.options.filter(responseOption => {
+                        return responseOption.option_id == option.option_id
+                    })[0];
+                    return {
+                        option_title: option.option_title,
+                        option_id: option.option_id,
+                        is_answer: matchedOption.is_answer,
+                        optionCount: matchedOption[`option${parseInt(index) + 1}_count`]
+                    }
+                })
+                this.setState({
+                    isQuestionActive: false,
+                    isLoading: false,
+                    isScoreActive: false,
+                    isResultRunning: false,
+                    isStatsActive: true,
+                    questionObject: questionObject
                 });
             }
         });
@@ -106,6 +133,10 @@ export default class PlayQuizComponent extends Component {
                 if(this.state.isLoading){
                     this.setState({
                         loadingPercent: loadingPercent
+                    }, () => {
+                        if(loadingPercent >= 100){
+                            alert('You have successfully joined the game. Please wait for Game to start');
+                        }
                     });
                 }
             }, 1000);
@@ -217,12 +248,30 @@ export default class PlayQuizComponent extends Component {
         }
     }
 
+    renderStatsScreen() {
+        if(this.state.isStatsActive){
+            return <StatsComponent 
+                questionObj={this.state.questionObject}
+                totalQuestions={this.state.totalQuestions}
+                currentQuestionNumber={this.state.currentQuestionNumber}
+                optionACount={this.state.questionObject.options[0].optionCount}
+                optionBCount={this.state.questionObject.options[1].optionCount}
+                optionCCount={this.state.questionObject.options[2].optionCount}
+                optionDCount={this.state.questionObject.options[3].optionCount}
+            />
+        }
+        else{
+            return null;
+        }
+    }
+
     render() {
         return <div className="main">
             {this.renderLoadingScreen()}
             {this.renderHiddenData()}
             {this.renderScoreBoard()}
             {this.renderQuestion()}
+            {this.renderStatsScreen()}
             {this.renderResultScreen()}
         </div>
     }

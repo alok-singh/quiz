@@ -108,9 +108,14 @@ export default class StatsComponent extends Component {
     }
 
     renderNextButton() {
-        return <div style={{textAlign: 'center', margin: '30px 0px'}}>
-            <button onClick={this.props.onClickNext} className="btn btn-success" style={{height: '42px', width: '120px', fontSize: '16px', textTransform: 'capitalize', display: 'inline-block', background: '#0067d5', border: '1px solid #0067d5'}}>{this.props.currentQuestionNumber < this.props.totalQuestions ? 'next' : 'finish'}</button>
-        </div>
+        if(this.props.onClickNext){
+            return <div style={{textAlign: 'center', margin: '30px 0px'}}>
+                <button onClick={this.props.onClickNext} className="btn btn-success" style={{height: '42px', width: '120px', fontSize: '16px', textTransform: 'capitalize', display: 'inline-block', background: '#0067d5', border: '1px solid #0067d5'}}>{this.props.currentQuestionNumber < this.props.totalQuestions ? 'next' : 'finish'}</button>
+            </div>
+        }
+        else{
+            return null;
+        } 
     }
 
     render() {

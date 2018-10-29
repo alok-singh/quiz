@@ -2,7 +2,19 @@ import React, { Component } from 'react';
 import {get, post} from '../../common/api';
 import Modal from '../common/modal';
 
-const selectedColor = '#2e9e0f';
+const optionColorList = [
+    'rgba(226, 27, 60, 0.6)',
+    'rgba(19, 104, 206, 0.6)',
+    'rgba(216, 158, 0, 0.6)',
+    'rgba(41, 143, 13, 0.6)'
+];
+
+const selectedColorList = [
+    'rgb(226, 27, 60)',
+    'rgb(19, 104, 206)',
+    'rgb(216, 158, 0)',
+    'rgb(41, 143, 13)'
+];
 
 export default class PlayQuizComponent extends Component {
 
@@ -164,7 +176,7 @@ export default class PlayQuizComponent extends Component {
                     <div className="row quesbtn">
                         {questionObject.options.map((option, index) => {
                             return <div className="col-xs-6" >
-                                <button onClick={() => this.onClickAnswer(index, questionIndex)} type="button" className="btn btn-success btn-block" style={{background: option.is_answer ? selectedColor : '#b9b9b9'}}>{option.option_title}</button>
+                                <button onClick={() => this.onClickAnswer(index, questionIndex)} type="button" className="btn btn-success btn-block" style={{background: option.is_answer ? selectedColorList[index] : optionColorList[index]}}>{option.option_title}</button>
                             </div>
                         })}
                     </div>

@@ -129,12 +129,12 @@ hr {
     color: #000000;
 }
 
-#explore .btnblock {
+.explore .btnblock {
     text-align: center;
     padding-bottom: 20px;
 }
 
-#explore .btn {
+.explore .btn {
     background: #eb670f;
     padding: 5px 15px;
 }
@@ -768,7 +768,7 @@ figure.effect-goliath:hover h2 {
     transform: translate3d(0, -112px, 0);
 }
 
-#explore figure.effect-goliath:hover h2 {
+.explore figure.effect-goliath:hover h2 {
     -webkit-transform: translate3d(0, -94px, 0);
     transform: translate3d(0, -94px, 0);
 }

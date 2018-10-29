@@ -26,6 +26,9 @@ export const gatewayPostController = (req, res) => {
 		else if(url == '/api/host/quiz/stats/'){
 			io.emit('broadcast', Object.assign({}, response.body, {action: 'leaderBoard'}));
 		}
+		else if(url == '/api/host/options/stats/'){
+			io.emit('broadcast', Object.assign({}, response.body, {action: 'statsBoard'}));
+		}
 		res.writeHead(response.statusCode, {'Content-Type': 'application/JSON'});
 		res.write(JSON.stringify(response.body));
 		res.end();
