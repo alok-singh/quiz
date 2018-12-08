@@ -49,18 +49,31 @@ export default class QuizComponent extends Component {
     }
 
     onClickSubmitPin() {
+        let url = '';
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
-
-        if(this.state.quizPin.length){
-            post(`/api/verify/player/${this.state.quizPin.toUpperCase()}/`, null, {
-                authorization: apiToken
-            }).then(data => {
-                alert(data.message);
-                if((data.status == 200 && data.quiz_id)|| data.status == 400){
-                    location.href = `/play/live/${data.quiz_id}/${this.state.quizPin.toUpperCase()}/`
-                }
-            });
+        let pin = this.state.quizPin;
+        if(pin.length){
+            if(pin[0].toLowerCase() == 'p'){
+                post(`/api/poll/verify/player/${this.state.quizPin.toUpperCase()}/`, null, {
+                    authorization: apiToken
+                }).then(data => {
+                    alert(data.message);
+                    if(data.status == 200 && data.poll_id){
+                        location.href = `/play/poll/${data.poll_id}/${this.state.quizPin.toUpperCase()}/`
+                    }
+                });
+            }
+            else{
+                post(`/api/verify/player/${this.state.quizPin.toUpperCase()}/`, null, {
+                    authorization: apiToken
+                }).then(data => {
+                    alert(data.message);
+                    if(data.status == 200 && data.quiz_id){
+                        location.href = `/play/live/${data.quiz_id}/${this.state.quizPin.toUpperCase()}/`
+                    }
+                });
+            }
         }
     }
 

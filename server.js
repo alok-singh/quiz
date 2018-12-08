@@ -35,6 +35,11 @@ app.get('/quiz/:quizID/edit', (req, res) => {
 	addQuestionController(req, res);
 });
 
+app.get('/poll/:pollID/edit', (req, res) => {
+	addQuestionController(req, res);
+});
+
+
 app.get('/home', (req, res) => {
 	homeController(req, res);
 });
@@ -47,18 +52,17 @@ app.get('/play/quiz/:quizID', (req, res) => {
 	playQuizController(req, res);
 });
 
-app.get('/play/live/:quizID/:quizPin', (req, res) => {
+app.get(['/play/live/:quizID/:quizPin', '/play/poll/:pollID/:pollPin'], (req, res) => {
 	playLiveQuizController(req, res);
 });
 
-app.get('/create', (req, res) => {
+app.get(['/create', '/create-poll'], (req, res) => {
 	createQuizController(req, res);
 });
 
-app.get('/conduct/live/:quizID/:quizPin/', (req, res) => {
+app.get(['/conduct/live/:quizID/:quizPin/','/conduct/poll/:pollID/:pollPin/'], (req, res) => {
 	conductQuizController(req, res);
 });
-
 
 app.get('/build/*', (req, res) => {
 	let filePath = "." + req.url;

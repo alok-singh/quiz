@@ -3,7 +3,7 @@ import {get, post} from '../../common/api';
 
 const defaultQuestion = [{
     question_title: "Please add question here",
-    question_image: "",
+    image_url: "",
     question_time: 30,
     options: [{
         option_title: "choice1",
@@ -37,11 +37,20 @@ export default class AddQuestionComponent extends Component {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
         
-        post('/api/question/add/', data, {
-            authorization: apiToken
-        }).then(response => {
-            alert(response.message);
-        })
+        if(this.props.pollID){
+            post('/api/poll/question/add/', data, {
+                authorization: apiToken
+            }).then(response => {
+                alert(response.message);
+            })
+        }
+        else{
+            post('/api/question/add/', data, {
+                authorization: apiToken
+            }).then(response => {
+                alert(response.message);
+            })
+        }
     }
 
     getMappedData() {
@@ -49,6 +58,7 @@ export default class AddQuestionComponent extends Component {
         let isAnswer = '';
 
         mappedData.quiz_id = this.props.quizID;
+        mappedData.poll_id = this.props.pollID;
         mappedData.questions = this.state.questions.map(question => {
             question.options.forEach((val, index) => {
                 if(val.is_answer){
@@ -58,6 +68,7 @@ export default class AddQuestionComponent extends Component {
             return {
                 question_text: question.question_title,
                 question_time: question.question_time,
+                image_url: "",
                 question_image: "",
                 option1: question.options[0].option_title,
                 option2: question.options[1].option_title,
@@ -74,7 +85,7 @@ export default class AddQuestionComponent extends Component {
         let {questions} = this.state;
         questions.push({
             question_title: "Please add question here",
-            question_image: "",
+            image_url: "",
             question_time: 30,
             options: [{
                 option_title: "choice1"
@@ -138,17 +149,29 @@ export default class AddQuestionComponent extends Component {
         let sessionKey = sessionStorage.bqsid;
 
         if(apiToken && sessionKey){
-            get(`/api/quiz/${this.props.quizID}/questions/`, {
+            get(`${this.props.quizID ? ('/api/quiz/' + this.props.quizID) : ('/api/poll/' + this.props.pollID)}/questions/`, {
                 authorization: apiToken
             }).then(data => {
                 this.setState({
                     questions: data.questions ? data.questions : defaultQuestion
-                })
+                });
             });
         }
         else{
             location.href = '/login';
         }
+    }
+
+    renderOption(option, optionIndex, index) {
+        if(this.props.pollID){
+            return null;
+        }
+        else if(option.is_answer){
+            return <p><span><i className="fa fa-check-circle" ></i></span></p>
+        }
+        else{
+            return <p><span onClick={() => this.onClickCorrectAnswer(index, optionIndex)}><i className="fa fa-circle" ></i></span></p>
+        } 
     }
 
     renderTopComponent() {
@@ -214,7 +237,7 @@ export default class AddQuestionComponent extends Component {
                                 return <div className="col-xs-12 col-md-6">
                                     <p style={{fontSize: '18px'}}>Answer {optionIndex + 1}</p>
                                     <input className="btn" value={option.option_title} onChange={({target}) => this.onChangeInput(target.value, 'options', index, optionIndex)}></input>
-                                    {option.is_answer ? <p><span><i className="fa fa-check-circle" ></i></span></p> : <p><span onClick={() => this.onClickCorrectAnswer(index, optionIndex)}><i className="fa fa-circle" ></i></span></p>}
+                                    {this.renderOption(option, optionIndex, index)}
                                 </div>
                             })}
                         </div>
@@ -236,7 +259,7 @@ export default class AddQuestionComponent extends Component {
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>                        
                     </button>
-                    <a href="#"><img src="/images/log.jpg" alt="logo" className="img-responsive" /></a>
+                    <a href="/home"><img src="/images/log.jpg" alt="logo" className="img-responsive" /></a>
                 </div>
                 <div className="collapse navbar-collapse" id="myNavbar">
                     <ul id="nav-menu" className="nav navbar-nav navbar-right">
@@ -259,7 +282,12 @@ export default class AddQuestionComponent extends Component {
 
     renderHiddenData() {
         if(typeof window == 'undefined'){
-            return <span id='data' style={{display: 'none'}}>{this.props.quizID}</span>
+            if(this.props.quizID){
+                return <span id='dataQuiz' style={{display: 'none'}}>{this.props.quizID}</span>
+            }
+            else{
+                return <span id='dataPoll' style={{display: 'none'}}>{this.props.pollID}</span>
+            }
         }
         else{
             return null;

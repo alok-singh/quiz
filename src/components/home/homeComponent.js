@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import Modal from '../common/modal';
 import {get, post} from '../../common/api';
+import Loader from '../common/loader';
 
 export default class QuizComponent extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            pollList: [],
             quizList: [],
             userName: 'Default',
+            isPoll: false,
+            isLoading: false,
             activeQuizID: false,
             isModalVisible: false,
             activeConductType: 'live',
@@ -20,35 +24,75 @@ export default class QuizComponent extends Component {
     }
 
     signout() {
-        delete sessionStorage.apitk;
-        delete sessionStorage.bqsid;
-        location.href = '/login';
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        this.setState({
+            isLoading: true
+        }, () => {
+            post('/api/user/logout/', {
+                authorization: apiToken
+            }).then(data => {
+                delete sessionStorage.apitk;
+                delete sessionStorage.bqsid;
+                this.setState({
+                    isLoading: false
+                }, () => {
+                    location.href = '/login';
+                })
+            });
+        });
     }
 
     onClickConduct(quizID, quizIndex) {
         this.setState({
+            isPoll: false,
             activeQuizID: quizID,
             isModalVisible: true
         })
+    }
+
+    onClickConductPoll(pollID, pollIndex) {
+        this.setState({
+            isPoll: true,
+            activePollID: pollID,
+            isModalVisible: true
+        });
     }
 
     onClickConductModal() {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
 
-        post('/api/generate/pin/', {
-            quiz_id: this.state.activeQuizID
-        }, {
-            authorization: apiToken
-        }).then(data => {
-            if(data.quiz_pin && data.quiz_id){
-                alert(data.message);
-                location.href = `/conduct/live/${data.quiz_id}/${data.quiz_pin}/`;
-            }
-            else{
-                alert(data.message);
-            }
-        });
+        if(this.state.isPoll){
+            post('/api/poll/generate/pin/', {
+                poll_id: this.state.activePollID
+            }, {
+                authorization: apiToken
+            }).then(data => {
+                if(data.poll_pin && data.poll_id){
+                    alert(data.message);
+                    location.href = `/conduct/poll/${data.poll_id}/${data.poll_pin}/`;
+                }
+                else{
+                    alert(data.message);
+                }
+            });
+        }
+        else{
+            post('/api/generate/pin/', {
+                quiz_id: this.state.activeQuizID
+            }, {
+                authorization: apiToken
+            }).then(data => {
+                if(data.quiz_pin && data.quiz_id){
+                    alert(data.message);
+                    location.href = `/conduct/live/${data.quiz_id}/${data.quiz_pin}/`;
+                }
+                else{
+                    alert(data.message);
+                }
+            });
+        }
     }
 
     onClickCancel() {
@@ -75,6 +119,13 @@ export default class QuizComponent extends Component {
                 }).then(data => {
                     this.setState({
                         quizList: data.quizzes ? data.quizzes : []
+                    });
+                });
+                get('/api/poll/user/polls/ ', {
+                    authorization: apiToken
+                }).then(data => {
+                    this.setState({
+                        pollList: data.polls ? data.polls : []
                     });
                 });
                 get('/api/user/name/', {
@@ -144,6 +195,56 @@ export default class QuizComponent extends Component {
         }
     }
 
+    renderPollList() {
+        if(this.state.pollList.length){
+            return <React.Fragment>
+                {this.state.pollList.map((val, quizIndex) => {
+                    return <div className="adminrow row tablerows">
+                        <div className="col-xs-12">
+                            <div className="row titlerow" >
+                                <div className="col-xs-2 col-md-2 " >
+                                    <img src={val.image} className="img-responsive pull-right" style={{minHeight: '95px', minWidth: '100%'}}/>
+                                </div>
+                                <div className="col-xs-6 col-md-7 head" >
+                                    <p className="par1" >
+                                        <a href={`/poll/${val.id}/edit`} style={{marginRight: '10px'}}>{val.name}</a>
+                                        <span>
+                                            <button type="button" className="btn btn-success" style={{color:'#000000'}}>Poll</button>
+                                        </span>
+                                    </p>
+                                    <p className="par2" >
+                                        <span style={{marginRight: '22px'}}>Conducted 3 Times</span>
+                                        <span>Created 4 days ago</span>
+                                    </p>
+                                    <p className="par1" >
+                                        <span style={{marginRight: '22px'}}>
+                                            <button type="button" className="btn btn-success" style={{color: '#000000'}}>Show Results</button>
+                                        </span>
+                                        <span>
+                                            <button type="button" className="btn btn-success" style={{color: '#000000'}}>Show Stats</button>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div className="col-xs-4 col-md-3 btnrow " >
+                                    <div className="row">
+                                        <div className="col-xs-12 gapp"><button type="button" className="btn btn-success pull-left" style={{padding: '10px 42px', fontSize: '17px', marginBottom: '5px'}} onClick={()=>{this.onClickConductPoll(val.id, quizIndex)}} >Conduct</button></div>
+                                        <div className="col-xs-2 block" style={{marginLeft: '30px'}}><i className="fa fa-star" style={{background: '#ff9955'}} aria-hidden="true"></i></div>
+                                        <div className="col-xs-2 block"><i className="fa fa-pencil" style={{background: '#ff55dd'}} aria-hidden="true"></i></div>
+                                        <div className="col-xs-2 block"><i className="fa fa-clone" style={{background: '#b380ff'}} aria-hidden="true"></i></div>
+                                        <div className="col-xs-2 block"><i className="fa fa-trash-o" style={{background: '#ff8080'}} aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                })}
+            </React.Fragment>
+        }
+        else{
+            return <span>No Polls yet</span>
+        }
+    }
+
     renderAdminContent() {
         return <section className="admincontent">
             <div className="container" >
@@ -155,6 +256,9 @@ export default class QuizComponent extends Component {
                             </div>
                             <div className="col-xs-12 contblock">
                                 <a href="/create">Create Quiz</a>
+                            </div>
+                            <div className="col-xs-12 contblock">
+                                <a href="/create-poll">Create Poll</a>
                             </div>
                             <div className="col-xs-12 contblock"><p>Search Quiz</p></div>
                             <div className="col-xs-12 contblock"><p>My Creations</p></div>
@@ -179,6 +283,12 @@ export default class QuizComponent extends Component {
                             </div>
                         </div>
                         {this.renderQuizList()}
+                        <div className="row">
+                            <div className="col-xs-12 " >
+                                <p style={{fontSize: '25px', fontWeight: 'bold', marginLeft: '15px', marginBottom: '20px', color: 'rgba(0,0,0,0.38)', marginTop: '30px'}}>Popular Polls</p>
+                            </div>
+                        </div>
+                        {this.renderPollList()}
                     </div>
                 </div>
             </div>
@@ -224,11 +334,16 @@ export default class QuizComponent extends Component {
         </section>
     }
 
+    renderLoader() {
+        return <Loader isLoading={this.state.isLoading} />
+    }
+
     render() {
         return <div className="main">
             {this.renderAdmin()}
             {this.renderAdminContent()}
             {this.renderModal()}
+            {this.renderLoader()}
         </div>
     }
 }

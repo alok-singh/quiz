@@ -3,19 +3,18 @@ import {get, post} from '../../common/api';
 import LoadingScreenComponent from '../common/loadingScreenComponent';
 import ScoreBoardComponent from './scoreBoardComponent';
 import QuestionComponent from './questionComponent';
-import ResultScreenComponent from '../common/resultScreenComponent';
 import StatsComponent from '../common/statsComponent';
+import PollResultComponent from '../common/pollResultComponent';
 
 const selectedColor = '#2e9e0f';
 
-export default class PlayLiveQuizComponent extends Component {
+export default class PlayLivePollComponent extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             loadingPercent: 0,
             isLoading: true,
-            isScoreActive: false, // show is player correct
             isQuestionActive: false, 
             isResultRunning: false,  // leaderboard
             currentQuestionNumber: 0,
@@ -29,7 +28,7 @@ export default class PlayLiveQuizComponent extends Component {
             isAnsweringAllowed: true,
             questionObject: {},
             currentTimeout: 10,
-            resultList: []
+            resultQuestions: []
         }
 
         this.onClickAnswer = this.onClickAnswer.bind(this);
@@ -46,7 +45,6 @@ export default class PlayLiveQuizComponent extends Component {
                 this.setState({
                     isQuestionActive: true,
                     isLoading: false,
-                    isScoreActive: false,
                     isResultRunning: false,
                     isStatsActive: false,
                     questionObject: data.question,
@@ -61,7 +59,6 @@ export default class PlayLiveQuizComponent extends Component {
                 this.setState({
                     isQuestionActive: false,
                     isLoading: false,
-                    isScoreActive: true,
                     isResultRunning: false,
                     isStatsActive: false,
                     playerList: data.users
@@ -71,10 +68,9 @@ export default class PlayLiveQuizComponent extends Component {
                 this.setState({
                     isQuestionActive: false,
                     isLoading: false,
-                    isScoreActive: false,
                     isResultRunning: true,
                     isStatsActive: false,
-                    resultList: data.users
+                    resultQuestions: data.questions ? data.questions : []
                 });
             }
             else if(data && data.action == 'statsBoard'){
@@ -87,13 +83,12 @@ export default class PlayLiveQuizComponent extends Component {
                         option_title: option.option_title,
                         option_id: option.option_id,
                         is_answer: matchedOption.is_answer,
-                        optionCount: matchedOption[`option${parseInt(index) + 1}_count`]
+                        optionCount: matchedOption[`option_count`]
                     }
                 })
                 this.setState({
                     isQuestionActive: false,
                     isLoading: false,
-                    isScoreActive: false,
                     isResultRunning: false,
                     isStatsActive: true,
                     questionObject: questionObject
@@ -166,12 +161,12 @@ export default class PlayLiveQuizComponent extends Component {
                         return option.is_answer
                     })[0];
                     let data = {
-                        quiz_id: this.props.quizID,
+                        poll_id: this.props.pollID,
                         question_id: this.state.questionObject.question_id,
-                        quiz_pin: this.props.quizPin,
+                        poll_pin: this.props.pollPin,
                         option_id: answeredOption ? answeredOption.option_id : null
                     };
-                    post(`/api/player/answer/`, data, {
+                    post(`/api/poll/player/answer/`, data, {
                         authorization: apiToken
                     }).then(data => {
                         this.setState({
@@ -196,28 +191,10 @@ export default class PlayLiveQuizComponent extends Component {
     renderHiddenData() {
         if(typeof window == 'undefined'){
             let data = JSON.stringify({
-                quizID: this.props.quizID,
-                quizPin: this.props.quizPin
+                pollID: this.props.pollID,
+                pollPin: this.props.pollPin
             })
             return <span id='data' style={{display: 'none'}}>{data}</span>
-        }
-        else{
-            return null;
-        }
-    }
-
-    renderScoreBoard() {
-        if(this.state.isScoreActive){
-            return <ScoreBoardComponent 
-                currentQuestionNumber={this.state.currentQuestionNumber}
-                totalQuestions={this.state.totalQuestions}
-                isPlayerCorrect={this.state.isPlayerCorrect}
-                playerScore={this.state.playerScore}
-                roundBest={this.state.roundBest}
-                playerTotalScore={this.state.playerTotalScore}
-                playerRank={this.state.playerRank}
-                playerList={this.state.playerList}
-            />
         }
         else{
             return null;
@@ -241,7 +218,7 @@ export default class PlayLiveQuizComponent extends Component {
 
     renderResultScreen() {
         if(this.state.isResultRunning){
-            return <ResultScreenComponent resultList={this.state.resultList} homeURL="/player-home"/>
+            return <PollResultComponent resultQuestions={this.state.resultQuestions} homeURL="/home" />
         }
         else{
             return null;
@@ -258,6 +235,7 @@ export default class PlayLiveQuizComponent extends Component {
                 optionBCount={this.state.questionObject.options[1].optionCount}
                 optionCCount={this.state.questionObject.options[2].optionCount}
                 optionDCount={this.state.questionObject.options[3].optionCount}
+                isPoll={true}
             />
         }
         else{
@@ -269,7 +247,6 @@ export default class PlayLiveQuizComponent extends Component {
         return <div className="main">
             {this.renderLoadingScreen()}
             {this.renderHiddenData()}
-            {this.renderScoreBoard()}
             {this.renderQuestion()}
             {this.renderStatsScreen()}
             {this.renderResultScreen()}

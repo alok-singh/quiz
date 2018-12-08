@@ -8,6 +8,6 @@ export const addQuestionController = (req, res) => {
 		pageTitle: 'Home',
 		jsPath: '/build/js/addQuestion.bundle.js',
 		cssPath: '/build/css/host.css',
-		innerHTML: renderToString(<AddQuestionComponent quizID={req.params.quizID} />)
+		innerHTML: renderToString(<AddQuestionComponent quizID={req.params.quizID} pollID={req.params.pollID} />)
 	});
 }

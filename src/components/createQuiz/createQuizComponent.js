@@ -33,24 +33,45 @@ export default class createQuizComponent extends Component {
     onCreateQuiz() {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
-        if(this.state.quizName && this.state.description){
-            post('/api/quiz/', {
-                quiz_name: this.state.quizName,
-                description: this.state.description,
-                quiz_image: "",
-                schools: [],
-                sponsors: []
-            }, {
-                authorization: apiToken
-            }).then(data => {
-                alert(data.message);
-                if(data.status == '200' && data.id){
-                    location.href = `/quiz/${data.id}/edit`
-                }
-            })
+        if(this.props.isPoll){
+            if(this.state.quizName && this.state.description){
+                post('/api/poll/', {
+                    poll_name: this.state.quizName,
+                    description: this.state.description,
+                    poll_image: ""
+                }, {
+                    authorization: apiToken
+                }).then(data => {
+                    alert(data.message);
+                    if(data.status == '200' && data.id){
+                        location.href = `/poll/${data.id}/edit`
+                    }
+                })
+            }
+            else{
+                alert('please enter Poll Name and description');
+            }
         }
         else{
-            alert('please enter Quiz Name and description');
+            if(this.state.quizName && this.state.description){
+                post('/api/quiz/', {
+                    quiz_name: this.state.quizName,
+                    description: this.state.description,
+                    image_url: "",
+                    schools: [],
+                    sponsors: []
+                }, {
+                    authorization: apiToken
+                }).then(data => {
+                    alert(data.message);
+                    if(data.status == '200' && data.id){
+                        location.href = `/quiz/${data.id}/edit`
+                    }
+                })
+            }
+            else{
+                alert('please enter Quiz Name and description');
+            }
         }
         
     }
@@ -62,7 +83,7 @@ export default class createQuizComponent extends Component {
                     <div className="col-xs-12 col-md-8 " >
                         <div className="row">
                             <div className="col-xs-12" >
-                                <p style={{fontSize: '20px', color: '#676767', fontWeight: 'bold', lineHeight: '34px', marginBottom: '15px'}} >Quiz Name</p>
+                                <p style={{fontSize: '20px', color: '#676767', fontWeight: 'bold', lineHeight: '34px', marginBottom: '15px'}} >{this.props.isPoll ? 'Poll Name' : 'Quiz Name'}</p>
                                 <textarea rows="3" value={this.state.quizName} onChange={({target}) => this.onChangeInput('quizName', target.value)}></textarea>
                             </div>
                         </div>
@@ -107,7 +128,7 @@ export default class createQuizComponent extends Component {
                     <a type="button" className="btn btn-success pull-left" style={{color: '#000000'}} href="/home">Cancel</a>
                 </div>
                 <div className="col-md-8 text-center hidden-sm hidden-xs" >
-                    <p style={{fontWeight: 'bold', lineHeight: 1, fontSize: '30px', color: '#ffffff', margin: '0px'}}>Create Quiz</p>
+                    <p style={{fontWeight: 'bold', lineHeight: 1, fontSize: '30px', color: '#ffffff', margin: '0px'}}>{this.props.isPoll ? 'Create Poll' : 'Create Quiz'}</p>
                 </div>
                 <div className="col-xs-6 col-md-2" >
                     <button onClick={this.onCreateQuiz} type="button" className="btn btn-success pull-right" style={{color: '#000000'}}>Save & Next</button>
