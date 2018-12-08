@@ -1169,3 +1169,16 @@ p{
  .u-hide{
     display: none !important;
  }
+
+
+
+.poll-result .content {
+    background: #7385d0;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.poll-result .header-bar {
+    background: #f2f2f2;
+    border: 1px solid #757575;
+}

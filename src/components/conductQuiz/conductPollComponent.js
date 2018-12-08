@@ -314,6 +314,7 @@ export default class ConductPollComponent extends Component {
                     isLeaderBordRunning: false,
                     isResultRunning: true,
                     showLoader: false,
+                    pollName: response.poll_name,
                     resultQuestions: response.questions ? response.questions : []
                 });
             }
@@ -341,7 +342,7 @@ export default class ConductPollComponent extends Component {
 
     renderResultScreen() {
         if(this.state.isResultRunning){
-            return <PollResultComponent resultQuestions={this.state.resultQuestions} homeURL="/home" />
+            return <PollResultComponent resultQuestions={this.state.resultQuestions} homeURL="/home" pollName={this.state.pollName} />
         }
         else{
             return null;
