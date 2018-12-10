@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import {get, post} from '../../common/api';
+import {get, post, uploadImage} from '../../common/api';
 
 const defaultQuestion = [{
     question_title: "Please add question here",
     image_url: "",
+    question_image: "",
     question_time: 30,
     options: [{
         option_title: "choice1",
@@ -25,7 +26,10 @@ export default class AddQuestionComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            questions: defaultQuestion
+            questions: defaultQuestion,
+            uploadImageBinary: [],
+            activeIndex: 0,
+            activeFile: ''
         }
         this.onChangeInput = this.onChangeInput.bind(this);
         this.onClickAddQuestion = this.onClickAddQuestion.bind(this);
@@ -57,8 +61,13 @@ export default class AddQuestionComponent extends Component {
         let mappedData = {};
         let isAnswer = '';
 
-        mappedData.quiz_id = this.props.quizID;
-        mappedData.poll_id = this.props.pollID;
+        if(this.props.quizID){
+            mappedData.quiz_id = this.props.quizID;
+        }
+        else{
+            mappedData.poll_id = this.props.pollID;
+        }
+
         mappedData.questions = this.state.questions.map(question => {
             question.options.forEach((val, index) => {
                 if(val.is_answer){
@@ -68,8 +77,8 @@ export default class AddQuestionComponent extends Component {
             return {
                 question_text: question.question_title,
                 question_time: question.question_time,
-                image_url: "",
-                question_image: "",
+                image_url: question.image_url || question.question_image,
+                question_image: question.image_url || question.question_image,
                 option1: question.options[0].option_title,
                 option2: question.options[1].option_title,
                 option3: question.options[2].option_title,
@@ -147,7 +156,26 @@ export default class AddQuestionComponent extends Component {
     componentDidMount() {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
-
+        
+        this.reader = new FileReader();
+        this.reader.onload = (event) => {
+            let {uploadImageBinary, activeIndex} = this.state;
+            uploadImageBinary[activeIndex] = event.target.result;
+            this.setState({uploadImageBinary}, () => {
+                let formData = new FormData();
+                formData.append("image", this.state.activeFile);
+                formData.append("folder", this.props.pollID ? 'pollquestion' : 'quizquestion');
+                uploadImage(formData, apiToken).then(response => {
+                    let {questions, activeIndex} = this.state;
+                    questions[activeIndex].image_url = response.image_url; 
+                    questions[activeIndex].question_image = response.image_url; 
+                    this.setState({
+                        questions
+                    })
+                });
+            });
+        };
+        
         if(apiToken && sessionKey){
             get(`${this.props.quizID ? ('/api/quiz/' + this.props.quizID) : ('/api/poll/' + this.props.pollID)}/questions/`, {
                 authorization: apiToken
@@ -160,6 +188,20 @@ export default class AddQuestionComponent extends Component {
         else{
             location.href = '/login';
         }
+    }
+
+    onAddFile(event, index) {
+        let file = event.target.files[0];
+        this.setState({
+            activeIndex: index,
+            activeFile: file
+        }, () => {
+            this.reader.readAsDataURL(file);
+        });
+    }
+
+    onUploadImage(index) {
+        document.getElementById(`uploadImage-${index}`).click();
     }
 
     renderOption(option, optionIndex, index) {
@@ -202,16 +244,13 @@ export default class AddQuestionComponent extends Component {
                                 <div className="row">
                                     <div className="col-xs-12 " >
                                         <p style={{fontSize: '20px', color: '#676767', fontWeight: 'bold', lineHeight: '34px', marginBottom: '15px'}} >Add Photo</p>
-                                        <div className="innerboxx text-center" style={{padding: '61px 20px 5px'}}>
+                                        <div className="innerboxx text-center" style={{padding: '20px 20px 5px'}}>
+                                            {question.image_url || question.question_image || this.state.uploadImageBinary[index] ? <img src={this.state.uploadImageBinary[index] || question.image_url || question.question_image} style={{height: '62px', maxWidth: '300px'}} /> : <i className="fa fa-plus-circle" aria-hidden="true" style={{fontSize: '55px'}} onClick={() => this.onUploadImage(index)}></i>}
+                                            <input type="file" id={`uploadImage-${index}`} style={{display: 'none'}} onChange={(event) => this.onAddFile(event, index)}/>
                                             <hr />
                                             <p>
                                                 <span>
-                                                    <button type="button" className="btn btn-success" style={{background: '#31a2ff'}} >Upload</button>
-                                                </span>
-                                                <span>
-                                                    <button type="button" className="btn btn-success" style={{background: '#b650cf'}} >Change</button>
-                                                </span>
-                                                <span><button type="button" className="btn btn-success" style={{background: '#ff8f45'}} >Remove</button>
+                                                    <button type="button" className="btn btn-success" style={{background: '#31a2ff'}} onClick={() => this.onUploadImage(index)}>Upload</button>
                                                 </span>
                                             </p>
                                         </div>

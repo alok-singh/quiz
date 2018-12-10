@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {post} from '../../common/api';
+import {post, uploadImage} from '../../common/api';
 
 export default class createQuizComponent extends Component {
 
@@ -7,27 +7,62 @@ export default class createQuizComponent extends Component {
         super(props);
         this.state = {
             quizName: '',
-            description: ''
+            description: '',
+            imageURL: ''
         }
         this.onCreateQuiz = this.onCreateQuiz.bind(this);
+        this.onUploadImage = this.onUploadImage.bind(this);
+        this.onAddFile = this.onAddFile.bind(this); 
+        this.onClickUploadButton = this.onClickUploadButton.bind(this); 
     }
 
     componentDidMount() {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
-
+        let formData = new FormData();
+        
+        this.reader = new FileReader();
+        this.reader.onload = (event) => {
+            this.setState({
+                uploadImage: event.target.result
+            }, () => {
+                formData.append("image", this.uploadImageInput.files[0]);
+                formData.append("folder", this.props.isPoll ? 'poll' : 'quiz');
+                uploadImage(formData, apiToken).then(response => {
+                    this.setState({
+                        imageURL: response.image_url
+                    })
+                });
+            });
+        };
+        this.reader.onerror = (event) => {
+            console.error("File could not be read! Code " + event.target.error.code);
+        };
+        
         if(apiToken && sessionKey){
-            
+            this.uploadImageInput = document.getElementById('uploadImage');    
         }
         else{
             location.href = '/login';
         }
     }
 
+    onClickUploadButton() {
+        this.uploadImageInput.click();
+    }
+
+    onUploadImage() {
+        this.uploadImageInput.click();
+    }
+
     onChangeInput(key, value) {
         this.setState({
             [key]: value
         });
+    }
+
+    onAddFile() {
+        this.reader.readAsDataURL(event.target.files[0]);
     }
 
     onCreateQuiz() {
@@ -38,7 +73,7 @@ export default class createQuizComponent extends Component {
                 post('/api/poll/', {
                     poll_name: this.state.quizName,
                     description: this.state.description,
-                    poll_image: ""
+                    poll_image: this.state.imageURL
                 }, {
                     authorization: apiToken
                 }).then(data => {
@@ -57,7 +92,7 @@ export default class createQuizComponent extends Component {
                 post('/api/quiz/', {
                     quiz_name: this.state.quizName,
                     description: this.state.description,
-                    image_url: "",
+                    image_url: this.state.imageURL,
                     schools: [],
                     sponsors: []
                 }, {
@@ -99,17 +134,12 @@ export default class createQuizComponent extends Component {
                             <div className="col-xs-12 " >
                                 <p style={{fontSize: '20px', color: '#676767', fontWeight: 'bold', lineHeight: '34px', marginBottom: '15px'}} >Add Cover Photo</p>
                                 <div className="innerboxx text-center">
-                                    <i className="fa fa-plus-circle" aria-hidden="true" style={{fontSize: '55px'}}></i>
+                                    {this.state.uploadImage ? <img src={this.state.uploadImage} style={{height: '62px', maxWidth: '300px'}} /> : <i className="fa fa-plus-circle" aria-hidden="true" style={{fontSize: '55px'}} onClick={this.onUploadImage}></i>}
+                                    <input type="file" id="uploadImage" style={{display: 'none'}} onChange={this.onAddFile}/>
                                     <hr />
                                     <p>
                                         <span>
-                                            <button type="button" className="btn btn-success" style={{background: '#31a2ff'}} >Upload</button>
-                                        </span>
-                                        <span>
-                                            <button type="button" className="btn btn-success" style={{background: '#b650cf'}} >Change</button>
-                                        </span>
-                                        <span>
-                                            <button type="button" className="btn btn-success" style={{background: '#ff8f45'}} >Remove</button>
+                                            <button type="button" className="btn btn-success" style={{background: '#31a2ff'}} onClick={this.onClickUploadButton}>Upload</button>
                                         </span>
                                     </p>
                                 </div>
