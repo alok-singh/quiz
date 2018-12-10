@@ -29,7 +29,7 @@ export default class QuizComponent extends Component {
         this.setState({
             isLoading: true
         }, () => {
-            post('/api/user/logout/', {
+            post('/api/user/logout/', null, {
                 authorization: apiToken
             }).then(data => {
                 delete sessionStorage.apitk;
