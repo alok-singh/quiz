@@ -188,7 +188,7 @@ export default class ConductQuizComponent extends Component {
                             rank: parseInt(index) + 1,
                             name: player.name,
                             score: player.score,
-                            isCorrect: player.is_correct
+                            isCorrect: player.is_answer
                         }
                     })
                 });

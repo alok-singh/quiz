@@ -4,6 +4,7 @@ export default class PollResultComponent extends Component {
 	renderHeader() {
         return <div className="header-bar">
         	<img src="/images/br.png" className="img-responsive logo" />
+        	<a href={this.props.homeURL} className="home-link">Home</a>
         </div>
     }
     
@@ -35,9 +36,9 @@ export default class PollResultComponent extends Component {
 			    				</div>
 			    			</div>
 			    			<div className="flex-wrapper">
-			    				<div className="percent">{response.option_percent ? response.option_percent : '0'}%</div>
+			    				<div className="percent">{response.option_percent ? Math.round(response.option_percent*100) : '0'}%</div>
 			    				<div className="bar">
-			    					<div className="solid" style={{width: `${response.option_percent}%`}}></div>
+			    					<div className="solid" style={{width: `${Math.round(response.option_percent*100)}%`}}></div>
 			    				</div>
 			    			</div>
 		    			</div>

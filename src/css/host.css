@@ -1183,6 +1183,9 @@ p{
 .poll-result .header-bar {
     background: #f2f2f2;
     border: 1px solid #eaeaea;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .poll-result .header-bar img {
@@ -1262,4 +1265,17 @@ p{
 .poll-result .question-box .bar .solid {
     background: #fff;
     height: 20px;
+}
+
+.poll-result .home-link {
+    background: green;
+    color: #fff;
+    margin-right: 15px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-transform: uppercase;
+}
+
+.poll-result .home-link:hover {
+    color: #fff;
 }

@@ -70,7 +70,8 @@ export default class PlayLivePollComponent extends Component {
                     isLoading: false,
                     isResultRunning: true,
                     isStatsActive: false,
-                    resultQuestions: data.questions ? data.questions : []
+                    resultQuestions: data.questions ? data.questions : [],
+                    pollName: data.poll_name
                 });
             }
             else if(data && data.action == 'statsBoard'){
@@ -218,7 +219,7 @@ export default class PlayLivePollComponent extends Component {
 
     renderResultScreen() {
         if(this.state.isResultRunning){
-            return <PollResultComponent resultQuestions={this.state.resultQuestions} homeURL="/home" />
+            return <PollResultComponent resultQuestions={this.state.resultQuestions} homeURL="/player-home" pollName={this.state.pollName} />
         }
         else{
             return null;
