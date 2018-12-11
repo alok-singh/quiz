@@ -15,6 +15,29 @@ export default class QuizComponent extends Component {
         this.onClickSubmitPin = this.onClickSubmitPin.bind(this);
         this.onClickEnterPinButton = this.onClickEnterPinButton.bind(this);
         this.onClickCancel = this.onClickCancel.bind(this);
+        this.signout = this.signout.bind(this);
+    }
+
+    signout() {
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        this.setState({
+            isLoading: true
+        }, () => {
+            if(confirm("Are you sure you want to logout?")){
+                post('/api/user/logout/', null, {
+                    authorization: apiToken
+                }).then(data => {
+                    delete sessionStorage.apitk;
+                    delete sessionStorage.bqsid;
+                    this.setState({
+                        isLoading: false
+                    }, () => {
+                        location.href = '/login';
+                    })
+                });
+            }
+        });
     }
 
     componentDidMount() {
@@ -274,8 +297,7 @@ export default class QuizComponent extends Component {
                         <li><a href="#">Play</a></li>
                         <li><a href="#">School</a></li>
                         <li><a href="#">Business</a></li>
-                        <li><a href="#">Login</a></li>
-                        <li><a href="#">Sign Up</a></li>
+                        <li><a href="#" onClick={this.signout}>Logout</a></li>
                     </ul>
                 </div>
             </div>

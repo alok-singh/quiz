@@ -32,7 +32,6 @@ export default class QuizComponent extends Component {
             signupProgress: false,
             sessionID: '',
             isLoading: false,
-            sessionID: '',
             apiToken: '',
             mobileNumber: '',
             signupMobile: '',
@@ -51,15 +50,14 @@ export default class QuizComponent extends Component {
         location.reload();
     }
 
-    onClickSubmit(action) {
+    onClickSubmit(action, actionURL) {
         let url = '';
-        
         this.setState({
             isLoading: true
         })
 
         if(action == 'signin'){
-            post('/api/user/login/', {
+            post(actionURL ? actionURL : '/api/user/login/', {
                 user_id: this.state.mobileNumber
             }).then((data) => {
                 if(data.session_id){
@@ -75,8 +73,14 @@ export default class QuizComponent extends Component {
                 else{
                     this.setState({
                         isLoading: false
+                    }, () => {
+                        alert(data.message);
+                        if(data.status == 405){
+                            if(confirm('Do you want to login from this device?')){
+                                this.onClickSubmit('signin', '/api/user/login/other/device/');
+                            }
+                        }
                     });
-                    alert(data.message);
                 }
             }, (error) => {
                 this.setState({
