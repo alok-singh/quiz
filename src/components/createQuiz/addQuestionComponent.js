@@ -95,6 +95,7 @@ export default class AddQuestionComponent extends Component {
         questions.push({
             question_title: "Please add question here",
             image_url: "",
+            question_image: "",
             question_time: 30,
             options: [{
                 option_title: "choice1"
