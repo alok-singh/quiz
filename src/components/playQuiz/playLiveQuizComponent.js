@@ -40,6 +40,8 @@ export default class PlayLiveQuizComponent extends Component {
     }
 
     eventHandler() {
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
         this.socket = io();
         this.socket.on('broadcast', (data) => {
             if(data && data.action == 'question'){
@@ -58,13 +60,16 @@ export default class PlayLiveQuizComponent extends Component {
                 })
             }
             else if(data && data.action == 'result'){
+                let playerObj = data.users ? data.users.find(val => val.api_token == apiToken) : {};
+                let playerScore = playerObj.score ? playerObj.score : 'NA';
                 this.setState({
                     isQuestionActive: false,
                     isLoading: false,
                     isScoreActive: true,
                     isResultRunning: false,
                     isStatsActive: false,
-                    playerList: data.users
+                    playerList: data.users,
+                    playerScore: playerScore
                 });
             }
             else if(data && data.action == 'leaderBoard'){

@@ -54,45 +54,62 @@ export default class ScoreBoardComponent extends Component {
     }
 
     renderScoreBoard() {
-        return <div className="row tablerow" style={{padding: '10px'}}>
-            <div className="col-md-3 hidden-sm hidden-xs"></div>
-            <div className="col-xs-12 col-md-6 " >
-                <table className="table" style={{color: '#fff'}}>
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Name</th>
-                            <th>Score</th>
-                            <th>Response</th>
-                        </tr>
-                    </thead>
-                </table>
-                <div className="table-wrapper-scroll-y tablescroll">
-                    <table className="table">
-                        <tbody>
-                            {this.props.playerList.map((player, index) => {
-                                return <tr>
-                                    <th>{parseInt(index) + 1}</th>
-                                    <td>{player.name}</td>
-                                    <td>{player.score}</td>
-                                    <td>{player.isCorrect ? <i className="fa fa-check" ></i> : <i className="fa fa-close" ></i>}</td>
-                                </tr>
-                            })}
-                        </tbody>
+        if(this.props.playerList){
+            return <div className="row tablerow" style={{padding: '10px'}}>
+                <div className="col-md-3 hidden-sm hidden-xs"></div>
+                <div className="col-xs-12 col-md-6 " >
+                    <table className="table" style={{color: '#fff'}}>
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Name</th>
+                                <th>Score</th>
+                                <th>Response</th>
+                            </tr>
+                        </thead>
                     </table>
-                </div>
-            </div>  
-            <div className="col-md-3 hidden-sm hidden-xs"></div>
-        </div>
+                    <div className="table-wrapper-scroll-y tablescroll">
+                        <table className="table">
+                            <tbody>
+                                {this.props.playerList.map((player, index) => {
+                                    return <tr>
+                                        <th>{parseInt(index) + 1}</th>
+                                        <td>{player.name}</td>
+                                        <td>{player.score}</td>
+                                        <td>{player.is_answer ? <i className="fa fa-check" ></i> : <i className="fa fa-close" ></i>}</td>
+                                    </tr>
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>  
+                <div className="col-md-3 hidden-sm hidden-xs"></div>
+            </div>
+        }
+        else{
+            return null;
+        }
+    }
+
+    renderNextButton() {
+        if(this.props.showNextButton){
+            return <div style={{textAlign: 'center', margin: '30px 0px'}}>
+                <button onClick={this.props.onClickNextScoreBoard} className="btn btn-success" style={{height: '42px', width: '120px', fontSize: '16px', textTransform: 'capitalize', display: 'inline-block', background: '#0067d5', border: '1px solid #0067d5'}}>Next</button>
+            </div>
+        }
+        else{
+            return null;
+        }  
     }
 
     render() {
-        return <section id="titlebar" style={{background: this.props.isPlayerCorrect ? '#78da33' : '#ff2c52', minHeight: '100vh'}}>
+        return <section id="titlebar" style={{background: this.props.isPlayerCorrect ? "#78da33" : (this.props.isPlayerCorrect == false ? "#ff2c52" : "#3a9cee"), minHeight: '100vh'}}>
             <div className="container">
                 {this.renderTitleRow()}
                 {this.renderPlayerResult()}
                 {this.renderPlayerStats()}
                 {this.renderScoreBoard()}
+                {this.renderNextButton()}
             </div>
         </section>
     }

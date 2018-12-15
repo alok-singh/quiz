@@ -727,6 +727,8 @@ figure.effect-goliath h2 {
 }
 
 figure.effect-goliath img {
+    width: 228px;
+    height: 257px;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
@@ -771,6 +773,9 @@ figure.effect-goliath:hover h2 {
 .explore figure.effect-goliath:hover h2 {
     -webkit-transform: translate3d(0, -94px, 0);
     transform: translate3d(0, -94px, 0);
+    width: 100%;
+    background: rgba(0,0,0,0.8);
+    color: #fff;
 }
 
 figure.effect-goliath:hover p {

@@ -253,10 +253,12 @@ export default class ConductQuizComponent extends Component {
                             }
                             else{
                                 message = data.message;
+                                alert(message ? message : 'error occured please try again');
                             }
                         }, error => {
                             console.log(error);
                             message = 'error occured check console';
+                            alert(message);
                         });
                     }
                 });

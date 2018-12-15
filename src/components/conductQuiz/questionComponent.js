@@ -46,6 +46,7 @@ export default class QuestionComponent extends Component {
                         <div className="col-xs-2 col-md-2"></div>
                         <div className="col-xs-12 col-md-8 text-center" >
                             <p style={{fontFamily: 'Hobo Std', fontSize: '46px', color: '#000000', margin: '0px'}}>{questionObject.question_title}</p>
+                            {questionObject.question_image ? <img src={questionObject.question_image} style={{marginTop: '30px', marginBottom: '-100px', height: '182px'}} /> : null}
                         </div>  
                         <div className="col-xs-2 col-md-2" ></div>
                     </div>

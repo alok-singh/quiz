@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {get, post} from '../../common/api';
+import ScoreBoardComponent from './scoreBoardComponent';
 import Modal from '../common/modal';
 
 const optionColorList = [
@@ -27,32 +28,90 @@ export default class PlayQuizComponent extends Component {
             isAnsweringAllowed: true,
             isModalVisible: false,
             isCurrentQuestionAnswered: false,
-            modalData: ''
+            modalData: '',
+            playerScore: 'NA',
+            isPlayerCorrect: undefined,
+            isScoreActive: false,
+            isQuestionActive: true,
+            answeredAtTimeRemaining: 0
         }
-        this.onClickNext = this.onClickNext.bind(this);
+        this.onClickNextQuestion = this.onClickNextQuestion.bind(this);
+        this.onClickNextScoreBoard = this.onClickNextScoreBoard.bind(this);
     }
 
-    onClickNext() {
+    onClickNextQuestion() {
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        let currentQuestionObject = this.state.questionList[this.state.currentQuestion-1];
+        let markedOption = currentQuestionObject.options.find(val => val.is_answer);
+        let optionID = markedOption ? markedOption.option_id : 0;
+        post('/api/quiz/question/answer/', {
+            quiz_id: this.props.quizID,
+            question_id: currentQuestionObject.question_id,
+            time_remaining: this.state.answeredAtTimeRemaining,
+            question_time: currentQuestionObject.question_time,
+            option_id: optionID
+        }, {
+            authorization: apiToken
+        }).then(response => {
+            this.setState({
+                isQuestionActive: false,
+                isScoreActive: true,
+                isPlayerCorrect: optionID == 0 ? undefined : response.is_answer,
+                playerScore: Math.round(response.score)
+            }, () => {
+                clearInterval(this.interval);
+            });
+        })
+    }
+
+    onClickAnswer(optionIndex, questionIndex) {
+        if(this.state.isAnsweringAllowed){
+            let {questionList} = this.state;
+            let answeredAtTimeRemaining = this.state.currentTimeout;
+            let options = questionList[questionIndex].options.map(val => {
+                return {
+                    option_title: val.option_title,
+                    option_id: val.option_id
+                }
+            });
+            options[optionIndex].is_answer = true;
+            questionList[questionIndex].options = options;
+            this.setState({
+                questionList,
+                isCurrentQuestionAnswered: true,
+                answeredAtTimeRemaining: answeredAtTimeRemaining
+            });
+        }
+    }
+
+    onClickNextScoreBoard() {
         if(!this.state.isAnsweringAllowed || this.state.isCurrentQuestionAnswered){
             if(this.state.currentQuestion < this.state.questionList.length){
                 this.setState({
                     currentQuestion: this.state.currentQuestion + 1,
                     currentTimeout: this.state.questionList[this.state.currentQuestion].question_time ? this.state.questionList[this.state.currentQuestion].question_time : 30,
                     isAnsweringAllowed: true,
-                    isCurrentQuestionAnswered: false
+                    isCurrentQuestionAnswered: false,
+                    isQuestionActive: true,
+                    isScoreActive: false
                 }, () => {
                     clearInterval(this.interval);
                     this.interval = setInterval(() => {
                         if(this.state.currentTimeout - 1 >= 0){
                             this.setState({
                                 currentTimeout: this.state.currentTimeout - 1,
-                                isAnsweringAllowed: true
+                                isAnsweringAllowed: true,
+                                isQuestionActive: true,
+                                isScoreActive: false
                             });
                         }
                         else{
                             clearInterval(this.interval);
                             this.setState({
-                                isAnsweringAllowed: false
+                                isAnsweringAllowed: false,
+                                isQuestionActive: true,
+                                isScoreActive: false
                             })
                         }
                     }, 1000)
@@ -67,28 +126,12 @@ export default class PlayQuizComponent extends Component {
                     clearInterval(this.interval);
                     this.setState({
                         isModalVisible: true,
-                        modalData: data
+                        modalData: data,
+                        isQuestionActive: true,
+                        isScoreActive: false
                     })
                 })
             }
-        }
-    }
-
-    onClickAnswer(optionIndex, questionIndex) {
-        if(this.state.isAnsweringAllowed){
-            let {questionList} = this.state;
-            let options = questionList[questionIndex].options.map(val => {
-                return {
-                    option_title: val.option_title,
-                    option_id: val.option_id
-                }
-            });
-            options[optionIndex].is_answer = true;
-            questionList[questionIndex].options = options;
-            this.setState({
-                questionList,
-                isCurrentQuestionAnswered: true
-            });
         }
     }
 
@@ -140,58 +183,66 @@ export default class PlayQuizComponent extends Component {
     renderQuestion() {
         let questionIndex = this.state.currentQuestion-1;
         let questionObject = this.state.questionList[questionIndex];
-        if(questionObject){
-            return <section id="titlebar">
-                <div className="container">
-                    <div className="row titlerow">
-                        <div className="col-xs-3 col-md-2" >
-                            <img src="/images/br.png" className="img-responsive logo" />
-                        </div>
-                        <div className="col-xs-9 col-md-8 text-center" >
-                            <p style={{fontFamily: 'Hobo Std', fontSize: '30px', color: '#000000', margin: '0px'}}>Question {this.state.currentQuestion} of {this.state.questionList.length}</p>
-                        </div>
-                        <div className="col-xs-2 hidden-sm hidden-xs " >
-                            
-                        </div>
-                    </div>
-                    <div className="row smartimage">
-                        <div className="col-xs-12 gap" style={{textAlign: 'right'}}>
-                            <div style={{display: 'inline-block', height: '90px', width: '90px', textAlign: 'center', borderRadius: '50%', background: '#008ff8', marginTop: '10px', padding: '11px', color: '#fff'}}>
-                                <span style={{fontSize: '30px', display: 'block'}}>{this.state.currentTimeout}</span>
-                                <span>Seconds</span>
+        if(this.state.isQuestionActive){
+            if(questionObject){
+                return <section id="titlebar">
+                    <div className="container">
+                        <div className="row titlerow">
+                            <div className="col-xs-3 col-md-2" >
+                                <img src="/images/br.png" className="img-responsive logo" />
+                            </div>
+                            <div className="col-xs-9 col-md-8 text-center" >
+                                <p style={{fontFamily: 'Hobo Std', fontSize: '30px', color: '#000000', margin: '0px'}}>Question {this.state.currentQuestion} of {this.state.questionList.length}</p>
+                            </div>
+                            <div className="col-xs-2 hidden-sm hidden-xs " >
+                                
                             </div>
                         </div>
-                    </div>
-                    <div className="row headrow">
-                        <div className="col-xs-2 col-md-2" >
-                            
-                        </div>
-                        <div className="col-xs-12 col-md-8 text-center" >
-                            <p style={{fontFamily: 'Hobo Std', fontSize: '46px', color: '#000000', margin: '0px'}}>{questionObject.question_title}</p>
-                        </div>  
-                        <div className="col-xs-2 col-md-2" >
-                            
-                        </div>
-                    </div>
-                    <div className="row quesbtn">
-                        {questionObject.options.map((option, index) => {
-                            return <div className="col-xs-6" >
-                                <button onClick={() => this.onClickAnswer(index, questionIndex)} type="button" className="btn btn-success btn-block" style={{background: option.is_answer ? selectedColorList[index] : optionColorList[index]}}>{option.option_title}</button>
+                        <div className="row smartimage">
+                            <div className="col-xs-12 gap" style={{textAlign: 'right'}}>
+                                <div style={{display: 'inline-block', height: '90px', width: '90px', textAlign: 'center', borderRadius: '50%', background: '#008ff8', marginTop: '10px', padding: '11px', color: '#fff'}}>
+                                    <span style={{fontSize: '30px', display: 'block'}}>{this.state.currentTimeout}</span>
+                                    <span>Seconds</span>
+                                </div>
                             </div>
-                        })}
+                        </div>
+                        <div className="row headrow">
+                            <div className="col-xs-2 col-md-2" >
+                                
+                            </div>
+                            <div className="col-xs-12 col-md-8 text-center" >
+                                <p style={{fontFamily: 'Hobo Std', fontSize: '46px', color: '#000000', margin: '0px'}}>{questionObject.question_title}</p>
+                                {questionObject.question_image ? <img src={questionObject.question_image} style={{marginTop: '30px', marginBottom: '-100px', height: '182px'}} /> : null}
+                            </div>  
+                            <div className="col-xs-2 col-md-2" >
+                                
+                            </div>
+                        </div>
+                        <div className="row quesbtn">
+                            {questionObject.options.map((option, index) => {
+                                return <div className="col-xs-6" >
+                                    <button onClick={() => this.onClickAnswer(index, questionIndex)} type="button" className="btn btn-success btn-block" style={{background: option.is_answer ? selectedColorList[index] : optionColorList[index]}}>{option.option_title}</button>
+                                </div>
+                            })}
+                        </div>
                     </div>
-                </div>
-            </section>
+                    {this.renderNextButton()}
+                </section>
+
+            }
+            else{
+                return <div style={{fontSize: '20px', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>No Questions Added in Quiz</div>
+            }
         }
         else{
-            return <div style={{fontSize: '20px', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>No Questions Added in Quiz</div>
+            return null;
         }
     }
 
     renderNextButton() {
         if((!this.state.isAnsweringAllowed || this.state.isCurrentQuestionAnswered) && this.state.questionList.length){
             return <div style={{textAlign: 'center', margin: '30px 0px'}}>
-                <button onClick={this.onClickNext} className="btn btn-success" style={{height: '42px', width: '120px', fontSize: '16px', textTransform: 'capitalize', display: 'inline-block', background: '#0067d5', border: '1px solid #0067d5'}}>{this.state.currentQuestion < this.state.questionList.length ? 'next' : 'finish'}</button>
+                <button onClick={this.onClickNextQuestion} className="btn btn-success" style={{height: '42px', width: '120px', fontSize: '16px', textTransform: 'capitalize', display: 'inline-block', background: '#0067d5', border: '1px solid #0067d5'}}>{this.state.currentQuestion < this.state.questionList.length ? 'next' : 'finish'}</button>
             </div>
         }
         else{
@@ -202,6 +253,22 @@ export default class PlayQuizComponent extends Component {
     renderHiddenData() {
         if(typeof window == 'undefined'){
             return <span id='data' style={{display: 'none'}}>{this.props.quizID}</span>
+        }
+        else{
+            return null;
+        }
+    }
+
+    renderScoreBoard() {
+        if(this.state.isScoreActive){
+            return <ScoreBoardComponent 
+                currentQuestionNumber={this.state.currentQuestion}
+                totalQuestions={this.state.questionList.length}
+                isPlayerCorrect={this.state.isPlayerCorrect}
+                playerScore={this.state.playerScore}
+                showNextButton={true}
+                onClickNextScoreBoard={this.onClickNextScoreBoard}
+            />
         }
         else{
             return null;
@@ -243,7 +310,7 @@ export default class PlayQuizComponent extends Component {
         return <div className="main">
             {this.renderQuestion()}
             {this.renderHiddenData()}
-            {this.renderNextButton()}
+            {this.renderScoreBoard()}
             {this.renderModal()}
         </div>
     }

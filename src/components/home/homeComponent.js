@@ -20,7 +20,7 @@ export default class QuizComponent extends Component {
         }
         this.signout = this.signout.bind(this);
         this.onClickCancel = this.onClickCancel.bind(this);
-        this.odeletenClickConductModal = this.onClickConductModal.bind(this);
+        this.onClickConductModal = this.onClickConductModal.bind(this);
         this.delete = this.delete.bind(this);
     }
 
@@ -197,7 +197,7 @@ export default class QuizComponent extends Component {
                                 <div className="col-xs-4 col-md-3 btnrow " >
                                     <div className="row">
                                         <div className="col-xs-12 gapp"><button type="button" className="btn btn-success pull-left" style={{padding: '10px 42px', fontSize: '17px', marginBottom: '5px'}} onClick={()=>{this.onClickConduct(val.id, quizIndex)}} >Conduct</button></div>
-                                        <a className="col-xs-2 block" style={{marginLeft: '30px', marginRight: '5px'}} href={`/quiz/${val.id}/edit`}><i className="fa fa-pencil" style={{background: '#ff55dd'}} aria-hidden="true"></i></a>
+                                        <a className="col-xs-2 block" style={{marginLeft: '15px', marginRight: '5px'}} href={`/quiz/${val.id}/edit`}><i className="fa fa-pencil" style={{background: '#ff55dd'}} aria-hidden="true"></i></a>
                                         <div className="col-xs-2 block"><i className="fa fa-trash-o" style={{background: '#ff8080'}} aria-hidden="true" onClick={() => this.delete('quiz', val.id, val.name)}></i></div>
                                     </div>
                                 </div>
@@ -239,7 +239,7 @@ export default class QuizComponent extends Component {
                                 <div className="col-xs-4 col-md-3 btnrow " >
                                     <div className="row">
                                         <div className="col-xs-12 gapp"><button type="button" className="btn btn-success pull-left" style={{padding: '10px 42px', fontSize: '17px', marginBottom: '5px'}} onClick={()=>{this.onClickConductPoll(val.id, quizIndex)}} >Conduct</button></div>
-                                        <a className="col-xs-2 block" style={{marginLeft: '30px', marginRight: '5px'}} href={`/poll/${val.id}/edit`}><i className="fa fa-pencil" style={{background: '#ff55dd'}} aria-hidden="true"></i></a>
+                                        <a className="col-xs-2 block" style={{marginLeft: '15px', marginRight: '5px'}} href={`/poll/${val.id}/edit`}><i className="fa fa-pencil" style={{background: '#ff55dd'}} aria-hidden="true"></i></a>
                                         <div className="col-xs-2 block"><i className="fa fa-trash-o" style={{background: '#ff8080'}} aria-hidden="true" onClick={() => this.delete('poll', val.id, val.name)}></i></div>
                                     </div>
                                 </div>
@@ -269,7 +269,7 @@ export default class QuizComponent extends Component {
                             <div className="col-xs-12 contblock">
                                 <a href="/create-poll">Create Poll</a>
                             </div>
-                            <div className="col-xs-12 contblock"><p>My Results</p></div>
+                            <div className="col-xs-12 contblock"><a href="/my-results">My Results</a></div>
                             <div className="col-xs-12 contblock" onClick={this.signout}><p>Sign Out</p></div>
                         </div>
                     </div> : null}

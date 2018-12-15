@@ -10,11 +10,13 @@ export default class QuizComponent extends Component {
             quizList: [],
             featuredQuizzes: [],
             quizPin: '',
+            categories: '',
             isModalVisible: false
         }
         this.onClickSubmitPin = this.onClickSubmitPin.bind(this);
         this.onClickEnterPinButton = this.onClickEnterPinButton.bind(this);
         this.onClickCancel = this.onClickCancel.bind(this);
+        this.onClickPlayQuiz = this.onClickPlayQuiz.bind(this);
         this.signout = this.signout.bind(this);
     }
 
@@ -44,18 +46,28 @@ export default class QuizComponent extends Component {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
         
-        if(apiToken && sessionKey){
-            get('/api/quiz/all/', {
-                authorization: apiToken
-            }).then(data => {
-                this.setState({
-                    quizList: data.quizzes ? data.quizzes : [],
-                    featuredQuizzes: data.featured_quizzes ? data.featured_quizzes : []
-                });
+        get('/api/quiz/all/', {
+            authorization: apiToken
+        }).then(data => {
+            this.setState({
+                quizList: data.quizzes ? data.quizzes : [],
+                featuredQuizzes: data.featured_quizzes ? data.featured_quizzes : [],
+                categories: data.categories ? data.categories : ''
             });
+        });
+    }
+
+    onClickPlayQuiz() {
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        if(apiToken && sessionKey){
+
         }
         else{
-            location.href = '/player-home';
+            event.preventDefault();
+            if(confirm('Please sign in to play quiz')){
+                window.location.href = '/login';
+            }
         }
     }
 
@@ -184,57 +196,22 @@ export default class QuizComponent extends Component {
         </footer>
     }
 
-    renderFeaturedQuizzes() {
-        return <section className="explore">
-            <div className="container grid">
-                <div className="row">
-                    <div className="row phead">
-                        <div className="col-xs-9" >
-                            <p style={{color: '#eb670f', textAlign: 'left', fontSize: '44px', lineHeight: '2.2', fontWeight: 'bold', marginBottom: '0px'}}>Featured Learning Games</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="row">
-                    {this.state.featuredQuizzes.map(quiz => {
-                        return <div className="col-md-3 goliath colblock ">
-                            <div className="inner">
-                                <figure className="effect-goliath">
-                                    <img className="img-responsive" src="/images/eet.png" alt="img23"/>
-                                    <figcaption>
-                                        <h2><span>{quiz.quiz_title}</span></h2>
-                                        <p style={{textAlign: 'left', fontSize: '14px'}}>{quiz.description}</p>
-                                        <a href={`/play/quiz/${quiz.quiz_id}`}>Play</a>
-                                    </figcaption>           
-                                </figure>
-                                <div>
-                                    <div className="row">
-                                        <div className="col-xs-12 btnblock">
-                                            <a href={`/play/quiz/${quiz.quiz_id}`} className="btn btn-success " >Play Quiz</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
-                    })}
-                </div>
-            </div>
-        </section>
-    }
-
-    renderQuizzes() {
+    renderQuizzes(quizList, text) {
+        let defaultImageURL = "/images/eet.png";
+        text = text ? text : "Others";
         return <section className="explore">
             <div className="container grid">
                 <div className="row">
                     <div className="col-xs-12" >
-                        <p style={{color: '#eb670f', textAlign: 'left', fontSize: '44px', lineHeight: '2.2', fontWeight: 'bold', marginBottom: '0px'}}>All Live Quizzes</p>
+                        <p style={{color: '#eb670f', textAlign: 'left', fontSize: '44px', lineHeight: '2.2', fontWeight: 'bold', marginBottom: '0px'}}>{text}</p>
                     </div>
                 </div>
                 <div className="row">
-                    {this.state.quizList.map(quiz => {
+                    {quizList.map(quiz => {
                         return <div className="col-md-3 goliath colblock ">
                             <div className="inner">
                                 <figure className="effect-goliath">
-                                    <img className="img-responsive" src="/images/eet.png" alt="img23"/>
+                                    <img className="img-responsive" src={quiz.image_url ? quiz.image_url : defaultImageURL} alt="img23"/>
                                     <figcaption>
                                         <h2><span>{quiz.quiz_title}</span></h2>
                                         <p style={{textAlign: 'left', fontSize: '14px'}}>{quiz.description}</p>
@@ -244,7 +221,7 @@ export default class QuizComponent extends Component {
                                 <div>
                                     <div className="row">
                                         <div className="col-xs-12 btnblock">
-                                            <a href={`/play/quiz/${quiz.quiz_id}`} className="btn btn-success " >Play Quiz</a>
+                                            <a onClick={this.onClickPlayQuiz} href={`/play/quiz/${quiz.quiz_id}`} className="btn btn-success " >Play Quiz</a>
                                         </div>
                                     </div>
                                 </div>
@@ -325,13 +302,51 @@ export default class QuizComponent extends Component {
         </Modal>
     }
 
+    renderHomePageLists() {
+        let quizBucketComponent = [];
+        let categoryNameObject = {};
+        let categoryIDBucket = this.state.quizList.reduce((acc, quiz) => {
+            if(quiz.category_id){
+                if(acc[quiz.category_id]){
+                    acc[quiz.category_id].push(quiz);
+                }
+                else{
+                    acc[quiz.category_id] = [quiz];
+                }
+            }
+            else{
+                if(acc['others']){
+                    acc['others'].push(quiz);
+                }
+                else{
+                    acc['others'] = [quiz];
+                }
+            }
+            return acc;
+        }, {});
+        
+        if(this.state.categories && this.state.quizList && this.state.quizList.length){
+            categoryNameObject = this.state.categories.reduce((acc, category) => {
+                acc[category.category_id] = category.category_name;
+                return acc;
+            }, {})
+            quizBucketComponent = Object.keys(categoryIDBucket).map(categoryID => {
+                return this.renderQuizzes(categoryIDBucket[categoryID], categoryNameObject[categoryID]);
+            })
+        }
+
+        return <React.Fragment>
+            {this.renderQuizzes(this.state.featuredQuizzes, 'Featured Quizzes')}
+            {quizBucketComponent}
+        </React.Fragment>
+    }
+
     render() {
         return <div className="player-home">
             {this.renderNavBar()}
             {this.renderHeader()}
             {this.renderBottomHeader()}
-            {this.renderFeaturedQuizzes()}
-            {this.renderQuizzes()}
+            {this.renderHomePageLists()}
             {this.renderExplore()}
             {this.renderExploreImage()}
             {this.renderFooter()}

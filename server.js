@@ -48,6 +48,10 @@ app.get('/player-home', (req, res) => {
 	playerHomeController(req, res);
 });
 
+app.get('/my-results', (req, res) => {
+	hostMyResultController(req, res);
+});
+
 app.get('/play/quiz/:quizID', (req, res) => {
 	playQuizController(req, res);
 });

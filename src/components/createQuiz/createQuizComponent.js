@@ -8,6 +8,7 @@ export default class createQuizComponent extends Component {
         this.state = {
             quizName: '',
             description: '',
+            category: '',
             imageURL: ''
         }
         this.onCreateQuiz = this.onCreateQuiz.bind(this);
@@ -93,6 +94,7 @@ export default class createQuizComponent extends Component {
                     quiz_name: this.state.quizName,
                     description: this.state.description,
                     image_url: this.state.imageURL,
+                    category: this.state.category,
                     schools: [],
                     sponsors: []
                 }, {
@@ -128,6 +130,12 @@ export default class createQuizComponent extends Component {
                                 <textarea rows="5" value={this.state.description} onChange={({target}) => this.onChangeInput('description', target.value)}></textarea>
                             </div>
                         </div>
+                        {this.props.isPoll ? null : <div className="row" style={{marginTop: '20px'}}>
+                            <div className="col-xs-12" >
+                                <p style={{fontSize: '20px', color: '#676767', fontWeight: 'bold', lineHeight: '34px', marginBottom: '15px'}} >Category</p>
+                                <textarea rows="5" value={this.state.category} onChange={({target}) => this.onChangeInput('category', target.value)}></textarea>
+                            </div>
+                        </div>}
                     </div>
                     <div className="col-xs-12 col-md-4 uploadsection" >
                         <div className="row">
