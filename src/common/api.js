@@ -11,6 +11,10 @@ export const get = (url, headers) => {
     return fetchAPI(url, 'GET', null, headers);
 }
 
+export const deleteReq = (url, headers) => {
+    return fetchAPI(url, 'DELETE', null, headers);
+}
+
 export const uploadImage = (formData, apiToken, callback) => {
     return new Promise((resolve, reject) => {
         $.ajax({

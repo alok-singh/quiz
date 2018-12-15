@@ -55,7 +55,7 @@ export default class QuizComponent extends Component {
             });
         }
         else{
-            location.href = '/login';
+            location.href = '/player-home';
         }
     }
 

@@ -11,7 +11,7 @@ import {homeController} from './controllers/homeController';
 import {playerHomeController} from './controllers/playerHomeController';
 import {playQuizController} from './controllers/playQuizController';
 import {playLiveQuizController} from './controllers/playLiveQuizController';
-import {gatewayPostController, gatewayGetController, createConnection} from './controllers/apiController';
+import {gatewayPostController, gatewayGetController, createConnection, gatewayDeleteController} from './controllers/apiController';
 import {addQuestionController} from './controllers/addQuestionController';
 import {conductQuizController} from './controllers/conductQuizController';
 
@@ -95,6 +95,10 @@ app.get('/*', (req, res) => {
 app.post('/api/*', (req, res) => {
 	gatewayPostController(req, res);
 });
+
+app.delete('/api/*', (req, res) => {
+	gatewayDeleteController(req, res);
+})
 
 const getFileFromPath = (filePath, res, contentType)  => {
 	fs.readFile(filePath, (err, data) => {

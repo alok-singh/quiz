@@ -684,6 +684,7 @@ p{
     color: #ffffff;
     border-radius: 25px;
     font-size: 14px;
+    cursor: pointer;
 }
 
 .adminrow .titlerow .btnrow .block {

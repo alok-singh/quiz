@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Modal from '../common/modal';
-import {get, post} from '../../common/api';
+import {get, post, deleteReq} from '../../common/api';
 import Loader from '../common/loader';
 
 export default class QuizComponent extends Component {
@@ -20,7 +20,8 @@ export default class QuizComponent extends Component {
         }
         this.signout = this.signout.bind(this);
         this.onClickCancel = this.onClickCancel.bind(this);
-        this.onClickConductModal = this.onClickConductModal.bind(this);
+        this.odeletenClickConductModal = this.onClickConductModal.bind(this);
+        this.delete = this.delete.bind(this);
     }
 
     signout() {
@@ -41,6 +42,24 @@ export default class QuizComponent extends Component {
                 })
             });
         });
+    }
+
+    delete(type, id, name) {
+        let apiToken = sessionStorage.apitk;
+        let sessionID = sessionStorage.bqsid;
+        let role = sessionStorage.role;
+        if(confirm(`Are you sure you want to delete "${name}"?`)){
+            deleteReq(`/api/${type}/${id}/`, {
+                authorization: apiToken
+            }).then(response => {
+                if(response.status == 200){
+                    if(response.message){
+                        alert(response.message);
+                    }
+                    this.renderList(apiToken, sessionID, role);
+                }
+            })
+        }
     }
 
     onClickConduct(quizID, quizIndex) {
@@ -108,31 +127,37 @@ export default class QuizComponent extends Component {
     }
 
     componentDidMount() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
-        let role = sessionStorage.role;
+        this.renderList(sessionStorage.apitk, sessionStorage.bqsid, sessionStorage.role);
+    }
 
+    renderList(apiToken, sessionKey, role) {
+        this.setState({
+            isLoading: true
+        });
         if(apiToken && sessionKey){
             if(role == 'host'){
                 get('/api/user/quizzes/', {
                     authorization: apiToken
                 }).then(data => {
                     this.setState({
-                        quizList: data.quizzes ? data.quizzes : []
+                        quizList: data.quizzes ? data.quizzes : [],
+                        isLoading: false
                     });
                 });
                 get('/api/poll/user/polls/ ', {
                     authorization: apiToken
                 }).then(data => {
                     this.setState({
-                        pollList: data.polls ? data.polls : []
+                        pollList: data.polls ? data.polls : [],
+                        isLoading: false
                     });
                 });
                 get('/api/user/name/', {
                     authorization: apiToken
                 }).then(data => {
                     this.setState({
-                        userName: data.message ? data.message : 'Default'
+                        userName: data.message ? data.message : 'Default',
+                        isLoading: false
                     });
                 });
             }
@@ -158,30 +183,22 @@ export default class QuizComponent extends Component {
                                 <div className="col-xs-6 col-md-7 head" >
                                     <p className="par1" >
                                         <a href={`/quiz/${val.id}/edit`} style={{marginRight: '10px'}}>{val.name}</a>
-                                        <span>
-                                            <button type="button" className="btn btn-success" style={{color:'#000000'}}>Quiz</button>
-                                        </span>
                                     </p>
                                     <p className="par2" >
                                         <span style={{marginRight: '22px'}}>Conducted 3 Times</span>
                                         <span>Created 4 days ago</span>
                                     </p>
                                     <p className="par1" >
-                                        <span style={{marginRight: '22px'}}>
-                                            <button type="button" className="btn btn-success" style={{color: '#000000'}}>Show Results</button>
-                                        </span>
                                         <span>
-                                            <button type="button" className="btn btn-success" style={{color: '#000000'}}>Show Stats</button>
+                                            <button type="button" className="btn btn-success" style={{color:'#000000'}}>Quiz</button>
                                         </span>
                                     </p>
                                 </div>
                                 <div className="col-xs-4 col-md-3 btnrow " >
                                     <div className="row">
                                         <div className="col-xs-12 gapp"><button type="button" className="btn btn-success pull-left" style={{padding: '10px 42px', fontSize: '17px', marginBottom: '5px'}} onClick={()=>{this.onClickConduct(val.id, quizIndex)}} >Conduct</button></div>
-                                        <div className="col-xs-2 block" style={{marginLeft: '30px'}}><i className="fa fa-star" style={{background: '#ff9955'}} aria-hidden="true"></i></div>
-                                        <div className="col-xs-2 block"><i className="fa fa-pencil" style={{background: '#ff55dd'}} aria-hidden="true"></i></div>
-                                        <div className="col-xs-2 block"><i className="fa fa-clone" style={{background: '#b380ff'}} aria-hidden="true"></i></div>
-                                        <div className="col-xs-2 block"><i className="fa fa-trash-o" style={{background: '#ff8080'}} aria-hidden="true"></i></div>
+                                        <a className="col-xs-2 block" style={{marginLeft: '30px', marginRight: '5px'}} href={`/quiz/${val.id}/edit`}><i className="fa fa-pencil" style={{background: '#ff55dd'}} aria-hidden="true"></i></a>
+                                        <div className="col-xs-2 block"><i className="fa fa-trash-o" style={{background: '#ff8080'}} aria-hidden="true" onClick={() => this.delete('quiz', val.id, val.name)}></i></div>
                                     </div>
                                 </div>
                             </div>
@@ -208,9 +225,6 @@ export default class QuizComponent extends Component {
                                 <div className="col-xs-6 col-md-7 head" >
                                     <p className="par1" >
                                         <a href={`/poll/${val.id}/edit`} style={{marginRight: '10px'}}>{val.name}</a>
-                                        <span>
-                                            <button type="button" className="btn btn-success" style={{color:'#000000'}}>Poll</button>
-                                        </span>
                                     </p>
                                     <p className="par2" >
                                         <span style={{marginRight: '22px'}}>Conducted 3 Times</span>
@@ -218,20 +232,15 @@ export default class QuizComponent extends Component {
                                     </p>
                                     <p className="par1" >
                                         <span style={{marginRight: '22px'}}>
-                                            <button type="button" className="btn btn-success" style={{color: '#000000'}}>Show Results</button>
-                                        </span>
-                                        <span>
-                                            <button type="button" className="btn btn-success" style={{color: '#000000'}}>Show Stats</button>
+                                            <button type="button" className="btn btn-success" style={{color: '#000000'}}>Poll</button>
                                         </span>
                                     </p>
                                 </div>
                                 <div className="col-xs-4 col-md-3 btnrow " >
                                     <div className="row">
                                         <div className="col-xs-12 gapp"><button type="button" className="btn btn-success pull-left" style={{padding: '10px 42px', fontSize: '17px', marginBottom: '5px'}} onClick={()=>{this.onClickConductPoll(val.id, quizIndex)}} >Conduct</button></div>
-                                        <div className="col-xs-2 block" style={{marginLeft: '30px'}}><i className="fa fa-star" style={{background: '#ff9955'}} aria-hidden="true"></i></div>
-                                        <div className="col-xs-2 block"><i className="fa fa-pencil" style={{background: '#ff55dd'}} aria-hidden="true"></i></div>
-                                        <div className="col-xs-2 block"><i className="fa fa-clone" style={{background: '#b380ff'}} aria-hidden="true"></i></div>
-                                        <div className="col-xs-2 block"><i className="fa fa-trash-o" style={{background: '#ff8080'}} aria-hidden="true"></i></div>
+                                        <a className="col-xs-2 block" style={{marginLeft: '30px', marginRight: '5px'}} href={`/poll/${val.id}/edit`}><i className="fa fa-pencil" style={{background: '#ff55dd'}} aria-hidden="true"></i></a>
+                                        <div className="col-xs-2 block"><i className="fa fa-trash-o" style={{background: '#ff8080'}} aria-hidden="true" onClick={() => this.delete('poll', val.id, val.name)}></i></div>
                                     </div>
                                 </div>
                             </div>
@@ -260,11 +269,7 @@ export default class QuizComponent extends Component {
                             <div className="col-xs-12 contblock">
                                 <a href="/create-poll">Create Poll</a>
                             </div>
-                            <div className="col-xs-12 contblock"><p>Search Quiz</p></div>
-                            <div className="col-xs-12 contblock"><p>My Creations</p></div>
                             <div className="col-xs-12 contblock"><p>My Results</p></div>
-                            <div className="col-xs-12 contblock"><p>Org Accounts</p></div>
-                            <div className="col-xs-12 contblock"><p>Account Setting</p></div>
                             <div className="col-xs-12 contblock" onClick={this.signout}><p>Sign Out</p></div>
                         </div>
                     </div> : null}

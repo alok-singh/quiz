@@ -13,6 +13,17 @@ export const createConnection = (server) => {
 	});
 }
 
+export const gatewayDeleteController = (req, res) => {
+	api.deleteReq(req.url, req.headers).then(response => {
+		res.writeHead(response.statusCode, {'Content-Type': 'application/JSON'});
+		res.write(JSON.stringify(response.body));
+		res.end();
+	}, (error) => {
+		res.writeHead(500, {'Content-Type': 'application/JSON'});
+		res.write(error.message);
+		res.end();
+	})
+}
 
 export const gatewayPostController = (req, res) => {
 	api.post(req.url, req.body, req.headers).then((response) => {
@@ -54,12 +65,3 @@ export const gatewayGetController = (req, res) => {
 		res.end();
 	})
 }
-
-
-
-// use this when player adding is done bty websocket
-
-/*client.on('update', (data) => { // listen to the event
-	console.log('update');
-	console.log(data);
-});*/

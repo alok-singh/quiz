@@ -10,6 +10,10 @@ export const get = (url, headers) => {
 	return requestAPI(url, 'GET', null, headers);
 }
 
+export const deleteReq = (url, headers) => {
+	return requestAPI(url, 'DELETE', null, headers);
+}
+
 export const requestAPI = (url, method, data, headers) => {
 	url = baseURL + url;
 	const options = { 
@@ -40,5 +44,6 @@ export const requestAPI = (url, method, data, headers) => {
 export default {
 	post,
 	get,
+	deleteReq,
 	requestAPI
 }

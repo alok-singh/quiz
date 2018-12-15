@@ -67,14 +67,26 @@ export default class QuizComponent extends Component {
                         isLoading: false,
                         signupProgress: false
                     }, () => {
-                        alert(data.message);
+                        if(data.message){
+                            alert(data.message);
+                        }
+                        else{
+                            alert('Something went wrong please try again.');
+                            window.location.reload();
+                        }
                     });
                 }
                 else{
                     this.setState({
                         isLoading: false
                     }, () => {
-                        alert(data.message);
+                        if(data.message){
+                            alert(data.message);
+                        }
+                        else{
+                            alert('Something went wrong please try again.');
+                            window.location.reload();
+                        }
                         if(data.status == 405){
                             if(confirm('Do you want to login from this device?')){
                                 this.onClickSubmit('signin', '/api/user/login/other/device/');
@@ -109,14 +121,26 @@ export default class QuizComponent extends Component {
                         isLoading: false,
                         signupProgress: true
                     }, () => {
-                        alert(data.message);
+                        if(data.message){
+                            alert(data.message);
+                        }
+                        else{
+                            alert('Something went wrong please try again.');
+                            window.location.reload();
+                        }
                     });
                 }
                 else{
                     this.setState({
                         isLoading: false
                     });
-                    alert(data.message);
+                    if(data.message){
+                        alert(data.message);
+                    }
+                    else{
+                        alert('Something went wrong please try again.');
+                        window.location.reload();
+                    }
                 }
             }, (error) => {
                 this.setState({
@@ -168,7 +192,13 @@ export default class QuizComponent extends Component {
                         isLoading: false
                     });
                 }
-                alert(data.message);
+                if(data.message){
+                    alert(data.message);
+                }
+                else{
+                    alert('Something went wrong please try again.');
+                    window.location.reload();
+                }
             }, (error) => {
                 this.setState({
                     activeStage: 'signup',
