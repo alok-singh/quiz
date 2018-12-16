@@ -80,17 +80,17 @@ export default class QuizComponent extends Component {
                     this.setState({
                         isLoading: false
                     }, () => {
-                        if(data.message){
+                        if(data.status == 405){
+                            if(confirm(data.message)){
+                                this.onClickSubmit('signin', '/api/user/login/other/device/');
+                            }
+                        }
+                        else if(data.message){
                             alert(data.message);
                         }
                         else{
                             alert('Something went wrong please try again.');
                             window.location.reload();
-                        }
-                        if(data.status == 405){
-                            if(confirm('Do you want to login from this device?')){
-                                this.onClickSubmit('signin', '/api/user/login/other/device/');
-                            }
                         }
                     });
                 }

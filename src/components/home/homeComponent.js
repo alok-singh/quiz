@@ -16,7 +16,8 @@ export default class QuizComponent extends Component {
             activeQuizID: false,
             isModalVisible: false,
             activeConductType: 'live',
-            isSidebarVisible: true
+            isSidebarVisible: true,
+            searchInput: ''
         }
         this.signout = this.signout.bind(this);
         this.onClickCancel = this.onClickCancel.bind(this);
@@ -56,10 +57,31 @@ export default class QuizComponent extends Component {
                     if(response.message){
                         alert(response.message);
                     }
-                    this.renderList(apiToken, sessionID, role);
+                    this.renderList();
                 }
             })
         }
+    }
+
+    onChangeInput(val, key) {
+        this.setState({
+            [key]: val
+        }, () => {
+            if(key == 'searchInput'){
+                if(this.timeout){
+                    clearTimeout(this.timeout);
+                }
+                this.timeout = setTimeout(() => {
+                    this.setState({
+                        isLoading: true
+                    }, () => {
+                        this.renderList({
+                            name: this.state.searchInput
+                        });
+                    })
+                }, 500);
+            }
+        })
     }
 
     onClickConduct(quizID, quizIndex) {
@@ -127,16 +149,37 @@ export default class QuizComponent extends Component {
     }
 
     componentDidMount() {
-        this.renderList(sessionStorage.apitk, sessionStorage.bqsid, sessionStorage.role);
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        this.renderList();
+        get('/api/user/name/', {
+            authorization: apiToken
+        }).then(data => {
+            this.setState({
+                userName: data.message ? data.message : 'Default',
+                isLoading: false
+            });
+        });
     }
 
-    renderList(apiToken, sessionKey, role) {
+    getQueryParamsFromObj(queryObj) {
+        return Object.keys(queryObj).reduce((string, key) => {
+            string = `${key}=${queryObj[key]}`;
+            return string;
+        }, '');
+    }
+
+    renderList(queryObj) {
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        let role = sessionStorage.role;
+
         this.setState({
             isLoading: true
         });
         if(apiToken && sessionKey){
             if(role == 'host'){
-                get('/api/user/quizzes/', {
+                get(`/api/user/quizzes/?${queryObj ? this.getQueryParamsFromObj(queryObj) : ''}`, {
                     authorization: apiToken
                 }).then(data => {
                     this.setState({
@@ -144,19 +187,11 @@ export default class QuizComponent extends Component {
                         isLoading: false
                     });
                 });
-                get('/api/poll/user/polls/ ', {
+                get(`/api/poll/user/polls/?${queryObj ? this.getQueryParamsFromObj(queryObj) : ''}`, {
                     authorization: apiToken
                 }).then(data => {
                     this.setState({
                         pollList: data.polls ? data.polls : [],
-                        isLoading: false
-                    });
-                });
-                get('/api/user/name/', {
-                    authorization: apiToken
-                }).then(data => {
-                    this.setState({
-                        userName: data.message ? data.message : 'Default',
                         isLoading: false
                     });
                 });
@@ -277,7 +312,7 @@ export default class QuizComponent extends Component {
                         <div className="row">
                             <div className="main">
                                 <div className="form-group has-feedback has-search">
-                                    <input type="text" className="form-control" placeholder="Search from Quizzes/Polls/Tournaments" />
+                                    <input onChange={({target}) => this.onChangeInput(target.value, 'searchInput')} type="text" className="form-control" placeholder="Search from Quizzes/Polls" />
                                     <span className="fa fa-search form-control-feedback"></span>
                                 </div>
                             </div>
