@@ -56,7 +56,7 @@ export const gatewayGetController = (req, res) => {
 			let action = (response.body.quiz_ended || response.body.poll_ended) ? 'leaderBoard' : 'question';
 			io.emit('broadcast', Object.assign({}, response.body, {action}));
 		}
-		res.writeHead(response.statusCode, {'Content-Type': 'application/JSON'});
+		res.writeHead(response.statusCode, {'Content-Type': response.headers['content-type']});
 		res.write(JSON.stringify(response.body));
 		res.end();
 	}, (error) => {

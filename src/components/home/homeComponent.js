@@ -296,7 +296,7 @@ export default class QuizComponent extends Component {
                     {this.state.isSidebarVisible ? <div className="col-md-2 text-center" style={{background: '#8cc4fd', borderRight: '1px solid #d4d4d4', width: '27%'}} >
                         <div className="row">
                             <div className="col-xs-12 contblock " style={{background: '#ffffff', padding: '0px'}}>
-                                <img src="images/user.jpg" className="img-responsive "/>
+                                <img src="/images/user.jpg" className="img-responsive "/>
                             </div>
                             <div className="col-xs-12 contblock">
                                 <a href="/create">Create Quiz</a>

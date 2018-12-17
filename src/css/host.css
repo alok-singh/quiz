@@ -453,9 +453,8 @@ p{
 .table>thead>tr>td,
 .table>thead>tr>th {
     border: 0px;
-    font-family: Calibri;
     padding: 2px 8px;
-    font-size: 22px;
+    font-size: 18px;
     text-align: center;
 }
 
@@ -1279,4 +1278,8 @@ p{
 
 .poll-result .home-link:hover {
     color: #fff;
+}
+
+.tablecont .fa-download{
+    cursor: pointer;
 }

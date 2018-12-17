@@ -14,6 +14,8 @@ import {playLiveQuizController} from './controllers/playLiveQuizController';
 import {gatewayPostController, gatewayGetController, createConnection, gatewayDeleteController} from './controllers/apiController';
 import {addQuestionController} from './controllers/addQuestionController';
 import {conductQuizController} from './controllers/conductQuizController';
+import {hostMyResultController} from './controllers/hostMyResultController';
+
 
 const app = express();
 

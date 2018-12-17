@@ -40,8 +40,8 @@ const fetchAPI = (url, type, data, headers) => {
     let options = {
         method: type,
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Accept': (headers && headers.accept) ? headers.accept : 'application/json',
+            'Content-Type': (headers && headers.contentType) ? headers.contentType : 'application/json'
         }
     };
     options.headers.authorization = (headers && headers.authorization) ? headers.authorization : undefined;
