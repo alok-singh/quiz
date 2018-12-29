@@ -259,6 +259,8 @@ export default class QuizComponent extends Component {
     }
 
     renderNavBar() {
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
         return <nav className="navbar navbar-default">
             <div className="container">
                 <div className="navbar-header">
@@ -274,7 +276,9 @@ export default class QuizComponent extends Component {
                         <li><a href="#">Play</a></li>
                         <li><a href="#">School</a></li>
                         <li><a href="#">Business</a></li>
-                        <li><a href="#" onClick={this.signout}>Logout</a></li>
+                        <li>
+                            {apiToken ? <a href="#" onClick={this.signout}>Logout</a> : <a href="/login" >Login</a>}
+                        </li>
                     </ul>
                 </div>
             </div>
