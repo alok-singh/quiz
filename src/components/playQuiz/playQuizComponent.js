@@ -298,6 +298,10 @@ export default class PlayQuizComponent extends Component {
                             <div className="parameter">Total Number of Incorrect Answers</div>
                             <div className="value">{modalData.wrong_answers}</div>
                         </div>
+                        <div className="result-row">
+                            <div className="parameter">Total Score</div>
+                            <div className="value">{modalData.total_score}</div>
+                        </div>
                     </div>
                     <a className="btn-signin" onClick={() => location.reload()}>Retry Quiz</a>
                     <a className="btn-signin" href='/player-home' style={{marginLeft: '5px'}}>Home</a>

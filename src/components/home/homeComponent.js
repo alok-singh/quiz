@@ -148,6 +148,30 @@ export default class QuizComponent extends Component {
         });
     }
 
+    onClickActivate(quizID, switchTo) {
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        let quizList = this.state.quizList.map(quiz => {
+            if(quiz.id == quizID){
+                quiz.is_enabled = switchTo;
+            }
+            return quiz;
+        });
+
+        this.setState({
+            quizList: quizList
+        }, () => {
+            post(`/api/${quizID}/enable/disable/${switchTo ? 1 : 0}/`, null, {
+                authorization: apiToken
+            }).then(response => {
+                if(response.message){
+                    alert(response.message);
+                }
+            });
+        })
+
+    }
+
     componentDidMount() {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
@@ -224,8 +248,11 @@ export default class QuizComponent extends Component {
                                         <span>Created 4 days ago</span>
                                     </p>
                                     <p className="par1" >
-                                        <span>
+                                        <span style={{marginRight: '10px'}}>
                                             <button type="button" className="btn btn-success" style={{color:'#000000'}}>Quiz</button>
+                                        </span>
+                                        <span>
+                                            <button onClick={() => this.onClickActivate(val.id, !val.is_enabled)} type="button" className="btn btn-success" style={{color:'#000000'}}>{val.is_enabled ? 'Enabled' : 'Disabled'}</button>
                                         </span>
                                     </p>
                                 </div>

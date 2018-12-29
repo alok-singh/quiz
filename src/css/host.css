@@ -761,18 +761,20 @@ p{
     display: flex;
     justify-content: center;
     font-size: 18px;
-    margin: 10px 0px;
+    margin: 5px 0px;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 5px;
 }
 
 .modal-content .parameter {
     width: 80%;
-    text-align: right;
+    text-align: left;
     margin-right: 2%;
 }
 
 .modal-content .value {
     width: 30%;
-    text-align: left;
+    text-align: right;
     margin-left: 4%;
 }
 
