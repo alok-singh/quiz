@@ -226,32 +226,12 @@ export default class QuizComponent extends Component {
                                             <span></span>
                                         </div>
                                         <div className="col-xs-5">
-                                            <button type="button" className="btn btn-success "><a style={{color: '#fff'}} href={`/play/quiz/${quiz.quiz_id}`}>Play</a></button>
+                                            <button type="button" className="btn btn-success"><a onClick={this.onClickPlayQuiz} style={{color: '#fff'}} href={`/play/quiz/${quiz.quiz_id}`}>Play</a></button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        return <div className="col-md-3 goliath colblock ">
-                            <div className="inner">
-                                <figure className="effect-goliath">
-                                    <img className="img-responsive" src={quiz.image_url ? quiz.image_url : defaultImageURL} alt="img23"/>
-                                    <figcaption>
-                                        <h2><span>{quiz.quiz_title}</span></h2>
-                                        <p style={{textAlign: 'left', fontSize: '14px'}}>{quiz.description}</p>
-                                        <a href={`/play/quiz/${quiz.quiz_id}`}>Play</a>
-                                    </figcaption>           
-                                </figure>
-                                <div>
-                                    <div className="row">
-                                        <div className="col-xs-12 btnblock">
-                                            <a onClick={this.onClickPlayQuiz} href={`/play/quiz/${quiz.quiz_id}`} className="btn btn-success " >Play Quiz</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
                     })}
                 </div>
             </div>
