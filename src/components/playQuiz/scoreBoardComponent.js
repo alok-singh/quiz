@@ -61,10 +61,10 @@ export default class ScoreBoardComponent extends Component {
                     <table className="table" style={{color: '#fff'}}>
                         <thead>
                             <tr>
-                                <th>Rank</th>
-                                <th>Name</th>
-                                <th>Score</th>
-                                <th>Response</th>
+                                <th width="20%">Rank</th>
+                                <th width="40%">Name</th>
+                                <th width="20%">Score</th>
+                                <th width="20%">Response</th>
                             </tr>
                         </thead>
                     </table>
@@ -73,10 +73,10 @@ export default class ScoreBoardComponent extends Component {
                             <tbody>
                                 {this.props.playerList.map((player, index) => {
                                     return <tr>
-                                        <th>{parseInt(index) + 1}</th>
-                                        <td>{player.name}</td>
-                                        <td>{player.score}</td>
-                                        <td>{player.is_answer ? <i className="fa fa-check" ></i> : <i className="fa fa-close" ></i>}</td>
+                                        <td width="20%">{parseInt(index) + 1}</td>
+                                        <td width="40%">{player.name}</td>
+                                        <td width="20%">{player.score}</td>
+                                        <td width="20%">{player.is_answer ? <i className="fa fa-check" ></i> : <i className="fa fa-close" ></i>}</td>
                                     </tr>
                                 })}
                             </tbody>

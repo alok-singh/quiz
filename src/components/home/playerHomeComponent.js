@@ -208,6 +208,31 @@ export default class QuizComponent extends Component {
                 </div>
                 <div className="row">
                     {quizList.map(quiz => {
+                        return <div className="col-md-4 goliath colblock ">
+                            <div className="inner">
+                                <figure className="effect-goliath">
+                                    <div className="quiz-image" style={{backgroundImage: `url('${quiz.image_url ? quiz.image_url : defaultImageURL}')`}}></div>
+                                    <figcaption>
+                                        <h2><span>{quiz.quiz_title}</span></h2>
+                                        <p style={{textAlign:'left', fontSize:'14px'}}>{quiz.description}</p>
+                                    </figcaption>
+                                </figure>
+                                <div>
+                                    <div className="row">
+                                        <div className="col-xs-2">
+                                            <p className="pg" style={{padding: '5px 0px 15px', paddingLeft: '30px', whiteSpace: 'nowrap'}}>by {quiz.host_name}</p>
+                                        </div>
+                                        <div className="col-xs-5">
+                                            <span></span>
+                                        </div>
+                                        <div className="col-xs-5">
+                                            <button type="button" className="btn btn-success "><a style={{color: '#fff'}} href={`/play/quiz/${quiz.quiz_id}`}>Play</a></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         return <div className="col-md-3 goliath colblock ">
                             <div className="inner">
                                 <figure className="effect-goliath">
@@ -242,7 +267,7 @@ export default class QuizComponent extends Component {
                         <p style={{fontSize: '60px', letterSpacing: '2.5px', lineHeight: '1', fontFamily: '\'Chango\', cursive', margin: '0px', marginBottom: '18px', fontWeight: '500'}}>Amazing..!</p>
                         <p style={{fontSize: '18px', margin : '0px'}}>Play Quizzes, Chanllenge Friends, </p>
                         <p style={{fontSize: '18px', marginBottom: '40px'}}>Compete with World, Learn Something Everyday</p>
-                        <span><button type="button" className="btn btn-success " >Join Games</button></span><span><button type="button" className="btn btn-success " >Explore Games</button></span>
+                        <span><button type="button" className="btn btn-success" onClick={this.onClickEnterPinButton} >Join Games</button></span><span><button type="button" className="btn btn-success " >Explore Games</button></span>
                     </div>
                     <div className="col-md-6 cont" >
                         <img className="img-responsive " src="/images/ws.jpg" alt="Chicago" />
@@ -259,8 +284,8 @@ export default class QuizComponent extends Component {
     }
 
     renderNavBar() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = typeof window == 'undefined' ? '' : sessionStorage.apitk;
+        let sessionKey = typeof window == 'undefined' ? '' : sessionStorage.bqsid;
         return <nav className="navbar navbar-default">
             <div className="container">
                 <div className="navbar-header">
@@ -273,9 +298,9 @@ export default class QuizComponent extends Component {
                 </div>
                 <div className="collapse navbar-collapse" id="myNavbar">
                     <ul id="nav-menu" className="nav navbar-nav navbar-right">
-                        <li><a href="#">Play</a></li>
-                        <li><a href="#">School</a></li>
-                        <li><a href="#">Business</a></li>
+                        <li>
+                            {apiToken ? '' : <a href="/login">Signup</a>}
+                        </li>
                         <li>
                             {apiToken ? <a href="#" onClick={this.signout}>Logout</a> : <a href="/login" >Login</a>}
                         </li>

@@ -2,22 +2,21 @@ import React, { Component } from 'react';
 import {get, post, uploadImage} from '../../common/api';
 
 const defaultQuestion = [{
-    question_title: "Please add question here",
+    question_title: "",
     image_url: "",
     question_image: "",
-    question_time: 30,
+    question_time: "",
     options: [{
-        option_title: "choice1",
-        is_answer: true
+        option_title: ""
     },
     {
-        option_title: "choice2"
+        option_title: ""
     },
     {
-        option_title: "choice3"
+        option_title: ""
     },
     {
-        option_title: "choice4"
+        option_title: ""
     }]
 }];
 
@@ -46,6 +45,9 @@ export default class AddQuestionComponent extends Component {
                 authorization: apiToken
             }).then(response => {
                 alert(response.message);
+                if(response.status !== 400){
+                    window.location.href = "/home";
+                }
             })
         }
         else{
@@ -53,6 +55,9 @@ export default class AddQuestionComponent extends Component {
                 authorization: apiToken
             }).then(response => {
                 alert(response.message);
+                if(response.status !== 400){
+                    window.location.href = "/home";
+                }
             })
         }
     }
@@ -93,21 +98,21 @@ export default class AddQuestionComponent extends Component {
     onClickAddQuestion() {
         let {questions} = this.state;
         questions.push({
-            question_title: "Please add question here",
+            question_title: "",
             image_url: "",
             question_image: "",
-            question_time: 30,
+            question_time: "",
             options: [{
-                option_title: "choice1"
+                option_title: ""
             },
             {
-                option_title: "choice2"
+                option_title: ""
             },
             {
-                option_title: "choice3"
+                option_title: ""
             },
             {
-                option_title: "choice4"
+                option_title: ""
             }]
         });
         this.setState({
@@ -182,7 +187,7 @@ export default class AddQuestionComponent extends Component {
                 authorization: apiToken
             }).then(data => {
                 this.setState({
-                    questions: data.questions ? data.questions : defaultQuestion
+                    questions: (data.questions && data.questions.length) ? data.questions : defaultQuestion
                 });
             });
         }
@@ -237,7 +242,7 @@ export default class AddQuestionComponent extends Component {
                                 <div className="row">
                                     <div className="col-xs-12" >
                                         <p style={{fontSize: '20px', color: '#676767', fontWeight : 'bold', lineHeight: '34px', marginBottom: '15px'}} >Question {index + 1}</p>
-                                        <textarea rows="4" style={{fontSize: '22px', padding: '15px'}} value={question.question_title} onChange={({target}) => this.onChangeInput(target.value, 'question_title', index)}></textarea>
+                                        <textarea rows="4" style={{fontSize: '22px', padding: '15px'}} value={question.question_title} placeholder="Please enter your question here" onChange={({target}) => this.onChangeInput(target.value, 'question_title', index)}></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -265,7 +270,7 @@ export default class AddQuestionComponent extends Component {
                                 <p style={{fontSize: '20px', marginTop: '15px'}}>
                                     <span>Question Time(s)</span>
                                     <span>
-                                        <input className="btn" style={{fontSize: '18px', background: '#ffffff', border: '1px solid #474747', borderRadius: '0px', fontWeight: 'bold', marginLeft: '15px'}} value={question.question_time ? question.question_time : 30} onChange={({target}) => this.onChangeInput(target.value, 'question_time', index)}></input>
+                                        <input className="btn" style={{fontSize: '18px', background: '#ffffff', border: '1px solid #474747', borderRadius: '0px', fontWeight: 'bold', marginLeft: '15px'}} placeholder="time" value={question.question_time ? question.question_time : 30} onChange={({target}) => this.onChangeInput(target.value, 'question_time', index)}></input>
                                     </span>
                                     <button type="button" className="btn btn-success" style={{background: '#31a2ff', marginLeft: '30px', lineHeight: '26px'}} onClick={() => this.onClickRemoveQuestion(index)}>Remove This Question</button>
                                 </p>
@@ -276,7 +281,7 @@ export default class AddQuestionComponent extends Component {
                             {question.options.map((option, optionIndex) => {
                                 return <div className="col-xs-12 col-md-6">
                                     <p style={{fontSize: '18px'}}>Answer {optionIndex + 1}</p>
-                                    <input className="btn" value={option.option_title} onChange={({target}) => this.onChangeInput(target.value, 'options', index, optionIndex)}></input>
+                                    <input className="btn" value={option.option_title} placeholder="option value" onChange={({target}) => this.onChangeInput(target.value, 'options', index, optionIndex)}></input>
                                     {this.renderOption(option, optionIndex, index)}
                                 </div>
                             })}

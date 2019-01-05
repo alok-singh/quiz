@@ -47,9 +47,9 @@ export default class ResultScreenComponent extends Component {
 				<table className="table" style={{color: '#fff'}}>
 					<thead>
 						<tr>
-							<th>Rank</th>
-							<th>Name</th>
-							<th>Score</th>
+							<th width="30%">Rank</th>
+							<th width="40%">Name</th>
+							<th width="30%">Score</th>
 						</tr>
 					</thead>
 				</table>
@@ -58,9 +58,9 @@ export default class ResultScreenComponent extends Component {
 						<tbody>
 							{this.props.resultList.map((player, index) => {
 								return <tr>
-									<th>{parseInt(index) + 1}</th>
-									<td>{player.name}</td>
-									<td>{player.score}</td>
+									<td width="30%">{parseInt(index) + 1}</td>
+									<td width="40%">{player.name}</td>
+									<td width="30%">{player.score}</td>
 			 					</tr>
 							})}
 						</tbody>

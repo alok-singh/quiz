@@ -727,8 +727,8 @@ figure.effect-goliath h2 {
 }
 
 figure.effect-goliath img {
-    width: 228px;
-    height: 257px;
+    width: 100%;
+    height: auto;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
@@ -736,6 +736,14 @@ figure.effect-goliath img {
 figure.effect-goliath h2 {
     text-align: left;
     font-size:
+}
+
+figure.effect-goliath .quiz-image{
+    height: 246px;
+    width: 328px;    
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px 15px 0px 0px;
 }
 
 figure.effect-goliath h2,
@@ -746,6 +754,7 @@ figure.effect-goliath p {
     padding: 10px 30px;
     background: white;
     color: #191919;
+    width: 100%;
 }
 
 figure.effect-goliath p {

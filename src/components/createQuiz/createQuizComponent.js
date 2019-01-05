@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {post, uploadImage} from '../../common/api';
+import {post, get, uploadImage} from '../../common/api';
 
 export default class createQuizComponent extends Component {
 
@@ -9,12 +9,14 @@ export default class createQuizComponent extends Component {
             quizName: '',
             description: '',
             category: '',
-            imageURL: ''
+            imageURL: '',
+            userName: 'Default'
         }
         this.onCreateQuiz = this.onCreateQuiz.bind(this);
         this.onUploadImage = this.onUploadImage.bind(this);
         this.onAddFile = this.onAddFile.bind(this); 
         this.onClickUploadButton = this.onClickUploadButton.bind(this); 
+        this.signout = this.signout.bind(this);
     }
 
     componentDidMount() {
@@ -39,6 +41,14 @@ export default class createQuizComponent extends Component {
         this.reader.onerror = (event) => {
             console.error("File could not be read! Code " + event.target.error.code);
         };
+
+        get('/api/user/name/', {
+            authorization: apiToken
+        }).then(data => {
+            this.setState({
+                userName: data.message ? data.message : 'Default'
+            });
+        });
         
         if(apiToken && sessionKey){
             this.uploadImageInput = document.getElementById('uploadImage');    
@@ -46,6 +56,26 @@ export default class createQuizComponent extends Component {
         else{
             location.href = '/login';
         }
+    }
+
+    signout() {
+        let apiToken = sessionStorage.apitk;
+        let sessionKey = sessionStorage.bqsid;
+        this.setState({
+            isLoading: true
+        }, () => {
+            post('/api/user/logout/', null, {
+                authorization: apiToken
+            }).then(data => {
+                delete sessionStorage.apitk;
+                delete sessionStorage.bqsid;
+                this.setState({
+                    isLoading: false
+                }, () => {
+                    location.href = '/login';
+                })
+            });
+        });
     }
 
     onClickUploadButton() {
@@ -190,10 +220,8 @@ export default class createQuizComponent extends Component {
                 </div>
                 <div className="collapse navbar-collapse" id="myNavbar">
                     <ul id="nav-menu" className="nav navbar-nav navbar-right">
-                        <li><a href="#">About us</a></li>
-                        <li><a href="#">Help & Support</a></li>
-                        <li><a href="#">Contact us</a></li>
-                        <li><a href="#" className="login">Login</a></li>
+                        <li><a href="#">{this.state.userName}</a></li>
+                        <li><a href="#" className="login" onClick={this.signout}>Logout</a></li>
                     </ul>
                 </div>
             </div>

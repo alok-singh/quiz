@@ -29,10 +29,10 @@ export default class LeaderBoardComponent extends Component {
                 <table className="table" style={{color: '#fff'}}>
                     <thead>
                         <tr>
-                            <th>Rank</th>
-                            <th>Name</th>
-                            <th>Score</th>
-                            <th>Response</th>
+                            <th width="20%">Rank</th>
+                            <th width="40%">Name</th>
+                            <th width="20%">Score</th>
+                            <th width="20%">Response</th>
                         </tr>
                     </thead>
                 </table>
@@ -41,10 +41,10 @@ export default class LeaderBoardComponent extends Component {
                         <tbody>
                             {this.props.leaderBoardList.map(player => {
                                 return <tr>
-                                    <th>{player.rank}</th>
-                                    <td>{player.name}</td>
-                                    <td>{player.score}</td>
-                                    <td>
+                                    <td width="20%">{player.rank}</td>
+                                    <td width="40%">{player.name}</td>
+                                    <td width="20%">{player.score}</td>
+                                    <td width="20%">
                                         <span>{player.isCorrect ? <i className="fa fa-check" ></i> : <i className="fa fa-close"></i>}</span>
                                     </td>
                                 </tr>

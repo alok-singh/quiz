@@ -59,6 +59,9 @@ export default class QuizComponent extends Component {
                     }
                     this.renderList();
                 }
+                else{
+                    alert('Something went wrong please try again later');
+                }
             })
         }
     }
@@ -244,8 +247,7 @@ export default class QuizComponent extends Component {
                                         <a href={`/quiz/${val.id}/edit`} style={{marginRight: '10px'}}>{val.name}</a>
                                     </p>
                                     <p className="par2" >
-                                        <span style={{marginRight: '22px'}}>Conducted 3 Times</span>
-                                        <span>Created 4 days ago</span>
+                                        <span style={{marginRight: '22px'}}>{val.description}</span>
                                     </p>
                                     <p className="par1" >
                                         <span style={{marginRight: '10px'}}>
@@ -289,8 +291,7 @@ export default class QuizComponent extends Component {
                                         <a href={`/poll/${val.id}/edit`} style={{marginRight: '10px'}}>{val.name}</a>
                                     </p>
                                     <p className="par2" >
-                                        <span style={{marginRight: '22px'}}>Conducted 3 Times</span>
-                                        <span>Created 4 days ago</span>
+                                        <span style={{marginRight: '22px'}}>{val.description}</span>
                                     </p>
                                     <p className="par1" >
                                         <span style={{marginRight: '22px'}}>
@@ -324,6 +325,9 @@ export default class QuizComponent extends Component {
                         <div className="row">
                             <div className="col-xs-12 contblock " style={{background: '#ffffff', padding: '0px'}}>
                                 <img src="/images/user.jpg" className="img-responsive "/>
+                            </div>
+                            <div className="col-xs-12 contblock">
+                                <a href="/home">My Creations</a>
                             </div>
                             <div className="col-xs-12 contblock">
                                 <a href="/create">Create Quiz</a>
@@ -363,16 +367,10 @@ export default class QuizComponent extends Component {
     }
 
     renderModal() {
-        return <Modal isVisible={this.state.isModalVisible} width='710px'>
+        return <Modal isVisible={this.state.isModalVisible} width='400px'>
             <div className="modal-body">
                 <label className="radio-inline">
                     <input type="radio" name="optradio" onChange={() => {this.onChangeConductType('live')}} checked={this.state.activeConductType == 'live'} />PLAY LIVE
-                </label>
-                <label className="radio-inline">
-                    <input type="radio" name="optradio" onChange={() => {this.onChangeConductType('pin')}} checked={this.state.activeConductType == 'pin'} />CHALLENGE VIA PIN GENERATION
-                </label>
-                <label className="radio-inline">
-                    <input type="radio" name="optradio" onChange={() => {this.onChangeConductType('schedule')}} checked={this.state.activeConductType == 'schedule'} />ACTIVATE AS PER SCHEDULED
                 </label>
             </div>
             <div className="modal-footer text-center">

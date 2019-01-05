@@ -60,28 +60,6 @@ export default class MyResultComponent extends Component {
         });
     }
 
-    renderSideContent() {
-        return <div className="col-md-2 text-center" style={{background: '#8cc4fd'}} >
-            <div className="row controw" style={{display: 'flex'}}>
-                <div className="col-md-2 text-center" style={{background: '#8cc4fd', borderRight: '1px solid #d4d4d4', width: '27%'}} >
-                    <div className="row">
-                        <div className="col-xs-12 contblock " style={{background: '#ffffff', padding: '0px'}}>
-                            <img src="/images/user.jpg" className="img-responsive "/>
-                        </div>
-                        <div className="col-xs-12 contblock">
-                            <a href="/create">Create Quiz</a>
-                        </div>
-                        <div className="col-xs-12 contblock">
-                            <a href="/create-poll">Create Poll</a>
-                        </div>
-                        <div className="col-xs-12 contblock"><a href="/my-results">My Results</a></div>
-                        <div className="col-xs-12 contblock" onClick={this.signout}><p>Sign Out</p></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-
     renderHeadingTabs() {
         return <div className="row">
             <div className="col-xs-6 inner" style={{background: '#d4d4d4', width: '100%'}}><p>Polls and Quizzes</p></div>
@@ -126,6 +104,9 @@ export default class MyResultComponent extends Component {
                         <div className="row">
                             <div className="col-xs-12 contblock " style={{background: '#ffffff', padding: '0px'}}>
                                 <img src="/images/user.jpg" className="img-responsive "/>
+                            </div>
+                            <div className="col-xs-12 contblock">
+                                <a href="/home">My Creations</a>
                             </div>
                             <div className="col-xs-12 contblock">
                                 <a href="/create">Create Quiz</a>

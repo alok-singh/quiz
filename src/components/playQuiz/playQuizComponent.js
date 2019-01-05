@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {get, post} from '../../common/api';
 import ScoreBoardComponent from './scoreBoardComponent';
 import Modal from '../common/modal';
+import LoadingScreenComponent from '../common/loadingScreenComponent';
 
 const optionColorList = [
     'rgba(226, 27, 60, 0.6)',
@@ -27,12 +28,14 @@ export default class PlayQuizComponent extends Component {
             currentTimeout: 30,
             isAnsweringAllowed: true,
             isModalVisible: false,
+            isLoading: true,
+            loadingPercent: 0,
             isCurrentQuestionAnswered: false,
             modalData: '',
             playerScore: 'NA',
             isPlayerCorrect: undefined,
             isScoreActive: false,
-            isQuestionActive: true,
+            isQuestionActive: false,
             answeredAtTimeRemaining: 0
         }
         this.onClickNextQuestion = this.onClickNextQuestion.bind(this);
@@ -48,7 +51,7 @@ export default class PlayQuizComponent extends Component {
         post('/api/quiz/question/answer/', {
             quiz_id: this.props.quizID,
             question_id: currentQuestionObject.question_id,
-            time_remaining: this.state.answeredAtTimeRemaining,
+            time_remaining: this.state.answeredAtTimeRemaining*1000,
             question_time: currentQuestionObject.question_time,
             option_id: optionID
         }, {
@@ -155,29 +158,48 @@ export default class PlayQuizComponent extends Component {
     componentDidMount() {
         let apiToken = sessionStorage.apitk;
         let sessionKey = sessionStorage.bqsid;
-        get(`/api/quiz/${this.props.quizID}/play/`, {
-            authorization: apiToken
-        }).then(data => {
-            this.setState({
-                questionList: data.questions ? data.questions : [],
-                currentTimeout: data.questions && data.questions.length ? data.questions[0].question_time : 30,
-            }, () => {
-                this.interval = setInterval(() => {
-                    if(this.state.currentTimeout - 1 >= 0){
-                        this.setState({
-                            currentTimeout: this.state.currentTimeout - 1,
-                            isAnsweringAllowed: true
-                        });
-                    }
-                    else{
-                        clearInterval(this.interval);
-                        this.setState({
-                            isAnsweringAllowed: false
+
+        this.timeout = setInterval(() => {
+            let loadingPercent = parseInt(this.state.loadingPercent) + parseInt(50*Math.random());
+            if(loadingPercent >= 100){
+                clearInterval(this.timeout);
+                loadingPercent = 100;
+            }
+            if(this.state.isLoading){
+                this.setState({
+                    loadingPercent: loadingPercent
+                }, () => {
+                    if(loadingPercent >= 100){
+                        get(`/api/quiz/${this.props.quizID}/play/`, {
+                            authorization: apiToken
+                        }).then(data => {
+                            this.setState({
+                                isQuestionActive: true,
+                                isLoading: false,
+                                questionList: data.questions ? data.questions : [],
+                                isRequestCompleted: true,
+                                currentTimeout: data.questions && data.questions.length ? data.questions[0].question_time : 30,
+                            }, () => {
+                                this.interval = setInterval(() => {
+                                    if(this.state.currentTimeout - 1 >= 0){
+                                        this.setState({
+                                            currentTimeout: this.state.currentTimeout - 1,
+                                            isAnsweringAllowed: true
+                                        });
+                                    }
+                                    else{
+                                        clearInterval(this.interval);
+                                        this.setState({
+                                            isAnsweringAllowed: false
+                                        })
+                                    }
+                                }, 1000)
+                            });
                         })
                     }
-                }, 1000)
-            });
-        })
+                });
+            }
+        }, 1000);
     }
 
     renderQuestion() {
@@ -230,7 +252,7 @@ export default class PlayQuizComponent extends Component {
                 </section>
 
             }
-            else{
+            else {
                 return <div style={{fontSize: '20px', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>No Questions Added in Quiz</div>
             }
         }
@@ -303,15 +325,24 @@ export default class PlayQuizComponent extends Component {
                             <div className="value">{modalData.total_score}</div>
                         </div>
                     </div>
-                    <a className="btn-signin" onClick={() => location.reload()}>Retry Quiz</a>
                     <a className="btn-signin" href='/player-home' style={{marginLeft: '5px'}}>Home</a>
                 </div>
             </Modal>
         }
     }
+    
+    renderLoadingScreen() {
+        if(this.state.isLoading){
+            return <LoadingScreenComponent loaded={this.state.loadingPercent} />
+        }
+        else{
+            return null;
+        }
+    }
 
     render() {
         return <div className="main">
+            {this.renderLoadingScreen()}
             {this.renderQuestion()}
             {this.renderHiddenData()}
             {this.renderScoreBoard()}
