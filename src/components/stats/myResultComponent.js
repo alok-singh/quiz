@@ -106,7 +106,7 @@ export default class MyResultComponent extends Component {
                                 <img src="/images/user.jpg" className="img-responsive "/>
                             </div>
                             <div className="col-xs-12 contblock">
-                                <a href="/home">My Creations</a>
+                                <a href="/home">Home</a>
                             </div>
                             <div className="col-xs-12 contblock">
                                 <a href="/create">Create Quiz</a>

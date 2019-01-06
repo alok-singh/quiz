@@ -26,48 +26,43 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
 app.get('/login', (req, res) => {
-	loginController(req, res);
-});
-
-app.get('/quiz', (req, res) => {
-	quizController(req, res);
+	requestPassway(req, res, loginController);
 });
 
 app.get('/quiz/:quizID/edit', (req, res) => {
-	addQuestionController(req, res);
+	requestPassway(req, res, addQuestionController);
 });
 
 app.get('/poll/:pollID/edit', (req, res) => {
-	addQuestionController(req, res);
+	requestPassway(req, res, addQuestionController);
 });
 
-
 app.get('/home', (req, res) => {
-	homeController(req, res);
+	requestPassway(req, res, homeController);
 });
 
 app.get('/player-home', (req, res) => {
-	playerHomeController(req, res);
+	requestPassway(req, res, playerHomeController);
 });
 
 app.get('/my-results', (req, res) => {
-	hostMyResultController(req, res);
+	requestPassway(req, res, hostMyResultController);
 });
 
 app.get('/play/quiz/:quizID', (req, res) => {
-	playQuizController(req, res);
+	requestPassway(req, res, playQuizController);
 });
 
 app.get(['/play/live/:quizID/:quizPin', '/play/poll/:pollID/:pollPin'], (req, res) => {
-	playLiveQuizController(req, res);
+	requestPassway(req, res, playLiveQuizController);
 });
 
 app.get(['/create', '/create-poll'], (req, res) => {
-	createQuizController(req, res);
+	requestPassway(req, res, createQuizController);
 });
 
 app.get(['/conduct/live/:quizID/:quizPin/','/conduct/poll/:pollID/:pollPin/'], (req, res) => {
-	conductQuizController(req, res);
+	requestPassway(req, res, conductQuizController);
 });
 
 app.get('/build/*', (req, res) => {
@@ -105,6 +100,15 @@ app.post('/api/*', (req, res) => {
 app.delete('/api/*', (req, res) => {
 	gatewayDeleteController(req, res);
 })
+
+const requestPassway = (req, res, controller) => {
+	try{
+		controller(req, res);
+	}
+	catch(err) {
+		sendTo404(res);
+	}
+}
 
 const getFileFromPath = (filePath, res, contentType)  => {
 	fs.readFile(filePath, (err, data) => {
