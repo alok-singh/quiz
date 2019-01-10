@@ -67,7 +67,7 @@ export default class PlayLiveQuizComponent extends Component {
                         return true;
                     }
                 }) : {};
-                let playerScore = playerObj.score ? playerObj.score : 'NA';
+                let playerScore = playerObj.score ? playerObj.score : 0;
                 this.setState({
                     isQuestionActive: false,
                     isLoading: false,
