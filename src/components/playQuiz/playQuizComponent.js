@@ -36,7 +36,8 @@ export default class PlayQuizComponent extends Component {
             isPlayerCorrect: undefined,
             isScoreActive: false,
             isQuestionActive: false,
-            answeredAtTimeRemaining: 0
+            answeredAtTimeRemaining: 0,
+            playerTotalScore: 0
         }
         this.onClickNextQuestion = this.onClickNextQuestion.bind(this);
         this.onClickNextScoreBoard = this.onClickNextScoreBoard.bind(this);
@@ -61,7 +62,8 @@ export default class PlayQuizComponent extends Component {
                 isQuestionActive: false,
                 isScoreActive: true,
                 isPlayerCorrect: optionID == 0 ? undefined : response.is_answer,
-                playerScore: Math.round(response.score)
+                playerScore: Math.round(response.score),
+                playerTotalScore: parseInt(this.state.playerTotalScore) + Math.round(response.score)
             }, () => {
                 clearInterval(this.interval);
             });
@@ -289,7 +291,9 @@ export default class PlayQuizComponent extends Component {
                 isPlayerCorrect={this.state.isPlayerCorrect}
                 playerScore={this.state.playerScore}
                 showNextButton={true}
+                playerTotalScore={this.state.playerTotalScore}
                 onClickNextScoreBoard={this.onClickNextScoreBoard}
+                playerRank={1}
             />
         }
         else{

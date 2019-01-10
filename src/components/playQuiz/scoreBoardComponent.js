@@ -34,19 +34,15 @@ export default class ScoreBoardComponent extends Component {
 
     renderPlayerStats() {
         return <div className="row" style={{color: '#ffffff'}}>
-            <div className="col-xs-12 col-md-3 text-center" >
+            <div className="col-xs-12 col-md-4 text-center" >
                 <span style={{fontSize: '25px', fontWeight: 'bold', marginRight: '10px'}}>Your Score:</span> 
                 <span style={{fontSize: '40px'}}>{this.props.playerScore}</span>
             </div>
-            <div className="col-xs-12 col-md-3 text-center" >
-                <span style={{fontSize: '25px', fontWeight: 'bold', marginRight: '10px'}}>Round Best:</span> 
-                <span style={{fontSize: '40px'}}>{this.props.roundBest}</span>
-            </div>
-            <div className="col-xs-12 col-md-3 text-center" >
+            <div className="col-xs-12 col-md-4 text-center" >
                 <span style={{fontSize: '25px', fontWeight: 'bold', marginRight: '10px'}}>Total Score:</span> 
                 <span style={{fontSize: '40px'}}>{this.props.playerTotalScore}</span>
             </div>
-            <div className="col-xs-12 col-md-3 text-center" >
+            <div className="col-xs-12 col-md-4 text-center" >
                 <span style={{fontSize: '25px', fontWeight: 'bold', marginRight: '10px'}}>Your Rank:</span> 
                 <span style={{fontSize: '40px'}}>{this.props.playerRank}</span>
             </div>

@@ -23,7 +23,7 @@ export default class PlayLiveQuizComponent extends Component {
             isPlayerCorrect: false,
             playerScore: 'NA',
             roundBest: 'NA',
-            playerTotalScore: 'NA',
+            playerTotalScore: 0,
             playerRank: 'NA',
             playerList: [],
             isAnsweringAllowed: true,
@@ -60,7 +60,13 @@ export default class PlayLiveQuizComponent extends Component {
                 })
             }
             else if(data && data.action == 'result'){
-                let playerObj = data.users ? data.users.find(val => val.api_token == apiToken) : {};
+                let playerRank = 'NA';
+                let playerObj = data.users ? data.users.find((val, index) => {
+                    if(val.api_token == apiToken){
+                        playerRank = index + 1;
+                        return true;
+                    }
+                }) : {};
                 let playerScore = playerObj.score ? playerObj.score : 'NA';
                 this.setState({
                     isQuestionActive: false,
@@ -69,7 +75,9 @@ export default class PlayLiveQuizComponent extends Component {
                     isResultRunning: false,
                     isStatsActive: false,
                     playerList: data.users,
-                    playerScore: playerScore
+                    playerScore: playerScore,
+                    playerRank: playerRank,
+                    playerTotalScore: parseInt(this.state.playerTotalScore) + Math.round(parseInt(playerScore))
                 });
             }
             else if(data && data.action == 'leaderBoard'){

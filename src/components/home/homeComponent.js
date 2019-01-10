@@ -256,6 +256,9 @@ export default class QuizComponent extends Component {
                                         <span>
                                             <button onClick={() => this.onClickActivate(val.id, !val.is_enabled)} title="click to toggle status" type="button" className="btn btn-success" style={{color:'#000000'}}>{val.is_enabled ? 'Enabled' : 'Disabled'}</button>
                                         </span>
+                                        <span style={{marginLeft: '10px'}}>
+                                            <button type="button" onClick={() => {window.alert(`N${val.id}`)}} className="btn btn-success" style={{color:'#000000'}}>PIN</button>
+                                        </span>
                                     </p>
                                 </div>
                                 <div className="col-xs-4 col-md-3 btnrow " >

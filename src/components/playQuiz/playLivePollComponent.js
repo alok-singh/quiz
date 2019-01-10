@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {get, post} from '../../common/api';
 import LoadingScreenComponent from '../common/loadingScreenComponent';
-import ScoreBoardComponent from './scoreBoardComponent';
 import QuestionComponent from './questionComponent';
 import StatsComponent from '../common/statsComponent';
 import PollResultComponent from '../common/pollResultComponent';
