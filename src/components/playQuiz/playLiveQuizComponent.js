@@ -60,6 +60,13 @@ export default class PlayLiveQuizComponent extends Component {
                 })
             }
             else if(data && data.action == 'result'){
+                
+                if(data.users && data.users.length){
+                    data.users.sort((a, b) => {
+                        return b.total_score - a.total_score
+                    });
+                }
+                
                 let playerRank = 'NA';
                 let playerObj = data.users ? data.users.find((val, index) => {
                     if(val.api_token == apiToken){
@@ -67,17 +74,24 @@ export default class PlayLiveQuizComponent extends Component {
                         return true;
                     }
                 }) : {};
+                
                 let playerScore = playerObj.score ? playerObj.score : 0;
+                let playerTotalScore = playerObj.total_score ? playerObj.total_score : 0;
+                
+                let userList = data.users.map(val => {
+                    val.score = val.total_score
+                });
+                
                 this.setState({
                     isQuestionActive: false,
                     isLoading: false,
                     isScoreActive: true,
                     isResultRunning: false,
                     isStatsActive: false,
-                    playerList: data.users,
+                    playerList: userList,
                     playerScore: playerScore,
                     playerRank: playerRank,
-                    playerTotalScore: parseInt(this.state.playerTotalScore) + Math.round(parseInt(playerScore))
+                    playerTotalScore: playerTotalScore
                 });
             }
             else if(data && data.action == 'leaderBoard'){
