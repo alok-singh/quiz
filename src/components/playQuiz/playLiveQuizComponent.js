@@ -80,6 +80,7 @@ export default class PlayLiveQuizComponent extends Component {
                 
                 let userList = data.users.map(val => {
                     val.score = val.total_score
+                    return val;
                 });
                 
                 this.setState({

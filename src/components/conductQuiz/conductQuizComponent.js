@@ -176,6 +176,9 @@ export default class ConductQuizComponent extends Component {
                 alert(response.message);
             }
             if(response.users && response.users.length){
+                response.users.sort((a, b) => {
+                    return b.total_score - a.total_score
+                });
                 this.setState({
                     isLoading: false,
                     isPlayerList: false, 
@@ -187,7 +190,7 @@ export default class ConductQuizComponent extends Component {
                         return {
                             rank: parseInt(index) + 1,
                             name: player.name,
-                            score: player.score,
+                            score: player.total_score,
                             isCorrect: player.is_answer
                         }
                     })
