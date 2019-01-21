@@ -115,8 +115,8 @@ export default class PlayLivePollComponent extends Component {
     }
 
     componentDidMount() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         
         if(apiToken && sessionKey){
             this.timeout = setInterval(() => {
@@ -155,8 +155,8 @@ export default class PlayLivePollComponent extends Component {
             }, () => {
                 
                 if(remainingTime <= 0){
-                    let apiToken = sessionStorage.apitk;
-                    let sessionKey = sessionStorage.bqsid;
+                    let apiToken = localStorage.apitk;
+                    let sessionKey = localStorage.bqsid;
                     let answeredOption = this.state.questionObject.options.filter(option => {
                         return option.is_answer
                     })[0];

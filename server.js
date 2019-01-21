@@ -106,6 +106,7 @@ const requestPassway = (req, res, controller) => {
 		controller(req, res);
 	}
 	catch(err) {
+		console.log(err);
 		sendTo404(res);
 	}
 }

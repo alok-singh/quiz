@@ -37,8 +37,8 @@ export default class AddQuestionComponent extends Component {
 
     onClickSaveQuiz() {
         let data = this.getMappedData();
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         
         if(this.props.pollID){
             post('/api/poll/question/add/', data, {
@@ -160,8 +160,8 @@ export default class AddQuestionComponent extends Component {
     }
 
     componentDidMount() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         
         this.reader = new FileReader();
         this.reader.onload = (event) => {

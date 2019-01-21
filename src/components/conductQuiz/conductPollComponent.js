@@ -35,8 +35,8 @@ export default class ConductPollComponent extends Component {
     }
 
     componentDidMount() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
 
         if(apiToken && sessionKey){
             this.getPlayerList(apiToken, sessionKey);
@@ -63,8 +63,8 @@ export default class ConductPollComponent extends Component {
 
     onClickNextQuestion() {
         // put the request for stats for host
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         let data = {
             poll_pin: this.props.pollPin,
             poll_id: this.props.pollID,
@@ -104,8 +104,8 @@ export default class ConductPollComponent extends Component {
     }
 
     onClickStartQuiz() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         let message = '';
         this.setState({
             isLoading: true,
@@ -190,7 +190,6 @@ export default class ConductPollComponent extends Component {
                     </div>
                     <div className="row">
                         <div className="col-xs-12" >
-                            <img src="/images/smart.png" className="img-responsive" style={{margin: '0 auto', height: '160px'}} />
                         </div>  
                     </div>
                     {this.renderPlayerList()}
@@ -292,8 +291,8 @@ export default class ConductPollComponent extends Component {
 
     onClickNextStats() {
         
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         
         this.setState({
             showLoader: true

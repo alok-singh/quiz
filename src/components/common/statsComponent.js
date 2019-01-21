@@ -78,33 +78,38 @@ export default class StatsComponent extends Component {
     }
 
     renderGraph() {
-        let {optionACount, optionBCount, optionCCount, optionDCount} = this.props;
-        let totalResponses = [optionACount, optionBCount, optionCCount, optionDCount].reduce((sum, val) => {
-            return sum + parseInt(val);
-        }, 0);
-        let correctOptionIndex = this.props.questionObj.options.findIndex(option => option.is_answer);
-        return <div className="graph">
-            <div className="entity">
-                <div className="count" style={{color: barColor[0]}}>{optionACount}</div>
-                <div className="bar" style={{backgroundColor: barColor[0], height: `${parseInt((200*optionACount)/totalResponses)}px`}}></div>
-                {this.props.isPoll ? null : <div className="correct" style={{backgroundColor: barColor[0]}}>{correctOptionIndex == 0 ? <i className="fa fa-check"></i> : <i className="fa fa-close"></i>}</div>}
+        if(this.props.hideGraph){
+            return <div style={{height: '100px'}}></div>;
+        }
+        else{
+            let {optionACount, optionBCount, optionCCount, optionDCount} = this.props;
+            let totalResponses = [optionACount, optionBCount, optionCCount, optionDCount].reduce((sum, val) => {
+                return sum + parseInt(val);
+            }, 0);
+            let correctOptionIndex = this.props.questionObj.options.findIndex(option => option.is_answer);
+            return <div className="graph">
+                <div className="entity">
+                    <div className="count" style={{color: barColor[0]}}>{optionACount}</div>
+                    <div className="bar" style={{backgroundColor: barColor[0], height: `${parseInt((200*optionACount)/totalResponses)}px`}}></div>
+                    {this.props.isPoll ? null : <div className="correct" style={{backgroundColor: barColor[0]}}>{correctOptionIndex == 0 ? <i className="fa fa-check"></i> : <i className="fa fa-close"></i>}</div>}
+                </div>
+                <div className="entity">
+                    <div className="count" style={{color: barColor[1]}}>{optionBCount}</div>
+                    <div className="bar" style={{backgroundColor: barColor[1], height: `${parseInt((200*optionBCount)/totalResponses)}px`}}></div>
+                    {this.props.isPoll ? null : <div className="correct" style={{backgroundColor: barColor[1]}}>{correctOptionIndex == 1 ? <i className="fa fa-check"></i> : <i className="fa fa-close"></i>}</div>}
+                </div>
+                <div className="entity">
+                    <div className="count" style={{color: barColor[2]}}>{optionCCount}</div>
+                    <div className="bar" style={{backgroundColor: barColor[2], height: `${parseInt((200*optionCCount)/totalResponses)}px`}}></div>
+                    {this.props.isPoll ? null : <div className="correct" style={{backgroundColor: barColor[2]}}>{correctOptionIndex == 2 ? <i className="fa fa-check"></i> : <i className="fa fa-close"></i>}</div>}
+                </div>
+                <div className="entity">
+                    <div className="count" style={{color: barColor[3]}}>{optionDCount}</div>
+                    <div className="bar" style={{backgroundColor: barColor[3], height: `${parseInt((200*optionDCount)/totalResponses)}px`}}></div>
+                    {this.props.isPoll ? null : <div className="correct" style={{backgroundColor: barColor[3]}}>{correctOptionIndex == 3 ? <i className="fa fa-check"></i> : <i className="fa fa-close"></i>}</div>}
+                </div>
             </div>
-            <div className="entity">
-                <div className="count" style={{color: barColor[1]}}>{optionBCount}</div>
-                <div className="bar" style={{backgroundColor: barColor[1], height: `${parseInt((200*optionBCount)/totalResponses)}px`}}></div>
-                {this.props.isPoll ? null : <div className="correct" style={{backgroundColor: barColor[1]}}>{correctOptionIndex == 1 ? <i className="fa fa-check"></i> : <i className="fa fa-close"></i>}</div>}
-            </div>
-            <div className="entity">
-                <div className="count" style={{color: barColor[2]}}>{optionCCount}</div>
-                <div className="bar" style={{backgroundColor: barColor[2], height: `${parseInt((200*optionCCount)/totalResponses)}px`}}></div>
-                {this.props.isPoll ? null : <div className="correct" style={{backgroundColor: barColor[2]}}>{correctOptionIndex == 2 ? <i className="fa fa-check"></i> : <i className="fa fa-close"></i>}</div>}
-            </div>
-            <div className="entity">
-                <div className="count" style={{color: barColor[3]}}>{optionDCount}</div>
-                <div className="bar" style={{backgroundColor: barColor[3], height: `${parseInt((200*optionDCount)/totalResponses)}px`}}></div>
-                {this.props.isPoll ? null : <div className="correct" style={{backgroundColor: barColor[3]}}>{correctOptionIndex == 3 ? <i className="fa fa-check"></i> : <i className="fa fa-close"></i>}</div>}
-            </div>
-        </div>
+        }
     }
 
     renderNextButton() {

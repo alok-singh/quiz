@@ -176,9 +176,9 @@ export default class QuizComponent extends Component {
                         isLoading: false,
                         role: data.role
                     }, () => {
-                        sessionStorage.bqsid = this.state.sessionID;
-                        sessionStorage.apitk = this.state.apiToken;
-                        sessionStorage.role = this.state.role;
+                        localStorage.bqsid = this.state.sessionID;
+                        localStorage.apitk = this.state.apiToken;
+                        localStorage.role = this.state.role;
                         if(data.role == 'player'){
                             location.href = '/player-home'
                         }
@@ -217,8 +217,8 @@ export default class QuizComponent extends Component {
     }
 
     componentDidMount() {
-        if(sessionStorage.bqsid && sessionStorage.apitk){
-            if(sessionStorage.role == 'player'){
+        if(localStorage.bqsid && localStorage.apitk){
+            if(localStorage.role == 'player'){
                 location.href = '/player-home';
             }
             else{

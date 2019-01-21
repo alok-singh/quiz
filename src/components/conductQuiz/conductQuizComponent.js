@@ -38,8 +38,8 @@ export default class ConductQuizComponent extends Component {
     }
 
     componentDidMount() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
 
         if(apiToken && sessionKey){
             this.getPlayerList(apiToken, sessionKey);
@@ -67,8 +67,8 @@ export default class ConductQuizComponent extends Component {
     onClickNextLeaderBoard() {
         // put the request of next question or final stats for host
         
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         
         this.setState({
             showLoader: true
@@ -116,8 +116,8 @@ export default class ConductQuizComponent extends Component {
 
     onClickNextQuestion() {
         // put the request for stats for host
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         let data = {
             quiz_pin: this.props.quizPin,
             quiz_id: this.props.quizID,
@@ -159,8 +159,8 @@ export default class ConductQuizComponent extends Component {
     onClickNextStats() {
         // put the request of leaderboard stats data
         
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         let data = {
             quiz_pin: this.props.quizPin,
             quiz_id: this.props.quizID,
@@ -217,8 +217,8 @@ export default class ConductQuizComponent extends Component {
     }
 
     onClickStartQuiz() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         let message = '';
         this.setState({
             isLoading: true,
@@ -307,7 +307,6 @@ export default class ConductQuizComponent extends Component {
                     </div>
                     <div className="row">
                         <div className="col-xs-12" >
-                            <img src="/images/smart.png" className="img-responsive" style={{margin: '0 auto', height: '160px'}} />
                         </div>  
                     </div>
                     {this.renderPlayerList()}

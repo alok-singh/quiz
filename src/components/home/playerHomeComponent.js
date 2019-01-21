@@ -21,8 +21,8 @@ export default class QuizComponent extends Component {
     }
 
     signout() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         this.setState({
             isLoading: true
         }, () => {
@@ -30,8 +30,8 @@ export default class QuizComponent extends Component {
                 post('/api/user/logout/', null, {
                     authorization: apiToken
                 }).then(data => {
-                    delete sessionStorage.apitk;
-                    delete sessionStorage.bqsid;
+                    delete localStorage.apitk;
+                    delete localStorage.bqsid;
                     this.setState({
                         isLoading: false
                     }, () => {
@@ -43,8 +43,8 @@ export default class QuizComponent extends Component {
     }
 
     componentDidMount() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         
         get('/api/quiz/all/', {
             authorization: apiToken
@@ -58,8 +58,8 @@ export default class QuizComponent extends Component {
     }
 
     onClickPlayQuiz() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         if(apiToken && sessionKey){
 
         }
@@ -85,8 +85,8 @@ export default class QuizComponent extends Component {
 
     onClickSubmitPin() {
         let url = '';
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         let pin = this.state.quizPin;
         if(pin.length){
             if(pin[0].toLowerCase() == 'p'){
@@ -264,8 +264,8 @@ export default class QuizComponent extends Component {
     }
 
     renderNavBar() {
-        let apiToken = typeof window == 'undefined' ? '' : sessionStorage.apitk;
-        let sessionKey = typeof window == 'undefined' ? '' : sessionStorage.bqsid;
+        let apiToken = typeof window == 'undefined' ? '' : localStorage.apitk;
+        let sessionKey = typeof window == 'undefined' ? '' : localStorage.bqsid;
         return <nav className="navbar navbar-default">
             <div className="container">
                 <div className="navbar-header">

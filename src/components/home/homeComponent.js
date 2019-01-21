@@ -26,16 +26,16 @@ export default class QuizComponent extends Component {
     }
 
     signout() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         this.setState({
             isLoading: true
         }, () => {
             post('/api/user/logout/', null, {
                 authorization: apiToken
             }).then(data => {
-                delete sessionStorage.apitk;
-                delete sessionStorage.bqsid;
+                delete localStorage.apitk;
+                delete localStorage.bqsid;
                 this.setState({
                     isLoading: false
                 }, () => {
@@ -46,9 +46,9 @@ export default class QuizComponent extends Component {
     }
 
     delete(type, id, name) {
-        let apiToken = sessionStorage.apitk;
-        let sessionID = sessionStorage.bqsid;
-        let role = sessionStorage.role;
+        let apiToken = localStorage.apitk;
+        let sessionID = localStorage.bqsid;
+        let role = localStorage.role;
         if(confirm(`Are you sure you want to delete "${name}"?`)){
             deleteReq(`/api/${type}/${id}/`, {
                 authorization: apiToken
@@ -104,8 +104,8 @@ export default class QuizComponent extends Component {
     }
 
     onClickConductModal() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
 
         if(this.state.isPoll){
             post('/api/poll/generate/pin/', {
@@ -152,8 +152,8 @@ export default class QuizComponent extends Component {
     }
 
     onClickActivate(quizID, switchTo) {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         let quizList = this.state.quizList.map(quiz => {
             if(quiz.id == quizID){
                 quiz.is_enabled = switchTo;
@@ -176,8 +176,8 @@ export default class QuizComponent extends Component {
     }
 
     componentDidMount() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         this.renderList();
         get('/api/user/name/', {
             authorization: apiToken
@@ -197,9 +197,9 @@ export default class QuizComponent extends Component {
     }
 
     renderList(queryObj) {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
-        let role = sessionStorage.role;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
+        let role = localStorage.role;
 
         this.setState({
             isLoading: true

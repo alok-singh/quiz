@@ -3,6 +3,7 @@ import {get, post} from '../../common/api';
 import ScoreBoardComponent from './scoreBoardComponent';
 import Modal from '../common/modal';
 import LoadingScreenComponent from '../common/loadingScreenComponent';
+import StatsComponent from '../common/statsComponent';
 
 const optionColorList = [
     'rgba(226, 27, 60, 0.6)',
@@ -35,17 +36,20 @@ export default class PlayQuizComponent extends Component {
             playerScore: 'NA',
             isPlayerCorrect: undefined,
             isScoreActive: false,
+            isStatsActive: false,
             isQuestionActive: false,
             answeredAtTimeRemaining: 0,
-            playerTotalScore: 0
+            playerTotalScore: 0,
+            correctAnswerID: null
         }
         this.onClickNextQuestion = this.onClickNextQuestion.bind(this);
         this.onClickNextScoreBoard = this.onClickNextScoreBoard.bind(this);
+        this.onClickNextStats = this.onClickNextStats.bind(this);
     }
 
     onClickNextQuestion() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         let currentQuestionObject = this.state.questionList[this.state.currentQuestion-1];
         let markedOption = currentQuestionObject.options.find(val => val.is_answer);
         let optionID = markedOption ? markedOption.option_id : 0;
@@ -60,10 +64,12 @@ export default class PlayQuizComponent extends Component {
         }).then(response => {
             this.setState({
                 isQuestionActive: false,
-                isScoreActive: true,
+                isScoreActive: false,
+                isStatsActive: true,
                 isPlayerCorrect: optionID == 0 ? undefined : response.is_answer,
                 playerScore: Math.round(response.score),
-                playerTotalScore: parseInt(this.state.playerTotalScore) + Math.round(response.score)
+                playerTotalScore: parseInt(this.state.playerTotalScore) + Math.round(response.score),
+                correctAnswerID: response.correct_answer_id
             }, () => {
                 clearInterval(this.interval);
             });
@@ -88,6 +94,13 @@ export default class PlayQuizComponent extends Component {
                 answeredAtTimeRemaining: answeredAtTimeRemaining
             });
         }
+    }
+
+    onClickNextStats() {
+        this.setState({
+            isScoreActive: true,
+            isStatsActive: false
+        });
     }
 
     onClickNextScoreBoard() {
@@ -123,8 +136,8 @@ export default class PlayQuizComponent extends Component {
                 });
             }
             else{
-                let apiToken = sessionStorage.apitk;
-                let sessionKey = sessionStorage.bqsid;
+                let apiToken = localStorage.apitk;
+                let sessionKey = localStorage.bqsid;
                 post('/api/quiz/answers/', this.getMappedData(), {
                     authorization: apiToken
                 }).then(data => {
@@ -158,8 +171,8 @@ export default class PlayQuizComponent extends Component {
     }
 
     componentDidMount() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
 
         this.timeout = setInterval(() => {
             let loadingPercent = parseInt(this.state.loadingPercent) + parseInt(50*Math.random());
@@ -301,6 +314,29 @@ export default class PlayQuizComponent extends Component {
         }
     }
 
+    renderStatsScreen() {
+        if(this.state.isStatsActive){
+            let questionObject = this.state.questionList[this.state.currentQuestion-1];
+            questionObject.options = questionObject.options.map(option => {
+                delete option.is_answer;
+                if(option.option_id == this.state.correctAnswerID){
+                    option.is_answer = true;
+                }
+                return option;
+            })
+            return <StatsComponent 
+                questionObj={questionObject}
+                totalQuestions={this.state.questionList.length}
+                currentQuestionNumber={this.state.currentQuestion}
+                onClickNext={this.onClickNextStats}
+                hideGraph={true}
+            />
+        }
+        else{
+            return null;
+        }
+    }
+
     renderModal() {
         if(this.state.modalData && this.state.isModalVisible){
             let {modalData} = this.state;
@@ -350,6 +386,7 @@ export default class PlayQuizComponent extends Component {
             {this.renderQuestion()}
             {this.renderHiddenData()}
             {this.renderScoreBoard()}
+            {this.renderStatsScreen()}
             {this.renderModal()}
         </div>
     }

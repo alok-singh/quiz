@@ -15,12 +15,11 @@ export default class LoadingScreenComponent extends Component {
                         
                     </div>
                     <div className="col-xs-10 col-md-8" >
-                        <img src="/images/smart.png" className="img-responsive" style={{margin: '0 auto', padding: '20px 0px 10px', height: '160px'}} />
                     </div>
                 </div>
                 <div className="row text-center">
                     <div className="col-xs-12" >
-                        <p style={{fontSize: '44px', color: '#333'}}>Questions</p>
+                        <p style={{fontSize: '44px', color: '#333', marginTop: '50px'}}>Instructions</p>
                     </div>
                 </div>
                 <div className="row text-center">

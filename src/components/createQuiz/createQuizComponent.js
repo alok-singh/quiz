@@ -20,8 +20,8 @@ export default class createQuizComponent extends Component {
     }
 
     componentDidMount() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         let formData = new FormData();
         
         this.reader = new FileReader();
@@ -59,16 +59,16 @@ export default class createQuizComponent extends Component {
     }
 
     signout() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         this.setState({
             isLoading: true
         }, () => {
             post('/api/user/logout/', null, {
                 authorization: apiToken
             }).then(data => {
-                delete sessionStorage.apitk;
-                delete sessionStorage.bqsid;
+                delete localStorage.apitk;
+                delete localStorage.bqsid;
                 this.setState({
                     isLoading: false
                 }, () => {
@@ -97,8 +97,8 @@ export default class createQuizComponent extends Component {
     }
 
     onCreateQuiz() {
-        let apiToken = sessionStorage.apitk;
-        let sessionKey = sessionStorage.bqsid;
+        let apiToken = localStorage.apitk;
+        let sessionKey = localStorage.bqsid;
         if(this.props.isPoll){
             if(this.state.quizName && this.state.description){
                 post('/api/poll/', {
