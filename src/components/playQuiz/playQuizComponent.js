@@ -92,6 +92,8 @@ export default class PlayQuizComponent extends Component {
                 questionList,
                 isCurrentQuestionAnswered: true,
                 answeredAtTimeRemaining: answeredAtTimeRemaining
+            }, () => {
+                this.onClickNextQuestion();
             });
         }
     }
@@ -130,6 +132,8 @@ export default class PlayQuizComponent extends Component {
                                 isAnsweringAllowed: false,
                                 isQuestionActive: true,
                                 isScoreActive: false
+                            }, () => {
+                                this.onClickNextQuestion();
                             })
                         }
                     }, 1000)
@@ -263,24 +267,12 @@ export default class PlayQuizComponent extends Component {
                             })}
                         </div>
                     </div>
-                    {this.renderNextButton()}
                 </section>
 
             }
             else {
                 return <div style={{fontSize: '20px', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>No Questions Added in Quiz</div>
             }
-        }
-        else{
-            return null;
-        }
-    }
-
-    renderNextButton() {
-        if((!this.state.isAnsweringAllowed || this.state.isCurrentQuestionAnswered) && this.state.questionList.length){
-            return <div style={{textAlign: 'center', margin: '30px 0px'}}>
-                <button onClick={this.onClickNextQuestion} className="btn btn-success" style={{height: '42px', width: '120px', fontSize: '16px', textTransform: 'capitalize', display: 'inline-block', background: '#0067d5', border: '1px solid #0067d5'}}>{this.state.currentQuestion < this.state.questionList.length ? 'next' : 'finish'}</button>
-            </div>
         }
         else{
             return null;
