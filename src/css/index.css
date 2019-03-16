@@ -951,6 +951,33 @@ figure.effect-goliath:hover p {
     margin-bottom: 0px;
 }
 
+.player-home {
+    overflow: hidden;
+}
+
+.home-page-line-1 {
+    font-size: 55px; 
+    font-weight: 500;
+    font-family: 'Chango', cursive;
+    margin-bottom: 0px;
+}
+.home-page-line-2 {
+    font-size: 60px; 
+    letter-spacing: 2.5px;
+    line-height: 1;
+    font-family: 'Chango', cursive;
+    margin: 0px; 
+    margin-bottom: 18px; 
+    font-weight: 500
+}
+.home-page-line-3 {
+    font-size: 18px; 
+    margin : 0px
+}
+.home-page-line-4 {
+    font-size: 18px; 
+    margin-bottom: 40px
+}
 
 @media (max-width: 600px) {
     .dynamic-text {
@@ -961,4 +988,11 @@ figure.effect-goliath:hover p {
         font-weight: bold;
         margin: 20px;
     }
+    .home-page-line-1 {
+        font-size: 36px
+    }
+    .home-page-line-2 {
+        font-size: 36px
+    }
+
 }

@@ -239,10 +239,10 @@ export default class QuizComponent extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 cont" >
-                        <p style={{fontSize: '55px', fontWeight: '500', fontFamily: '\'Chango\', cursive', marginBottom: '0px'}}>Make Learning</p>
-                        <p style={{fontSize: '60px', letterSpacing: '2.5px', lineHeight: '1', fontFamily: '\'Chango\', cursive', margin: '0px', marginBottom: '18px', fontWeight: '500'}}>Amazing..!</p>
-                        <p style={{fontSize: '18px', margin : '0px'}}>Play Quizzes, Challenge Friends, </p>
-                        <p style={{fontSize: '18px', marginBottom: '40px'}}>Compete with World, Learn Something New Everyday</p>
+                        <p className="home-page-line-1">Make Learning</p>
+                        <p className="home-page-line-2">Amazing..!</p>
+                        <p className="home-page-line-3">Play Quizzes, Challenge Friends, </p>
+                        <p className="home-page-line-4">Compete with World, Learn Something New Everyday</p>
                         <span>
                             <button type="button" className="btn btn-success" onClick={this.onClickEnterPinButton} >Join Games</button>
                         </span>
@@ -268,6 +268,17 @@ export default class QuizComponent extends Component {
         let apiToken = typeof window == 'undefined' ? '' : localStorage.apitk;
         return <nav className="navbar navbar-default">
             <div className="container">
+                <div className="navbar-header">
+                    {apiToken ? '' : <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style={{margin: '0px'}}>
+                        <a href="/sign-up">Signup</a>
+                    </button>}
+                    {apiToken ? <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style={{margin: '0px'}}>
+                        <a href="#" onClick={this.signout}>Logout</a>
+                    </button> : <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style={{margin: '0px'}}>
+                        <a href="/login" >Login</a>
+                    </button>}
+                    <a href="#"><img src="/images/lg.png" alt="logo" className="img-responsive" /></a>
+                </div>
                 <div className="collapse navbar-collapse" id="myNavbar">
                     <ul id="nav-menu" className="nav navbar-nav navbar-right">
                         <li>
@@ -289,7 +300,7 @@ export default class QuizComponent extends Component {
     }
 
     renderModal() {
-        return <Modal isVisible={this.state.isModalVisible} width="20%">
+        return <Modal isVisible={this.state.isModalVisible}>
             <div className="content-wrapper" style={{padding: '15px', textAlign: 'center'}}>
                 <h2 style={{color: '#333'}}>Enter PIN</h2>
                 <div className="table-wrapper">

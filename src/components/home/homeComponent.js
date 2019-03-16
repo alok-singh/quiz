@@ -318,7 +318,7 @@ export default class QuizComponent extends Component {
         return <section className="admincontent">
             <div className="container" >
                 <div className="row controw" style={{display: 'flex'}}>
-                    {this.state.isSidebarVisible ? <div className="col-md-2 text-center" style={{background: '#8cc4fd', borderRight: '1px solid #d4d4d4', width: '27%'}} >
+                    {this.state.isSidebarVisible ? <div className="col-md-2 text-center" style={{background: '#8cc4fd', borderRight: '1px solid #d4d4d4', width: '27%', minHeight: 'calc(100vh - 55px)'}} >
                         <div className="row">
                             <div className="col-xs-12 contblock " style={{background: '#ffffff', padding: '0px'}}>
                                 <img src="/images/user.jpg" className="img-responsive "/>
