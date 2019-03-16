@@ -41,7 +41,6 @@ export default class PlayLiveQuizComponent extends Component {
 
     eventHandler() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         this.socket = io();
         this.socket.on('broadcast', (data) => {
             if(data && data.action == 'question'){
@@ -52,6 +51,7 @@ export default class PlayLiveQuizComponent extends Component {
                     isResultRunning: false,
                     isStatsActive: false,
                     questionObject: data.question,
+                    isAnsweringAllowed: true,
                     totalQuestions: data.total_questions ? data.total_questions : this.state.totalQuestions,
                     currentTimeout: data.question.question_time,
                     currentQuestionNumber: parseInt(this.state.currentQuestionNumber) + 1
@@ -143,15 +143,35 @@ export default class PlayLiveQuizComponent extends Component {
             questionObject.options = options;
             this.setState({
                 questionObject
-            });
+            }, () => {
+                let apiToken = localStorage.apitk;
+                let answeredOption = this.state.questionObject.options.filter(option => {
+                    return option.is_answer
+                })[0];
+                let data = {
+                    quiz_id: this.props.quizID,
+                    question_id: this.state.questionObject.question_id,
+                    quiz_pin: this.props.quizPin,
+                    option_id: answeredOption ? answeredOption.option_id : null,
+                    time_remaining: this.state.currentTimeout*1000,
+                    question_time: this.state.questionObject.question_time*1000
+                };
+                post(`/api/player/answer/`, data, {
+                    authorization: apiToken
+                }).then(data => {
+                    this.setState({
+                        isPlayerCorrect: data.correct,
+                        isAnsweringAllowed: false
+                    });
+                });
+            });            
         }
     }
 
     componentDidMount() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         
-        if(apiToken && sessionKey){
+        if(apiToken){
             this.timeout = setInterval(() => {
                 let loadingPercent = parseInt(this.state.loadingPercent) + parseInt(50*Math.random());
                 if(loadingPercent >= 100){
@@ -178,36 +198,22 @@ export default class PlayLiveQuizComponent extends Component {
     startClock() {
         this.interval = setInterval(() => {
             let remainingTime = this.state.currentTimeout - 1;
+            let isAnsweringAllowed = false;
+            
+            if(remainingTime > 0) {
+                isAnsweringAllowed = true;
+            }
+            if(this.state.isAnsweringAllowed == false){
+                isAnsweringAllowed = false;
+            }
+             
             if(remainingTime <= 0){
                 remainingTime = 0;
                 clearTimeout(this.interval);
             }
             this.setState({
                 currentTimeout: remainingTime,
-                isAnsweringAllowed: !(remainingTime <= 0)
-            }, () => {
-                
-                if(remainingTime <= 0){
-                    let apiToken = localStorage.apitk;
-                    let sessionKey = localStorage.bqsid;
-                    let answeredOption = this.state.questionObject.options.filter(option => {
-                        return option.is_answer
-                    })[0];
-                    let data = {
-                        quiz_id: this.props.quizID,
-                        question_id: this.state.questionObject.question_id,
-                        quiz_pin: this.props.quizPin,
-                        option_id: answeredOption ? answeredOption.option_id : null
-                    };
-                    post(`/api/player/answer/`, data, {
-                        authorization: apiToken
-                    }).then(data => {
-                        this.setState({
-                            isPlayerCorrect: data.correct
-                        });
-                    });
-                }
-
+                isAnsweringAllowed: isAnsweringAllowed
             });
         }, 1000);
     }

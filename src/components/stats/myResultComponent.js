@@ -16,7 +16,6 @@ export default class MyResultComponent extends Component {
 
     signout() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         this.setState({
             isLoading: true
         }, () => {
@@ -40,7 +39,6 @@ export default class MyResultComponent extends Component {
 
     componentDidMount() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         this.setState({
             isLoading: true
         })

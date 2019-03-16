@@ -116,9 +116,8 @@ export default class PlayLivePollComponent extends Component {
 
     componentDidMount() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         
-        if(apiToken && sessionKey){
+        if(apiToken){
             this.timeout = setInterval(() => {
                 let loadingPercent = parseInt(this.state.loadingPercent) + parseInt(50*Math.random());
                 if(loadingPercent >= 100){
@@ -156,7 +155,6 @@ export default class PlayLivePollComponent extends Component {
                 
                 if(remainingTime <= 0){
                     let apiToken = localStorage.apitk;
-                    let sessionKey = localStorage.bqsid;
                     let answeredOption = this.state.questionObject.options.filter(option => {
                         return option.is_answer
                     })[0];

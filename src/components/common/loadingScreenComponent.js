@@ -25,12 +25,12 @@ export default class LoadingScreenComponent extends Component {
                 <div className="row text-center">
                     <div className="col-md-2 hidden-sm hidden-xs"></div>
                     <div className="col-md-4 par" >
-                        <p><span><i className="fa fa-check" ></i></span><span>Quick response for more points</span></p>
-                        <p><span><i className="fa fa-check" ></i></span><span>Quick response for more points</span></p>
+                        <p><span><i className="fa fa-check" ></i></span><span>Answer quickly for more points</span></p>
+                        <p><span><i className="fa fa-check" ></i></span><span>Response can't be changed once clicked</span></p>
                     </div>  
                     <div className="col-md-4 par" >
-                        <p><span><i className="fa fa-check" ></i></span><span>Correct streak for bonus points</span></p>
-                        <p><span><i className="fa fa-check" ></i></span><span>Correct streak for bonus points</span></p>
+                        <p><span><i className="fa fa-check" ></i></span><span>No negative points</span></p>
+                        <p><span><i className="fa fa-check" ></i></span><span>Final leaderboard based on total score</span></p>
                     </div>
                     <div className="col-md-2 hidden-sm hidden-xs"></div>
                 </div>

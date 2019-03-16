@@ -39,10 +39,9 @@ export default class ConductQuizComponent extends Component {
 
     componentDidMount() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
 
-        if(apiToken && sessionKey){
-            this.getPlayerList(apiToken, sessionKey);
+        if(apiToken){
+            this.getPlayerList(apiToken);
         }
         else{
             location.href = '/login';
@@ -68,7 +67,6 @@ export default class ConductQuizComponent extends Component {
         // put the request of next question or final stats for host
         
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         
         this.setState({
             showLoader: true
@@ -117,7 +115,6 @@ export default class ConductQuizComponent extends Component {
     onClickNextQuestion() {
         // put the request for stats for host
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         let data = {
             quiz_pin: this.props.quizPin,
             quiz_id: this.props.quizID,
@@ -160,7 +157,6 @@ export default class ConductQuizComponent extends Component {
         // put the request of leaderboard stats data
         
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         let data = {
             quiz_pin: this.props.quizPin,
             quiz_id: this.props.quizID,
@@ -218,7 +214,6 @@ export default class ConductQuizComponent extends Component {
 
     onClickStartQuiz() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         let message = '';
         this.setState({
             isLoading: true,
@@ -269,7 +264,7 @@ export default class ConductQuizComponent extends Component {
         });
     }
 
-    getPlayerList(apiToken, sessionKey) {
+    getPlayerList(apiToken) {
         get(`/api/${this.props.quizPin}/users/`, {
             authorization: apiToken
         }).then(({users}) => {
@@ -278,7 +273,7 @@ export default class ConductQuizComponent extends Component {
             }, () => {
                 setTimeout(() => {
                     if(this.state.isPlayerList){
-                        this.getPlayerList(apiToken, sessionKey);
+                        this.getPlayerList(apiToken);
                     }
                 }, 3000);
             });

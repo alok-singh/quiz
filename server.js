@@ -25,7 +25,7 @@ app.set('views', path.join(__dirname, '/templates'));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
-app.get('/login', (req, res) => {
+app.get(['/login', '/sign-up'], (req, res) => {
 	requestPassway(req, res, loginController);
 });
 
@@ -41,7 +41,7 @@ app.get('/home', (req, res) => {
 	requestPassway(req, res, homeController);
 });
 
-app.get('/player-home', (req, res) => {
+app.get(['/', '/player-home'], (req, res) => {
 	requestPassway(req, res, playerHomeController);
 });
 

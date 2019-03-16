@@ -21,7 +21,6 @@ export default class createQuizComponent extends Component {
 
     componentDidMount() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         let formData = new FormData();
         
         this.reader = new FileReader();
@@ -50,7 +49,7 @@ export default class createQuizComponent extends Component {
             });
         });
         
-        if(apiToken && sessionKey){
+        if(apiToken){
             this.uploadImageInput = document.getElementById('uploadImage');    
         }
         else{
@@ -60,7 +59,6 @@ export default class createQuizComponent extends Component {
 
     signout() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         this.setState({
             isLoading: true
         }, () => {
@@ -98,7 +96,6 @@ export default class createQuizComponent extends Component {
 
     onCreateQuiz() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         if(this.props.isPoll){
             if(this.state.quizName && this.state.description){
                 post('/api/poll/', {

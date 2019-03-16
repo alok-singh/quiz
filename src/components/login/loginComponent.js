@@ -10,7 +10,6 @@ export default class QuizComponent extends Component {
         this.state = {
             activeStage: 'signin',
             signupProgress: false,
-            sessionID: '',
             isLoading: false,
             sessionID: '',
             apiToken: '',
@@ -99,7 +98,6 @@ export default class QuizComponent extends Component {
                     activeStage: 'signup',
                     sessionID: '',
                     isLoading: false,
-                    sessionID: '',
                     apiToken: '',
                     mobileNumber: '',
                     signupMobile: '',
@@ -147,7 +145,6 @@ export default class QuizComponent extends Component {
                     activeStage: 'signup',
                     sessionID: '',
                     isLoading: false,
-                    sessionID: '',
                     apiToken: '',
                     mobileNumber: '',
                     signupMobile: '',
@@ -205,7 +202,6 @@ export default class QuizComponent extends Component {
                     signupProgress: false,
                     sessionID: '',
                     isLoading: false,
-                    sessionID: '',
                     apiToken: '',
                     mobileNumber: '',
                     otp: '',
@@ -217,13 +213,18 @@ export default class QuizComponent extends Component {
     }
 
     componentDidMount() {
-        if(localStorage.bqsid && localStorage.apitk){
+        if(localStorage.apitk){
             if(localStorage.role == 'player'){
-                location.href = '/player-home';
+                location.href = '/';
             }
             else{
                 location.href = '/home';
             }
+        }
+        else if(location.href.indexOf('sign-up') !== -1){
+            this.setState({
+               activeStage: 'signup' 
+            });
         }
     }
 

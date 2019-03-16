@@ -49,7 +49,6 @@ export default class PlayQuizComponent extends Component {
 
     onClickNextQuestion() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         let currentQuestionObject = this.state.questionList[this.state.currentQuestion-1];
         let markedOption = currentQuestionObject.options.find(val => val.is_answer);
         let optionID = markedOption ? markedOption.option_id : 0;
@@ -141,7 +140,6 @@ export default class PlayQuizComponent extends Component {
             }
             else{
                 let apiToken = localStorage.apitk;
-                let sessionKey = localStorage.bqsid;
                 post('/api/quiz/answers/', this.getMappedData(), {
                     authorization: apiToken
                 }).then(data => {
@@ -176,7 +174,6 @@ export default class PlayQuizComponent extends Component {
 
     componentDidMount() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
 
         this.timeout = setInterval(() => {
             let loadingPercent = parseInt(this.state.loadingPercent) + parseInt(50*Math.random());

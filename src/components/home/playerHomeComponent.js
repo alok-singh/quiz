@@ -22,7 +22,6 @@ export default class QuizComponent extends Component {
 
     signout() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         this.setState({
             isLoading: true
         }, () => {
@@ -44,7 +43,6 @@ export default class QuizComponent extends Component {
 
     componentDidMount() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         
         get('/api/quiz/all/', {
             authorization: apiToken
@@ -59,8 +57,7 @@ export default class QuizComponent extends Component {
 
     onClickPlayQuiz() {
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
-        if(apiToken && sessionKey){
+        if(apiToken){
 
         }
         else{
@@ -86,7 +83,6 @@ export default class QuizComponent extends Component {
     onClickSubmitPin() {
         let url = '';
         let apiToken = localStorage.apitk;
-        let sessionKey = localStorage.bqsid;
         let pin = this.state.quizPin;
         if(pin.length){
             if(pin[0].toLowerCase() == 'p'){
@@ -203,7 +199,7 @@ export default class QuizComponent extends Component {
             <div className="container grid">
                 <div className="row">
                     <div className="col-xs-12" >
-                        <p style={{color: '#eb670f', textAlign: 'left', fontSize: '44px', lineHeight: '2.2', fontWeight: 'bold', marginBottom: '0px'}}>{text}</p>
+                        <p className="dynamic-text">{text}</p>
                     </div>
                 </div>
                 <div className="row">
@@ -245,9 +241,14 @@ export default class QuizComponent extends Component {
                     <div className="col-md-6 cont" >
                         <p style={{fontSize: '55px', fontWeight: '500', fontFamily: '\'Chango\', cursive', marginBottom: '0px'}}>Make Learning</p>
                         <p style={{fontSize: '60px', letterSpacing: '2.5px', lineHeight: '1', fontFamily: '\'Chango\', cursive', margin: '0px', marginBottom: '18px', fontWeight: '500'}}>Amazing..!</p>
-                        <p style={{fontSize: '18px', margin : '0px'}}>Play Quizzes, Chanllenge Friends, </p>
-                        <p style={{fontSize: '18px', marginBottom: '40px'}}>Compete with World, Learn Something Everyday</p>
-                        <span><button type="button" className="btn btn-success" onClick={this.onClickEnterPinButton} >Join Games</button></span><span><button type="button" className="btn btn-success " >Explore Games</button></span>
+                        <p style={{fontSize: '18px', margin : '0px'}}>Play Quizzes, Challenge Friends, </p>
+                        <p style={{fontSize: '18px', marginBottom: '40px'}}>Compete with World, Learn Something New Everyday</p>
+                        <span>
+                            <button type="button" className="btn btn-success" onClick={this.onClickEnterPinButton} >Join Games</button>
+                        </span>
+                        <span>
+                            <button type="button" className="btn btn-success" onClick={() => {location.href = '/sign-up'}}>Sign Up</button>
+                        </span>
                     </div>
                     <div className="col-md-6 cont" >
                         <img className="img-responsive " src="/images/ws.jpg" alt="Chicago" />
@@ -265,21 +266,12 @@ export default class QuizComponent extends Component {
 
     renderNavBar() {
         let apiToken = typeof window == 'undefined' ? '' : localStorage.apitk;
-        let sessionKey = typeof window == 'undefined' ? '' : localStorage.bqsid;
         return <nav className="navbar navbar-default">
             <div className="container">
-                <div className="navbar-header">
-                    <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                        <span className="icon-bar"></span>
-                        <span className="icon-bar"></span>
-                        <span className="icon-bar"></span>                        
-                    </button>
-                    <a href="#"><img src="/images/lg.png" alt="logo" className="img-responsive" /></a>
-                </div>
                 <div className="collapse navbar-collapse" id="myNavbar">
                     <ul id="nav-menu" className="nav navbar-nav navbar-right">
                         <li>
-                            {apiToken ? '' : <a href="/login">Signup</a>}
+                            {apiToken ? '' : <a href="/sign-up">Signup</a>}
                         </li>
                         <li>
                             {apiToken ? <a href="#" onClick={this.signout}>Logout</a> : <a href="/login" >Login</a>}
