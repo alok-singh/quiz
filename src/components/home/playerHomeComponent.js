@@ -305,7 +305,7 @@ export default class QuizComponent extends Component {
                 <h2 style={{color: '#333'}}>Enter PIN</h2>
                 <div className="table-wrapper">
                     <div className="result-row">
-                        <input value={this.state.quizPin} onChange={({target}) => this.onChangeInput('quizPin', target.value)} style={{width: '75%', height: '35px', margin: '20px 0px 30px', color: '#333', letterSpacing: '3px', textTransform: 'uppercase', fontSize: '20px', paddingLeft: '8px'}}/>
+                        <input value={this.state.quizPin} onChange={({target}) => this.onChangeInput('quizPin', target.value)} style={{width: '75%', height: '35px', margin: '20px 0px 30px', color: '#333', letterSpacing: '3px', textTransform: 'uppercase', fontSize: '20px', paddingLeft: '8px', border: '1px solid #333'}}/>
                     </div>
                 </div>
                 <button className="btn btn-primary" onClick={this.onClickSubmitPin}>Proceed</button>
