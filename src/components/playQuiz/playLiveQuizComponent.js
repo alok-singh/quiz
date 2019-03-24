@@ -43,7 +43,10 @@ export default class PlayLiveQuizComponent extends Component {
         let apiToken = localStorage.apitk;
         this.socket = io();
         this.socket.on('broadcast', (data) => {
-            if(data && data.action == 'question'){
+            if(data && data.quiz_pin && data.quiz_pin != this.props.quizPin) {
+                // do nothing
+            }
+            else if(data && data.action == 'question'){
                 this.setState({
                     isQuestionActive: true,
                     isLoading: false,

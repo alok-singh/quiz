@@ -53,7 +53,7 @@ export default class QuizComponent extends Component {
         let url = '';
         this.setState({
             isLoading: true
-        })
+        });
 
         if(action == 'signin'){
             post(actionURL ? actionURL : '/api/user/login/', {
@@ -71,6 +71,7 @@ export default class QuizComponent extends Component {
                         }
                         else{
                             alert('Something went wrong please try again.');
+                            console.log('session id in the response no message', data);
                             window.location.reload();
                         }
                     });
@@ -86,9 +87,11 @@ export default class QuizComponent extends Component {
                         }
                         else if(data.message){
                             alert(data.message);
+                            console.log('expected response', data);
                         }
                         else{
                             alert('Something went wrong please try again.');
+                            console.log('session id not present in response', data);
                             window.location.reload();
                         }
                     });
@@ -124,6 +127,7 @@ export default class QuizComponent extends Component {
                         }
                         else{
                             alert('Something went wrong please try again.');
+                            console.log('there is session ID but no message', data);
                             window.location.reload();
                         }
                     });
@@ -137,6 +141,7 @@ export default class QuizComponent extends Component {
                     }
                     else{
                         alert('Something went wrong please try again.');
+                        console.log('there no session ID', data);
                         window.location.reload();
                     }
                 }
@@ -152,6 +157,7 @@ export default class QuizComponent extends Component {
                     fullName: ''
                 });
                 alert('api failed');
+                console.log('falsed response from api', error);
             })
         }
         else if(action == 'otp'){
@@ -188,12 +194,14 @@ export default class QuizComponent extends Component {
                     this.setState({
                         isLoading: false
                     });
+                    console.log('there is no api token in the response', data);
                 }
                 if(data.message){
                     alert(data.message);
                 }
                 else{
                     alert('Something went wrong please try again.');
+                    console.log('there is no message in the response', data);
                     window.location.reload();
                 }
             }, (error) => {
@@ -208,6 +216,7 @@ export default class QuizComponent extends Component {
                     fullName: ''
                 });
                 alert('api failed');
+                console.log('falsed response from api', error);
             })
         }
     }

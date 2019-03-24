@@ -40,7 +40,10 @@ export default class PlayLivePollComponent extends Component {
     eventHandler() {
         this.socket = io();
         this.socket.on('broadcast', (data) => {
-            if(data && data.action == 'question'){
+            if(data && data.poll_pin && data.poll_pin != this.props.pollPin) {
+                // do nothing
+            }
+            else if(data && data.action == 'question'){
                 this.setState({
                     isQuestionActive: true,
                     isLoading: false,
