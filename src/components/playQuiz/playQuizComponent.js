@@ -40,7 +40,8 @@ export default class PlayQuizComponent extends Component {
             isQuestionActive: false,
             answeredAtTimeRemaining: 0,
             playerTotalScore: 0,
-            correctAnswerID: null
+            correctAnswerID: null,
+            questionStartTime: 0
         }
         this.onClickNextQuestion = this.onClickNextQuestion.bind(this);
         this.onClickNextScoreBoard = this.onClickNextScoreBoard.bind(this);
@@ -52,10 +53,11 @@ export default class PlayQuizComponent extends Component {
         let currentQuestionObject = this.state.questionList[this.state.currentQuestion-1];
         let markedOption = currentQuestionObject.options.find(val => val.is_answer);
         let optionID = markedOption ? markedOption.option_id : 0;
+        let timeRemaining = currentQuestionObject.question_time*1000 - ((new Date()).getTime() - this.state.questionStartTime);
         post('/api/quiz/question/answer/', {
             quiz_id: this.props.quizID,
             question_id: currentQuestionObject.question_id,
-            time_remaining: this.state.answeredAtTimeRemaining*1000,
+            time_remaining: timeRemaining,
             question_time: currentQuestionObject.question_time,
             option_id: optionID
         }, {
@@ -113,7 +115,8 @@ export default class PlayQuizComponent extends Component {
                     isAnsweringAllowed: true,
                     isCurrentQuestionAnswered: false,
                     isQuestionActive: true,
-                    isScoreActive: false
+                    isScoreActive: false,
+                    questionStartTime: (new Date()).getTime()
                 }, () => {
                     clearInterval(this.interval);
                     this.interval = setInterval(() => {
@@ -195,6 +198,7 @@ export default class PlayQuizComponent extends Component {
                                 questionList: data.questions ? data.questions : [],
                                 isRequestCompleted: true,
                                 currentTimeout: data.questions && data.questions.length ? data.questions[0].question_time : 30,
+                                questionStartTime: (new Date()).getTime()
                             }, () => {
                                 this.interval = setInterval(() => {
                                     if(this.state.currentTimeout - 1 >= 0){
@@ -207,6 +211,8 @@ export default class PlayQuizComponent extends Component {
                                         clearInterval(this.interval);
                                         this.setState({
                                             isAnsweringAllowed: false
+                                        }, () => {
+                                            this.onClickNextQuestion();
                                         })
                                     }
                                 }, 1000)

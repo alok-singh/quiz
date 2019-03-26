@@ -149,7 +149,7 @@ export default class PlayLivePollComponent extends Component {
             let remainingTime = this.state.currentTimeout - 1;
             if(remainingTime <= 0){
                 remainingTime = 0;
-                clearTimeout(this.interval);
+                clearInterval(this.interval);
             }
             this.setState({
                 currentTimeout: remainingTime,

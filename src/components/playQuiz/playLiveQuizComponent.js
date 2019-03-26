@@ -20,13 +20,14 @@ export default class PlayLiveQuizComponent extends Component {
             isResultRunning: false,  // leaderboard
             currentQuestionNumber: 0,
             totalQuestions: 'NA',
-            isPlayerCorrect: false,
+            isPlayerCorrect: undefined,
             playerScore: 'NA',
             roundBest: 'NA',
             playerTotalScore: 0,
             playerRank: 'NA',
             playerList: [],
             isAnsweringAllowed: true,
+            questionStartTime: 0,
             questionObject: {},
             currentTimeout: 10,
             resultList: []
@@ -46,6 +47,9 @@ export default class PlayLiveQuizComponent extends Component {
             if(data && data.quiz_pin && data.quiz_pin != this.props.quizPin) {
                 // do nothing
             }
+            else if(data && data.pin_id && data.pin_id != this.props.quizPin) {
+
+            }
             else if(data && data.action == 'question'){
                 this.setState({
                     isQuestionActive: true,
@@ -55,9 +59,11 @@ export default class PlayLiveQuizComponent extends Component {
                     isStatsActive: false,
                     questionObject: data.question,
                     isAnsweringAllowed: true,
+                    isPlayerCorrect: undefined,
                     totalQuestions: data.total_questions ? data.total_questions : this.state.totalQuestions,
                     currentTimeout: data.question.question_time,
-                    currentQuestionNumber: parseInt(this.state.currentQuestionNumber) + 1
+                    currentQuestionNumber: parseInt(this.state.currentQuestionNumber) + 1,
+                    questionStartTime: (new Date()).getTime()
                 }, () => {
                     this.startClock();
                 })
@@ -156,7 +162,7 @@ export default class PlayLiveQuizComponent extends Component {
                     question_id: this.state.questionObject.question_id,
                     quiz_pin: this.props.quizPin,
                     option_id: answeredOption ? answeredOption.option_id : null,
-                    time_remaining: this.state.currentTimeout*1000,
+                    time_remaining: ((new Date()).getTime() - this.state.questionStartTime),
                     question_time: this.state.questionObject.question_time*1000
                 };
                 post(`/api/player/answer/`, data, {
@@ -212,7 +218,7 @@ export default class PlayLiveQuizComponent extends Component {
              
             if(remainingTime <= 0){
                 remainingTime = 0;
-                clearTimeout(this.interval);
+                clearInterval(this.interval);
             }
             this.setState({
                 currentTimeout: remainingTime,
