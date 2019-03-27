@@ -157,12 +157,13 @@ export default class PlayLiveQuizComponent extends Component {
                 let answeredOption = this.state.questionObject.options.filter(option => {
                     return option.is_answer
                 })[0];
+                let timeRemaining = this.state.questionObject.question_time*1000 - ((new Date()).getTime() - this.state.questionStartTime);
                 let data = {
                     quiz_id: this.props.quizID,
                     question_id: this.state.questionObject.question_id,
                     quiz_pin: this.props.quizPin,
                     option_id: answeredOption ? answeredOption.option_id : null,
-                    time_remaining: ((new Date()).getTime() - this.state.questionStartTime),
+                    time_remaining: timeRemaining,
                     question_time: this.state.questionObject.question_time*1000
                 };
                 post(`/api/player/answer/`, data, {
